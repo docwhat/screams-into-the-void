@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://drbf8d237goj"]
+[gd_scene load_steps=4 format=3 uid="uid://drbf8d237goj"]
 
 [ext_resource type="Shader" uid="uid://ded0dkcink1km" path="res://starfield.gdshader" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://d0yngcc1gaxcd" path="res://character.gd" id="2_h2yge"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xm2m"]
 shader = ExtResource("1_ig7tw")
@@ -16,3 +17,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Character" type="CharacterBody2D" parent="."]
+script = ExtResource("2_h2yge")
+
+[node name="Camera" type="Camera2D" parent="Character"]
