@@ -36,7 +36,7 @@ float field(in vec3 p) {
   for (int i = 0; i < 6; ++i) {
     float mag = dot(p, p);
     // This moves the cloud around.
-    p = abs(p) / mag + vec3(-.5, -.8 + 0.1*sin(-time*0.1 + 2.0), -1.1+0.3*cos(time*0.3));
+    p = abs(p) / mag + vec3(-.5, -.8 + 0.1*sin(-TIME*0.1 + 2.0), -1.1+0.3*cos(time*0.3));
     float w = exp(-float(i) / 7.);
     accum += w * exp(-strength * pow(abs(mag - prev), 2.3));
     tw += w;
@@ -44,6 +44,8 @@ float field(in vec3 p) {
   }
   return max(0., 5. * accum / tw - .7);
 }
+
+const float speed = 0.0; // -0.001;
 
 void fragment() {
   vec2 uv2 = 2. * FRAGCOORD.xy / vec2(512) - 1.;
@@ -53,30 +55,30 @@ void fragment() {
 
   //get coords and direction
   vec2 uv = uvs;
-  //mouse rotation
+
   float a_xz = 0.9;
-  float a_yz = -.6;
-  float a_xy = 0.9 + time*0.08;
+  float a_yz = -0.6;
+  float a_xy = 0.98;
 
   mat2 rot_xz = mat2(vec2(cos(a_xz),sin(a_xz)),vec2(-sin(a_xz),cos(a_xz)));
   mat2 rot_yz = mat2(vec2(cos(a_yz),sin(a_yz)),vec2(-sin(a_yz),cos(a_yz)));
   mat2 rot_xy = mat2(vec2(cos(a_xy),sin(a_xy)),vec2(-sin(a_xy),cos(a_xy)));
 
-  vec3 view_position = vec3(0.0, TIME * -0.001, 0.0);
+  vec3 view_position = vec3(0.0, TIME * speed, 0.0);
   float v2 =1.0;
   vec3 dir=vec3(uv*zoom,1.);
   vec3 from=vec3(0.0, 0.0,0.0);
 
   from.x -= 2.0*(view_position.x-0.5);
-  from.y -= 2.0*(view_position.y-0.5) - 0.001*TIME;
+  from.y -= 2.0*(view_position.y-0.5) - speed * TIME;
 
-  dir.xy*=rot_xy;
-  dir.xz*=rot_xz;
-  dir.yz*= rot_yz;
+  dir.xy *= rot_xy;
+  dir.xz *= rot_xz;
+  dir.yz *= rot_yz;
 
-  from.xy*=-1.0*rot_xy;
-  from.xz*=rot_xz;
-  from.yz*= rot_yz;
+  from.xy *= - 1.0 * rot_xy;
+  from.xz *= rot_xz;
+  from.yz *= rot_yz;
 
   //zoom
   float zooom = 0.0; // disabled
