@@ -110,10 +110,10 @@ void fragment() {
   uv *= 5.0;
 
   vec3 color = vec3(0.0); // black
-  
+
   // Front layer
   color += starLayer(uv);
-  
+
   // Background layer
   color += starLayer(uv * 2.0) * 0.5;
 

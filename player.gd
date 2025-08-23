@@ -11,7 +11,7 @@ func _ready() -> void:
 #   # Put the character at the center of the screen
 #   position = get_viewport().get_size() / 2
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
   var direction : Vector2 = Vector2(
     Input.get_action_strength("right") - Input.get_action_strength("left"),
     Input.get_action_strength("backwards") - Input.get_action_strength("forward"),
@@ -19,12 +19,12 @@ func _process(delta: float) -> void:
 
   velocity = direction * move_speed
 
-  #if direction:
-    #print_rich("Input Vector: %s  Speed: %s" % [direction, move_speed])
-    #print_rich("New Velocity: %s" % velocity)
-    #print_rich("Current Position:  %s" % position)
+  if direction:
+    print_rich("Input Vector: %s  Speed: %s" % [direction, move_speed])
+    print_rich("New Velocity: %s" % velocity)
+    print_rich("Current Position:  %s" % position)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
   move_and_slide()
 
 # func _physics_process(delta: float) -> void:
