@@ -3,12 +3,12 @@
 // By iVader: https://godotshaders.com/author/ivader/
 // License: CC0 <https://creativecommons.org/publicdomain/zero/1.0/>
 shader_type canvas_item;
+render_mode unshaded, world_vertex_coords;
 
 const int iterations = 12;
-const float formuparam2 = 0.79;
+const float formuparam = 0.79;
 const float volsteps = 7.0;
 const float stepsize = 0.290;
-const float zoom = 1.0;
 const float tile = 0.850;
 
 const float brightness = 0.0015;
@@ -16,16 +16,10 @@ const float darkmatter = 0.100;
 const float distfading = 0.560;
 const float saturation = 0.90;
 
-
-const float transverseSpeed = 1.0; //zoom;
+const float transverseSpeed = 1.0;
 const float cloud = 0.17;
 
 const float time = 1.0;
-
-float triangle(float x, float a) {
-  float output2 = 2.0*abs(  3.0*  ( (x/a) - floor( (x/a) + 0.5) ) ) - 1.0;
-  return output2;
-}
 
 float field(in vec3 p) {
   float strength = 7. + .03 * log(1.e-6 + fract(sin(TIME) * 373.11));
@@ -45,16 +39,11 @@ float field(in vec3 p) {
   return max(0., 5. * accum / tw - .7);
 }
 
-const float speed = 0.0; // -0.001;
-
 void fragment() {
-  vec2 uv2 = 2. * FRAGCOORD.xy / vec2(512) - 1.;
-  vec2 uvs = uv2 * vec2(512)  / 512.0;
-
-  float formuparam = formuparam2;
+  const float speed = -0.003;
 
   //get coords and direction
-  vec2 uv = uvs;
+  vec2 uv = 2. * FRAGCOORD.xy / vec2(512.) - 1.;
 
   float a_xz = 0.9;
   float a_yz = -0.6;
@@ -64,13 +53,16 @@ void fragment() {
   mat2 rot_yz = mat2(vec2(cos(a_yz),sin(a_yz)),vec2(-sin(a_yz),cos(a_yz)));
   mat2 rot_xy = mat2(vec2(cos(a_xy),sin(a_xy)),vec2(-sin(a_xy),cos(a_xy)));
 
-  vec3 view_position = vec3(0.0, TIME * speed, 0.0);
   float v2 =1.0;
-  vec3 dir=vec3(uv*zoom,1.);
-  vec3 from=vec3(0.0, 0.0,0.0);
+  vec3 dir=vec3(uv,1.);
 
+  vec3 view_position = vec3(0.0, TIME * speed, 0.0);
+  vec3 from=vec3(0.0, 0.0, 0.0);
   from.x -= 2.0*(view_position.x-0.5);
   from.y -= 2.0*(view_position.y-0.5) - speed * TIME;
+  // Simplified?:
+  // vec3 from = vec3(0., 0. - (2. * (TIME * speed - .5)) - TIME * speed, 0.);
+  // vec3 from = vec3(VERTEX.xy, 0.);
 
   dir.xy *= rot_xy;
   dir.xz *= rot_xz;

@@ -1,16 +1,24 @@
-[gd_scene load_steps=4 format=3 uid="uid://drbf8d237goj"]
+[gd_scene load_steps=5 format=3 uid="uid://drbf8d237goj"]
 
-[ext_resource type="Shader" uid="uid://ded0dkcink1km" path="res://starfield.gdshader" id="1_ig7tw"]
-[ext_resource type="Script" uid="uid://d0yngcc1gaxcd" path="res://character.gd" id="2_h2yge"]
+[ext_resource type="Script" uid="uid://3lpx3nh5ceyj" path="res://main.gd" id="1_h2yge"]
+[ext_resource type="Shader" uid="uid://bxg7qu236s2yc" path="res://stars.gdshader" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://cogwn8cxbc1mt" path="res://player.tscn" id="3_h2yge"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xm2m"]
-shader = ExtResource("1_ig7tw")
+shader = ExtResource("2_h2yge")
+shader_parameter/showGrid = false
+shader_parameter/time = 0.0
 
 [node name="Main" type="Node"]
+script = ExtResource("1_h2yge")
 
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
 
-[node name="ColorRect" type="ColorRect" parent="ParallaxBackground"]
+[node name="ParallaxBackground" type="ParallaxBackground" parent="CanvasLayer"]
+
+[node name="Starfield" type="ColorRect" parent="CanvasLayer/ParallaxBackground"]
+visible = false
 material = SubResource("ShaderMaterial_0xm2m")
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,7 +26,26 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Character" type="CharacterBody2D" parent="."]
-script = ExtResource("2_h2yge")
+[node name="Stars" type="ColorRect" parent="CanvasLayer/ParallaxBackground"]
+material = SubResource("ShaderMaterial_0xm2m")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Camera" type="Camera2D" parent="Character"]
+[node name="Green" type="ColorRect" parent="CanvasLayer/ParallaxBackground"]
+visible = false
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.532
+anchor_bottom = 0.531
+offset_right = 24.64
+offset_bottom = 31.63
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12, 1, 0.384, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Player" parent="." instance=ExtResource("3_h2yge")]
