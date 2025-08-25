@@ -28,7 +28,6 @@ window/size/viewport_width=1290
 window/size/viewport_height=800
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
-window/stretch/scale=2.0
 window/stretch/scale_mode="integer"
 
 [input]

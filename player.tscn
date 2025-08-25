@@ -18,3 +18,4 @@ one_way_collision_margin = 64.9
 debug_color = Color(0.926066, 4.16812e-05, 0.673835, 0.42)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(0, -300)
