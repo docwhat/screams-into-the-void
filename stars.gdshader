@@ -4,9 +4,11 @@ render_mode unshaded;
 // The speed that the stars move towards the bottom of the screen.
 uniform float speed : hint_range(0.0, 10.0, 0.001) = 0.01;
 // How fast the stars dim and undim.
-uniform float twinkle_speed = 0.2358404332;
+const float twinkle_speed = 0.2358404332;
 // How many stars per fragment.
 uniform float stars_ratio : hint_range(1.5, 30.0, 0.1) = 5;
+// Overall brighness of all stars.
+uniform float all_brightness : hint_range(0.1, 1.0, 0.01) = 1.0;
 
 // The percentage of each color in stars, randomly distributed.
 const vec3 starTint = vec3(0.4, 0.1, 0.9);
@@ -34,7 +36,7 @@ mat2 rotate(float rads) {
 float starBrightness(vec2 uv, float flare) {
   // Circle at center of star.
   float d = length(uv);
-  float brightness = 0.05 / d;
+  float brightness = 0.05 / d * all_brightness;
 
   // Horizontal & Vertical rays.
   float rays = 1.0 - min(1.0, abs(uv.x * uv.y * 1000.0));
@@ -98,7 +100,7 @@ vec3 starLayer(vec2 uv) {
 }
 
 void fragment() {
-  vec2 uv = SCREEN_UV;
+  vec2 uv = UV;
 
   // Put 0,0 in center of the viewport.
   // uv -= 0.5; // Not needed in production.
