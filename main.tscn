@@ -1,23 +1,46 @@
-[gd_scene load_steps=6 format=3 uid="uid://drbf8d237goj"]
+[gd_scene load_steps=10 format=3 uid="uid://drbf8d237goj"]
 
 [ext_resource type="Script" uid="uid://3lpx3nh5ceyj" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="Shader" uid="uid://bxg7qu236s2yc" path="res://stars.gdshader" id="2_h2yge"]
 [ext_resource type="Script" uid="uid://c0mgsc65vwhad" path="res://stars.gd" id="3_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://cogwn8cxbc1mt" path="res://player.tscn" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://d0yngcc1gaxcd" path="res://player.gd" id="4_lquwl"]
+[ext_resource type="Texture2D" uid="uid://dvd4saob0msxn" path="res://player.png" id="5_7mycd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xm2m"]
 shader = ExtResource("2_h2yge")
 shader_parameter/speed = 0.002
-shader_parameter/twinkle_speed = 0.23584
-shader_parameter/stars_ratio = 4.0
+shader_parameter/stars_ratio = 5.0
+shader_parameter/all_brightness = 1.0
 
-[node name="Main" type="Node"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_lquwl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_7mycd")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7mycd"]
+radius = 32.0
+
+[sub_resource type="Curve2D" id="Curve2D_7mycd"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_h2yge")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="AsteroidTimer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="Background" type="CanvasLayer" parent="."]
 layer = -1
 
-[node name="Stars" type="ColorRect" parent="CanvasLayer"]
+[node name="Stars" type="ColorRect" parent="Background"]
 material = SubResource("ShaderMaterial_0xm2m")
 anchors_preset = 15
 anchor_right = 1.0
@@ -28,5 +51,21 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("3_1bvp3")
 
-[node name="Player" parent="." instance=ExtResource("3_h2yge")]
-position = Vector2(647, 733)
+[node name="Player" type="Area2D" parent="."]
+script = ExtResource("4_lquwl")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
+sprite_frames = SubResource("SpriteFrames_lquwl")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CircleShape2D_7mycd")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="AsteroidPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_7mycd")
+
+[node name="AsteroidSpawnLocation" type="PathFollow2D" parent="AsteroidPath"]
+
+[connection signal="timeout" from="AsteroidTimer" to="." method="_on_asteroid_timer_timeout"]
