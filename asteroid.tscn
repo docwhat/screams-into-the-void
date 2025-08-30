@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dgo8gq5d22uf"]
+
+[ext_resource type="Script" uid="uid://b2samh810qdpg" path="res://asteroid.gd" id="1_p0ukn"]
+[ext_resource type="PackedScene" uid="uid://bj7tr13ilvj3h" path="res://Planets/Asteroids/Asteroid.tscn" id="1_u87q6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_272bh"]
+resource_local_to_scene = true
+
+[node name="Asteroid" type="RigidBody2D"]
+mass = 10000.0
+script = ExtResource("1_p0ukn")
+
+[node name="PixelAsteroid" parent="." instance=ExtResource("1_u87q6")]
+offset_left = -256.0
+offset_top = -150.0
+offset_right = -156.0
+offset_bottom = -50.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_272bh")
+one_way_collision_margin = 16.0
