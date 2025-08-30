@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://cc7jxj7fril3" path="res://Planets/Asteroids/Asteroid.gd" id="3"]
 
 [sub_resource type="ShaderMaterial" id="1"]
+resource_local_to_scene = true
 shader = ExtResource("1")
 shader_parameter/pixels = 100.0
 shader_parameter/rotation = 0.0
