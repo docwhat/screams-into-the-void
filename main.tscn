@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://drbf8d237goj"]
+[gd_scene load_steps=9 format=3 uid="uid://drbf8d237goj"]
 
 [ext_resource type="Script" uid="uid://3lpx3nh5ceyj" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="Shader" uid="uid://bxg7qu236s2yc" path="res://stars.gdshader" id="2_h2yge"]
@@ -26,8 +26,6 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_7mycd"]
 radius = 32.0
 
-[sub_resource type="Curve2D" id="Curve2D_7mycd"]
-
 [node name="Main" type="Control"]
 layout_mode = 3
 anchors_preset = 0
@@ -52,6 +50,7 @@ size_flags_vertical = 4
 script = ExtResource("3_1bvp3")
 
 [node name="Player" type="Area2D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("4_lquwl")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
@@ -60,12 +59,5 @@ animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_7mycd")
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-
-[node name="AsteroidPath" type="Path2D" parent="."]
-curve = SubResource("Curve2D_7mycd")
-
-[node name="AsteroidSpawnLocation" type="PathFollow2D" parent="AsteroidPath"]
 
 [connection signal="timeout" from="AsteroidTimer" to="." method="_on_asteroid_timer_timeout"]
