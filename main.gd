@@ -40,10 +40,10 @@ func _ready() -> void:
 
 func _on_asteroid_timer_timeout() -> void:
   var asteroid : RigidBody2D = preload("res://asteroid.tscn").instantiate()
-  
+
   var screen_size = get_viewport_rect().size
   var spawn_margin = 100
-  var target_position : Vector2 = %Player.global_position
+  var target_position : Vector2 = Global.player_position
   var direction : float
 
   # # Determine if this asteroid should intercept the player
@@ -58,9 +58,10 @@ func _on_asteroid_timer_timeout() -> void:
 
   # Target the player
   direction = asteroid.position.angle_to_point(target_position)
+  # direction = Global.rng.randf_range(PI/4, 3*PI/4)
 
   print_rich("pos: %s, target: %s, direction: %s, screen: %s" % [
-    asteroid.position, target_position, direction, screen_size])
+    asteroid.global_position, target_position, direction, screen_size])
 
   #if spawn_from_top:
     ## Spawn from top, moving downward

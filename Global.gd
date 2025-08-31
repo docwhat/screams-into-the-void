@@ -8,7 +8,9 @@ var resolution := Vector2(
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var star_speed : float = 0.01
 
-const player_size : Vector2 = Vector2(64, 64)
+# Player information.
+var player_size : Vector2 = Vector2(64, 64)
+var player_position : Vector2
 
 # Asteroid system variables
 var asteroid_player_intercept_chance : float = 0.3  # 30% chance asteroids target player
