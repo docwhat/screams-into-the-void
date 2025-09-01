@@ -1,5 +1,12 @@
 extends Control
 
+enum Side {
+  TOP,
+  LEFT,
+  RIGHT,
+  BOTTOM
+}
+
 func _ready() -> void:
   Global.rng.randomize()
   #resized.connect(_on_resized)
@@ -16,65 +23,68 @@ func _ready() -> void:
     viewport.content_scale_size
   ])
 
+# Asteroids start off screen. We need to ensure they spawn far enough off screen
+# that they can't be seen.
+func calculate_asteroid_starting_position() -> Vector2:
+  var screen_size : Vector2 = get_viewport_rect().size
+
+  # Distance from edge of screen to the asteroid off screen.
+  var spawn_margin : int = 100
+
+  # Where the asteroid should spawn.
+  var sides = [Side.TOP, Side.LEFT, Side.RIGHT, Side.BOTTOM]
+  var side_weights : PackedFloat32Array = [5, 1.5, 1.5, 0.1]
+
+  var side_index = Global.rng.rand_weighted(side_weights)
+  match sides[side_index]:
+    Side.LEFT:
+      return Vector2(
+        -spawn_margin,
+        Global.rng.randf_range(0, screen_size.y)
+      )
+    Side.RIGHT:
+      return Vector2(
+        screen_size.x + spawn_margin,
+        Global.rng.randf_range(0, screen_size.y)
+      )
+    Side.BOTTOM:
+      return Vector2(
+        Global.rng.randf_range(0, screen_size.x),
+        screen_size.y + spawn_margin
+      )
+    _: # AKA Side.TOP
+      return Vector2(
+        Global.rng.randf_range(-spawn_margin, screen_size.x + spawn_margin),
+        -spawn_margin
+      )
+
+
+
 func _on_asteroid_timer_timeout() -> void:
   var asteroid : RigidBody2D = preload("res://asteroid.tscn").instantiate()
+  var screen_size : Vector2 = get_viewport_rect().size
 
-  var screen_size = get_viewport_rect().size
-  var spawn_margin = 100
-  var target_position : Vector2 = Global.player_position
+  var target_coord : Vector2
   var direction : float
 
   # Determine if this asteroid should intercept the player
   var should_intercept = Global.rng.randf() < Global.asteroid_player_intercept_chance
 
-  # Determine spawn type based on bias
-  var spawn_from_top = Global.rng.randf() < Global.asteroid_top_down_bias
+  asteroid.position = calculate_asteroid_starting_position()
 
-  if spawn_from_top:
-    # Spawn from top, moving downward
-    asteroid.position.x = Global.rng.randf_range(-spawn_margin, screen_size.x + spawn_margin)
-    asteroid.position.y = -spawn_margin
-
-    if should_intercept:
-      # Target the player
-      target_position = $Player.global_position
-      direction = asteroid.position.angle_to_point(target_position)
-    else:
-      # Move generally downward with some variation
-      direction = Global.rng.randf_range(PI/4, 3*PI/4)
+  if should_intercept:
+    target_coord = $Player.global_position
   else:
-    # Spawn from other directions (left, right, or bottom)
-    var side = Global.rng.randi_range(0, 3)
-    match side:
-      0: # Left side
-        asteroid.position.x = -spawn_margin
-        asteroid.position.y = Global.rng.randf_range(0, screen_size.y)
-        if should_intercept:
-          target_position = $Player.global_position
-          direction = asteroid.position.angle_to_point(target_position)
-        else:
-          direction = Global.rng.randf_range(-PI/4, PI/4)  # Generally rightward
-      1: # Right side
-        asteroid.position.x = screen_size.x + spawn_margin
-        asteroid.position.y = Global.rng.randf_range(0, screen_size.y)
-        if should_intercept:
-          target_position = $Player.global_position
-          direction = asteroid.position.angle_to_point(target_position)
-        else:
-          direction = Global.rng.randf_range(3*PI/4, 5*PI/4)  # Generally leftward
-      2: # Bottom
-        asteroid.position.x = Global.rng.randf_range(0, screen_size.x)
-        asteroid.position.y = screen_size.y + spawn_margin
-        if should_intercept:
-          target_position = $Player.global_position
-          direction = asteroid.position.angle_to_point(target_position)
-        else:
-          direction = Global.rng.randf_range(-3*PI/4, -PI/4)  # Generally upward
+    target_coord = Vector2(
+      Global.rng.randf_range(0, screen_size.x),
+      Global.rng.randf_range(0, screen_size.y)
+    )
+  direction = asteroid.position.angle_to_point(target_coord)
 
   asteroid.rotation = direction
 
   # Choose a velocity
-  var speed = Global.rng.randf_range(150.0, 250.0)
+  var speed = Global.rng.randf_range(100.0, 150.0)
   var velocity = Vector2(speed, 0.0).rotated(direction)
   asteroid.linear_velocity = velocity
 

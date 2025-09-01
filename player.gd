@@ -1,4 +1,4 @@
-class_name Player extends StaticBody2D
+class_name Player extends Area2D
 
 func _ready() -> void:
   get_viewport().connect("size_changed", _on_resized)
@@ -16,3 +16,8 @@ func recenter_player():
 
 func _on_resized():
   recenter_player.call_deferred()
+  
+func _on_body_entered(body: Node2D) -> void:
+  if body.has_method("be_absorbed"):
+    body.be_absorbed(null)
+  body.queue_free()
