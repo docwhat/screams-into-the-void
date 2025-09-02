@@ -4,6 +4,44 @@ static var count : int = 0
 var radius : int
 var debuted : bool = false
 
+# Composition
+var carbon : int = 0
+var water : int = 0
+var silicon : int = 0
+var metal : int = 0
+
+func _ready() -> void:
+  radius = random_radius()
+  inertia = 1000000.0 * radius
+
+  var new_rotation_impulse : float = Global.rng.randf_range(-8.0, 8.0)
+  set_mass(1000.0 * radius)
+  apply_torque_impulse(new_rotation_impulse)
+
+  # Compisition
+  carbon = max(0, Global.rng.randi_range(-2, 20) * radius)
+  water = max(0, Global.rng.randi_range(0, 20) * radius)
+  silicon = max(0, Global.rng.randi_range(-2, 20) * radius)
+  metal = max(0, Global.rng.randi_range(0, 20) * radius)
+
+  # Image shape.
+  var points = generatePoints()
+  var poly = Polygon2D.new()
+  poly.set_polygon(points)
+  poly.set_color(Color(0.7, 0.6, 0.5))
+  add_child(poly)
+
+  # Collision polygon shape.
+  # This is commented out because I can't get it to be sane. The asteroids
+  # spin like crazy whenever they touch.
+  var collider : CollisionPolygon2D = CollisionPolygon2D.new()
+  collider.set_build_mode(CollisionPolygon2D.BUILD_SOLIDS)
+  collider.set_polygon(points)
+  collider
+  add_child(collider)
+
+  count += 1
+
 # A random asteroid size.
 func random_radius() -> int:
   # The list of possible asteroid sizes and the weights (chances) of getting
@@ -35,33 +73,11 @@ func generatePoints() -> PackedVector2Array:
     poly.append(Vector2(rad, 0).rotated(angle))
   return poly
 
-func _ready() -> void:
-  radius = random_radius()
-  inertia = 1000000.0 * radius
-
-  var new_rotation_impulse : float = Global.rng.randf_range(-8.0, 8.0)
-  set_mass(1000.0 * radius)
-  apply_torque_impulse(new_rotation_impulse)
-
-  # Image shape.
-  var points = generatePoints()
-  var poly = Polygon2D.new()
-  poly.set_polygon(points)
-  poly.set_color(Color(0.7, 0.6, 0.5))
-  add_child(poly)
-
-  # Collision polygon shape.
-  # This is commented out because I can't get it to be sane. The asteroids
-  # spin like crazy whenever they touch.
-  var collider : CollisionPolygon2D = CollisionPolygon2D.new()
-  collider.set_build_mode(CollisionPolygon2D.BUILD_SOLIDS)
-  collider.set_polygon(points)
-  collider
-  add_child(collider)
-
-  count += 1
-
 func be_absorbed(_storage) -> void:
+  SaveState.carbon += carbon
+  SaveState.water += water
+  SaveState.silicon += silicon
+  SaveState.metal += metal
   count -= 1
   # store the resources
 
