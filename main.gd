@@ -70,6 +70,8 @@ func _on_asteroid_timer_timeout() -> void:
   # Determine if this asteroid should intercept the player
   var should_intercept = Global.rng.randf() < Global.asteroid_player_intercept_chance
 
+  # Need to freeze the asteroid prior to making changes.
+  asteroid.set_freeze_enabled(true)
   asteroid.position = calculate_asteroid_starting_position()
 
   if should_intercept:
@@ -81,12 +83,15 @@ func _on_asteroid_timer_timeout() -> void:
     )
   direction = asteroid.position.angle_to_point(target_coord)
 
-  asteroid.rotation = direction
-
   # Choose a velocity
   var speed = Global.rng.randf_range(100.0, 150.0)
   var velocity = Vector2(speed, 0.0).rotated(direction)
-  asteroid.linear_velocity = velocity
+
+  # Restore the physics.
+  asteroid.set_freeze_enabled(false)
+
+  # Send it on its way.
+  asteroid.apply_impulse(velocity)
 
   # Spawn it by adding to the Main scene
   add_child(asteroid)

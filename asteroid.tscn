@@ -1,41 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://dgo8gq5d22uf"]
+[gd_scene load_steps=3 format=3 uid="uid://dgo8gq5d22uf"]
 
 [ext_resource type="Script" uid="uid://b2samh810qdpg" path="res://asteroid.gd" id="1_p0ukn"]
-[ext_resource type="PackedScene" uid="uid://bj7tr13ilvj3h" path="res://Planets/Asteroids/Asteroid.tscn" id="1_u87q6"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_p0ukn"]
 friction = 0.01
-bounce = 0.3
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_272bh"]
-resource_local_to_scene = true
+bounce = 0.5
 
 [node name="Asteroid" type="RigidBody2D"]
 top_level = true
 collision_layer = 2
 collision_mask = 3
 physics_material_override = SubResource("PhysicsMaterial_p0ukn")
-linear_velocity = Vector2(0, 0.1)
 linear_damp_mode = 1
+angular_damp_mode = 1
 constant_force = Vector2(0, -10)
 script = ExtResource("1_p0ukn")
-
-[node name="PixelAsteroid" parent="." instance=ExtResource("1_u87q6")]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = -100.0
-offset_top = -100.0
-offset_right = 0.0
-offset_bottom = 0.0
-grow_horizontal = 1
-grow_vertical = 1
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_272bh")
-one_way_collision_margin = 16.0
-debug_color = Color(0, 0.6, 0.701961, 0.152941)
-
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-
-[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
