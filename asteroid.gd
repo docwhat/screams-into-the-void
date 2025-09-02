@@ -50,25 +50,25 @@ func _ready() -> void:
   poly.set_color(Color(0.7, 0.6, 0.5))
   add_child(poly)
 
-  var max_radius : float = radius
-  for point in points:
-    max_radius = max(max_radius, point.length())
-
-  # # Collision polygon shape.
-  # # This is commented out because I can't get it to be sane. The asteroids
-  # # spin like crazy whenever they touch.
-  # var collider : CollisionPolygon2D = CollisionPolygon2D.new()
-  # collider.set_build_mode(CollisionPolygon2D.BUILD_SOLIDS)
-  # collider.set_polygon(points)
-  # add_child(collider)
-
-  # Collision circle shape.
-  var collider : CollisionShape2D = CollisionShape2D.new()
-  # Set the shape to a circle of radius max_radius
-  var shape : CircleShape2D = CircleShape2D.new()
-  shape.set_radius((max_radius + radius) / 2.0)
-  collider.set_shape(shape)
-  add_child(collider)
+  if false:
+    # Collision polygon shape.
+    # This is commented out because I can't get it to be sane. The asteroids
+    # spin like crazy whenever they touch.
+    var collider : CollisionPolygon2D = CollisionPolygon2D.new()
+    collider.set_build_mode(CollisionPolygon2D.BUILD_SOLIDS)
+    collider.set_polygon(points)
+    add_child(collider)
+  else:
+    # Collision circle shape.
+    var max_radius : float = radius
+    for point in points:
+      max_radius = max(max_radius, point.length())
+    var collider : CollisionShape2D = CollisionShape2D.new()
+    # Set the shape to a circle of radius max_radius
+    var shape : CircleShape2D = CircleShape2D.new()
+    shape.set_radius((max_radius + radius) / 2.0)
+    collider.set_shape(shape)
+    add_child(collider)
 
   count += 1
 
