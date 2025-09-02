@@ -37,10 +37,10 @@ func generatePoints() -> PackedVector2Array:
 
 func _ready() -> void:
   radius = random_radius()
-  inertia = 10.0 * radius / 64.0
+  inertia = 1000000.0 * radius
 
   var new_rotation_impulse : float = Global.rng.randf_range(-8.0, 8.0)
-  set_mass(radius)
+  set_mass(1000.0 * radius)
   apply_torque_impulse(new_rotation_impulse)
 
   # Image shape.
@@ -50,25 +50,14 @@ func _ready() -> void:
   poly.set_color(Color(0.7, 0.6, 0.5))
   add_child(poly)
 
-  if false:
-    # Collision polygon shape.
-    # This is commented out because I can't get it to be sane. The asteroids
-    # spin like crazy whenever they touch.
-    var collider : CollisionPolygon2D = CollisionPolygon2D.new()
-    collider.set_build_mode(CollisionPolygon2D.BUILD_SOLIDS)
-    collider.set_polygon(points)
-    add_child(collider)
-  else:
-    # Collision circle shape.
-    var max_radius : float = radius
-    for point in points:
-      max_radius = max(max_radius, point.length())
-    var collider : CollisionShape2D = CollisionShape2D.new()
-    # Set the shape to a circle of radius max_radius
-    var shape : CircleShape2D = CircleShape2D.new()
-    shape.set_radius((max_radius + radius) / 2.0)
-    collider.set_shape(shape)
-    add_child(collider)
+  # Collision polygon shape.
+  # This is commented out because I can't get it to be sane. The asteroids
+  # spin like crazy whenever they touch.
+  var collider : CollisionPolygon2D = CollisionPolygon2D.new()
+  collider.set_build_mode(CollisionPolygon2D.BUILD_SOLIDS)
+  collider.set_polygon(points)
+  collider
+  add_child(collider)
 
   count += 1
 
