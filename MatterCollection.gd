@@ -9,7 +9,10 @@ func _init() -> void:
   clear()
 
 func clear() -> void:
-  collection.fill(0)
+  fill(0)
+
+func fill(value : int) -> void:
+  collection.fill(max(0, value))
 
 func get_amount(matter : Global.Matter) -> int:
   return collection[matter]

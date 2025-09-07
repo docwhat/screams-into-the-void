@@ -141,3 +141,36 @@ func test_add_collection_empty_to_empty():
   for matter_type in Global.Matter.values():
     assert_eq(matter_collection.get_amount(matter_type), 0,
       "Adding empty collection to empty should remain zero")
+
+func test_add_collection_empty_to_non_empty():
+  matter_collection.set_amount(Global.Matter.SILICON, 5)
+  other_collection.set_amount(Global.Matter.SILICON, 3)
+  matter_collection.add_collection(other_collection)
+  assert_eq(matter_collection.get_amount(Global.Matter.SILICON), 8,
+    "Adding empty collection to non-empty should add the amounts")
+
+func test_add_collection_non_empty_to_empty():
+  matter_collection.set_amount(Global.Matter.SILICON, 5)
+  other_collection.set_amount(Global.Matter.SILICON, 3)
+  matter_collection.add_collection(other_collection)
+  assert_eq(matter_collection.get_amount(Global.Matter.SILICON), 8,
+    "Adding non-empty collection to empty should add the amounts")
+
+func test_add_collection_non_empty_to_non_empty():
+  matter_collection.set_amount(Global.Matter.SILICON, 5)
+  other_collection.set_amount(Global.Matter.SILICON, 3)
+  matter_collection.add_collection(other_collection)
+  assert_eq(matter_collection.get_amount(Global.Matter.SILICON), 8,
+    "Adding non-empty collection to non-empty should add the amounts")
+
+# Test fill functionality
+func test_fill_works():
+  matter_collection.fill(23)
+  for matter in Global.Matter.values():
+    assert_eq(matter_collection.get_amount(matter), 23,
+      "fill() should set all amounts to the given value")
+
+func test_fill_negative_value():
+  matter_collection.fill(-5)
+  for matter in Global.Matter.values():
+    assert_eq(matter_collection.get_amount(matter), 0)
