@@ -1,8 +1,10 @@
 extends RigidBody2D
 
 static var count : int = 0
-var radius : int
+# Has this asteroid been made visible?
 var debuted : bool = false
+
+var asteroid_size : AsteroidSize
 
 # Composition
 var carbon : int = 0
@@ -11,21 +13,21 @@ var silicon : int = 0
 var metal : int = 0
 
 func _ready() -> void:
-  radius = random_radius()
-  inertia = 1000000.0 * radius
+  asteroid_size = Global.get_random_asteroid_size()
+  inertia = 1000000.0 * asteroid_size.radius
 
   var new_rotation_impulse : float = Global.rng.randf_range(-8.0, 8.0)
-  set_mass(1000.0 * radius)
+  set_mass(1000.0 * asteroid_size.radius)
   apply_torque_impulse(new_rotation_impulse)
 
   # Compisition
-  carbon = max(0, Global.rng.randi_range(-2, 20) * radius)
-  water = max(0, Global.rng.randi_range(0, 20) * radius)
-  silicon = max(0, Global.rng.randi_range(-2, 20) * radius)
-  metal = max(0, Global.rng.randi_range(0, 20) * radius)
+  carbon = 1
+  water = 1
+  silicon = 1
+  metal = 1
 
   # Image shape.
-  var points = generatePoints()
+  var points = asteroid_size.generatePolygon()
   var poly = Polygon2D.new()
   poly.set_polygon(points)
   poly.set_color(Color(0.7, 0.6, 0.5))
@@ -41,37 +43,6 @@ func _ready() -> void:
   add_child(collider)
 
   count += 1
-
-# A random asteroid size.
-func random_radius() -> int:
-  # The list of possible asteroid sizes and the weights (chances) of getting
-  # each size.
-  var sizes = [8, 12, 16, 28, 32, 42, 64]
-  var wghts = [1, 2, 3, 6, 2, 0.2, 0.1]
-
-  var index = Global.rng.rand_weighted(PackedFloat32Array(wghts))
-
-  return sizes[index]
-
-func generatePoints() -> PackedVector2Array:
-  var number_of_points : int = Global.rng.randi_range(5, 12)
-  var poly : PackedVector2Array = PackedVector2Array()
-
-  # First point at the chosen radius.
-  poly.append(Vector2(radius, 0))
-
-  # The algorithm is to just go around a circle at evenly spaced points at random radii.
-  for point in range(1, number_of_points):
-    # Randomize the radius.
-    var rad : float = Global.rng.randf_range(
-      radius - Global.rng.randf_range(0.0, radius * 0.4),
-      radius + Global.rng.randf_range(0.0, radius * 0.4)
-    )
-
-    # calculate angle (evenly spaced).
-    var angle : float = point * PI * 2 / number_of_points
-    poly.append(Vector2(rad, 0).rotated(angle))
-  return poly
 
 func be_absorbed(_storage) -> void:
   SaveState.carbon += carbon
