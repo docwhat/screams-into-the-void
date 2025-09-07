@@ -16,7 +16,8 @@ var player_position : Vector2
 var asteroid_player_intercept_chance : float = 0.3  # 30% chance asteroids target player
 var asteroid_top_down_bias : float = 0.7  # 70% chance asteroids come from top
 
-# Materials. Never change these numbers, even we delete one.
+# Materials. Never delete any. Never change any numbers. Otherwise
+# saves won't work.
 enum Matter {
     CARBON = 0,
     WATER = 1,
@@ -26,6 +27,7 @@ enum Matter {
     URANIUM = 5
 }
 
+# The various asteroid sizes.
 var TinyAsteroidSize = AsteroidSize.new(8, 4.0, 1.0)
 var SmallAsteroidSize = AsteroidSize.new(12, 5.0, 2.0)
 var MediumAsteroidSize = AsteroidSize.new(16, 6.4, 3.0)

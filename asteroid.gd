@@ -15,12 +15,12 @@ var metal : int = 0
 func _ready() -> void:
   asteroid_size = Global.get_random_asteroid_size()
   inertia = 1000000.0 * asteroid_size.radius
+  set_mass(1000.0 * asteroid_size.radius)
 
   var new_rotation_impulse : float = Global.rng.randf_range(-8.0, 8.0)
-  set_mass(1000.0 * asteroid_size.radius)
   apply_torque_impulse(new_rotation_impulse)
 
-  # Compisition
+  # Composition
   carbon = 1
   water = 1
   silicon = 1
