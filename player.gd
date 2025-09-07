@@ -19,5 +19,5 @@ func _on_resized():
   
 func _on_body_entered(body: Node2D) -> void:
   if body.has_method("be_absorbed"):
-    body.be_absorbed(null)
+    body.be_absorbed()
   body.queue_free()

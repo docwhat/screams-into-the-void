@@ -6,11 +6,7 @@ var debuted : bool = false
 
 var asteroid_size : AsteroidSize
 
-# Composition
-var carbon : int = 0
-var water : int = 0
-var silicon : int = 0
-var metal : int = 0
+var composition : MatterCollection = MatterCollection.new()
 
 func _ready() -> void:
   asteroid_size = Global.get_random_asteroid_size()
@@ -21,10 +17,7 @@ func _ready() -> void:
   apply_torque_impulse(new_rotation_impulse)
 
   # Composition
-  carbon = 1
-  water = 1
-  silicon = 1
-  metal = 1
+  composition.fill(1)
 
   # Image shape.
   var points = asteroid_size.generatePolygon()
@@ -44,13 +37,9 @@ func _ready() -> void:
 
   count += 1
 
-func be_absorbed(_storage) -> void:
-  SaveState.carbon += carbon
-  SaveState.water += water
-  SaveState.silicon += silicon
-  SaveState.metal += metal
+func be_absorbed() -> void:
+  Global.collection.add_collection(composition)
   count -= 1
-  # store the resources
 
 func die() -> void:
   count -= 1

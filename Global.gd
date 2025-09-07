@@ -12,6 +12,9 @@ var star_speed : float = 0.01
 var player_size : Vector2 = Vector2(64, 64)
 var player_position : Vector2
 
+# How much rocks do we have. (PlayerState)
+var collection : MatterCollection = MatterCollection.new()
+
 # Asteroid system variables
 var asteroid_player_intercept_chance : float = 0.3  # 30% chance asteroids target player
 var asteroid_top_down_bias : float = 0.7  # 70% chance asteroids come from top

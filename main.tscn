@@ -82,74 +82,8 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD/Control/MarginContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/Control/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Title" type="Label" parent="HUD/Control/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"HeaderLarge"
-text = "Screams into the Void"
-horizontal_alignment = 1
-
-[node name="Carbon" type="HBoxContainer" parent="HUD/Control/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-alignment = 1
-
-[node name="name" type="Label" parent="HUD/Control/MarginContainer/VBoxContainer/Carbon"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Carbon"
-
-[node name="value" type="Label" parent="HUD/Control/MarginContainer/VBoxContainer/Carbon"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0"
-
-[node name="Water" type="HBoxContainer" parent="HUD/Control/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="name" type="Label" parent="HUD/Control/MarginContainer/VBoxContainer/Water"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Water"
-
-[node name="value" type="Label" parent="HUD/Control/MarginContainer/VBoxContainer/Water"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0"
-
-[node name="Silicon" type="HBoxContainer" parent="HUD/Control/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="name" type="Label" parent="HUD/Control/MarginContainer/VBoxContainer/Silicon"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Silicon"
-
-[node name="value" type="Label" parent="HUD/Control/MarginContainer/VBoxContainer/Silicon"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0"
-
-[node name="Metal" type="HBoxContainer" parent="HUD/Control/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="name" type="Label" parent="HUD/Control/MarginContainer/VBoxContainer/Metal"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Metal"
-
-[node name="value" type="Label" parent="HUD/Control/MarginContainer/VBoxContainer/Metal"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "0"
 
 [connection signal="timeout" from="AsteroidTimer" to="." method="_on_asteroid_timer_timeout"]
 [connection signal="timeout" from="HUD/UpdateHUD" to="HUD" method="update_hud"]
