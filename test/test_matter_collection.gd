@@ -52,6 +52,12 @@ func test_get_amount_different_matter_types():
   assert_eq(matter_collection.get_amount(Global.Matter.IRON), 12)
   assert_eq(matter_collection.get_amount(Global.Matter.CARBON), 0)
 
+# Test get_by_string functionality
+func test_get_by_string_handles_names():
+  matter_collection.set_amount(Global.Matter.CARBON, 23)
+  assert_eq(matter_collection.get_by_string("CARBON"), 23,
+    "get_amount(str) should return the exact value stored")
+
 # Test set_amount functionality
 func test_set_amount_positive_value():
   matter_collection.set_amount(Global.Matter.SILICON, 25)
@@ -73,6 +79,12 @@ func test_set_amount_overwrites_existing():
   matter_collection.set_amount(Global.Matter.CARBON, 20)
   assert_eq(matter_collection.get_amount(Global.Matter.CARBON), 20,
     "set_amount should overwrite existing values")
+
+# Test set_by_string functionality.
+func test_set_by_string():
+  matter_collection.set_by_string("Copper", 10)
+  assert_eq(matter_collection.get_amount(Global.Matter.COPPER), 10,
+    "set_by_string should set the exact positive value")
 
 # Test add_amount functionality
 func test_add_amount_to_zero():

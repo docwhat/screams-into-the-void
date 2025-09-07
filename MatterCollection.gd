@@ -20,6 +20,12 @@ func get_amount(matter : Global.Matter) -> int:
 func set_amount(matter : Global.Matter, value : int) -> void:
   collection[matter] = abs(value)
 
+func get_by_string(matter : String) -> int:
+  return get_amount(Global.Matter[matter.to_upper()])
+
+func set_by_string(matter : String, value : int) -> void:
+  set_amount(Global.Matter[matter.to_upper()], abs(value))
+
 func add_amount(matter : Global.Matter, value : int) -> void:
   collection[matter] = max(0, collection[matter] + value)
 
