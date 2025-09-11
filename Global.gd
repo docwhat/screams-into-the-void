@@ -31,16 +31,25 @@ enum Matter {
 }
 
 # The various asteroid sizes.
-var TinyAsteroidSize = AsteroidSize.new(8, 4.0, 1.0)
-var SmallAsteroidSize = AsteroidSize.new(12, 5.0, 2.0)
-var MediumAsteroidSize = AsteroidSize.new(16, 6.4, 3.0)
-var BigAsteroidSize = AsteroidSize.new(28, 12.0, 6.0)
-var LargeAsteroidSize = AsteroidSize.new(32, 12.0, 2.0)
-var HugeAsteroidSize = AsteroidSize.new(42, 5.0, 0.2)
-var GargantuanAsteroidSize = AsteroidSize.new(64, 4.0, 0.1)
+# Arguments:
+# - radius
+# - amount of variation allowed to for the radius
+# - the number of points for the polygon
+# - weighted probability of the asteroid appearing
+var TinyAsteroidSize = AsteroidSize.new(8, 3.0, 6, 1.0)
+var SmallAsteroidSize = AsteroidSize.new(12, 4.5, 7, 2.0)
+var SpikySmallAsteroidSize = AsteroidSize.new(12, 10.0, 6, 1.5)
+var MediumAsteroidSize = AsteroidSize.new(16, 6.4, 10, 2.5)
+var BigAsteroidSize = AsteroidSize.new(28, 12.0, 14, 5.0)
+var LargeAsteroidSize = AsteroidSize.new(32, 10.0, 18, 2.0)
+var HugeAsteroidSize = AsteroidSize.new(42, 5.0, 25, 0.2)
+var GargantuanAsteroidSize = AsteroidSize.new(64, 4.0, 40, 0.1)
 
-var ALL_ASTEROID_SIZES = [
+# TODO: Move this into the constructor for AsteroidSize.
+var ALL_ASTEROID_SIZES = [ 
+  TinyAsteroidSize,
   SmallAsteroidSize,
+  SpikySmallAsteroidSize,
   MediumAsteroidSize,
   BigAsteroidSize,
   LargeAsteroidSize,

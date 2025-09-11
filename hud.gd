@@ -60,7 +60,7 @@ func _ready() -> void:
   update_hud()
 
 func update_hud() -> void:
-  for name in Global.Matter.keys():
-    var label : Label = value_labels[name]
-    var value : int = Global.collection.get_by_string(name)
+  for matter_name in Global.Matter.keys():
+    var label : Label = value_labels[matter_name]
+    var value : int = Global.collection.get_by_string(matter_name)
     label.text = fnum(value)

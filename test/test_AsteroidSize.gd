@@ -1,7 +1,4 @@
-extends GutTest
-
-# Test file for AsteroidSize.generatePolygon() function
-class_name TestAsteroidSize
+class_name TestAsteroidSize extends GutTest
 
 var asteroid_size: AsteroidSize
 
@@ -12,7 +9,7 @@ func before_all():
 
 func before_each():
   # Create a test AsteroidSize instance with known parameters
-  asteroid_size = AsteroidSize.new(20.0, 5.0, 1.0)
+  asteroid_size = AsteroidSize.new(20.0, 5.0, 4, 1.0)
 
 func after_each():
   autofree(asteroid_size)
@@ -22,7 +19,7 @@ func test_generatePolygon_returns_PackedVector2Array():
   assert_true(result is PackedVector2Array, "generatePolygon should return a PackedVector2Array")
 
 func test_generatePolygon_returns_valid_number_of_points():
-  assert_between(asteroid_size.generatePolygon().size(), 5, 12)
+  assert_eq(asteroid_size.generatePolygon().size(), 4)
 
 func test_generatePolygon_first_point_at_radius():
   var first_point = asteroid_size.generatePolygon()[0]

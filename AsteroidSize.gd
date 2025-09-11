@@ -9,16 +9,17 @@ var max_radius_delta : float
 # Used to calculate what the probability of an asteroid being spawned is.
 var probability : float
 
-func _init(r : float, d : float, p: float) -> void:
+# The number of points for the polygon.
+var number_of_points : int
+
+func _init(r : float, d : float, n: int, p: float) -> void:
     radius = r
     max_radius_delta = d
+    number_of_points = n
     probability = p
 
 # Generate a set of points describing an asteroid of this size.
 func generatePolygon() -> PackedVector2Array:
-  # Pick an random number of points. More is smoother.
-  var number_of_points : int = Global.rng.randi_range(5, 12)
-
   var polygon : PackedVector2Array
   # First point at the chosen radius.
   polygon.append(Vector2(radius, 0))

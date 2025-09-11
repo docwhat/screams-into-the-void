@@ -1,10 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://dgo8gq5d22uf"]
+[gd_scene load_steps=6 format=3 uid="uid://dgo8gq5d22uf"]
 
+[ext_resource type="Shader" uid="uid://b2jdvm5frkqlx" path="res://asteroid.gdshader" id="1_gm5ib"]
 [ext_resource type="Script" uid="uid://b2samh810qdpg" path="res://asteroid.gd" id="1_p0ukn"]
+[ext_resource type="Texture2D" uid="uid://bh0mbmredemri" path="res://128x128-transparent.png" id="3_gm5ib"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_p0ukn"]
 friction = 0.0
 bounce = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gm5ib"]
+resource_local_to_scene = true
+shader = ExtResource("1_gm5ib")
+shader_parameter/pixels = 75.0
+shader_parameter/noise_size = 5.3
+shader_parameter/crater_size = 0.3
+shader_parameter/colors = PackedColorArray(0.639, 0.655, 0.761, 1, 0.298, 0.408, 0.522, 1, 0.227, 0.247, 0.369, 1)
+shader_parameter/seed = 1.567
 
 [node name="Asteroid" type="RigidBody2D"]
 top_level = true
@@ -17,3 +28,11 @@ linear_damp_mode = 1
 angular_damp_mode = 1
 constant_force = Vector2(0, -10)
 script = ExtResource("1_p0ukn")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+material = SubResource("ShaderMaterial_gm5ib")
+texture = ExtResource("3_gm5ib")
+polygon = PackedVector2Array(16, 0, 5.19, 15.97, -11.39, 8.27, -13.188, -9.58, 4.8, -14.79)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(16, 0, 5.19, 15.97, -11.39, 8.27, -13.188, -9.58, 4.8, -14.79)

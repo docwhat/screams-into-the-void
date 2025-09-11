@@ -8,6 +8,51 @@ var asteroid_size : AsteroidSize
 
 var composition : MatterCollection = MatterCollection.new()
 
+# Using ideas from https://www.iquilezles.org/www/articles/palettes/palettes.htm
+func generate_colorscheme(n_colors : int, hue_diff : float = 0.9, saturation : float = 0.5) -> PackedColorArray:
+#       var a = Vector3(rand_range(0.0, 0.5), rand_range(0.0, 0.5), rand_range(0.0, 0.5))
+        var a = Vector3(0.5,0.5,0.5)
+#       var b = Vector3(rand_range(0.1, 0.6), rand_range(0.1, 0.6), rand_range(0.1, 0.6))
+        var b = Vector3(0.5,0.5,0.5) * saturation
+        var c = Vector3(
+          Global.rng.randf_range(0.5, 1.5),
+          Global.rng.randf_range(0.5, 1.5),
+          Global.rng.randf_range(0.5, 1.5)
+        ) * hue_diff
+        var d = Vector3(
+          Global.rng.randf_range(0.0, 1.0),
+          Global.rng.randf_range(0.0, 1.0),
+          Global.rng.randf_range(0.0, 1.0)
+        ) * Global.rng.randf_range(1.0, 3.0)
+
+        var cols = PackedColorArray()
+        var n = float(n_colors - 1.0)
+        n = max(1, n)
+        for i in range(0, n_colors, 1):
+                var vec3 = Vector3()
+                vec3.x = (a.x + b.x * cos(6.28318 * (c.x * float(i/n) + d.x)))
+                vec3.y = (a.y + b.y * cos(6.28318 * (c.y * float(i/n) + d.y)))
+                vec3.z = (a.z + b.z * cos(6.28318 * (c.z * float(i/n) + d.z)))
+
+                cols.append(Color(vec3.x, vec3.y, vec3.z))
+
+        return cols
+
+func randomize_colors() -> Array[Color]:
+  var seed_colors : PackedColorArray = generate_colorscheme(
+    3,
+    Global.rng.randf_range(0.3, 0.6),
+    0.5
+  )
+  var cols : Array[Color] = []
+  for i : int in 3:
+    var new_col : Color = seed_colors[i].darkened(i/3.0)
+    new_col = new_col.lightened((1.0 - (i/3.0)) * 0.2)
+
+    cols.append(new_col)
+
+  return cols
+
 func _ready() -> void:
   asteroid_size = Global.get_random_asteroid_size()
   inertia = 1000000.0 * asteroid_size.radius
@@ -21,18 +66,17 @@ func _ready() -> void:
 
   # Image shape.
   var points = asteroid_size.generatePolygon()
-  var poly = Polygon2D.new()
+
+  # Visible polygon shape
+  var poly : Polygon2D = $Polygon2D
   poly.set_polygon(points)
-  poly.set_color(Color(0.7, 0.6, 0.5))
-  add_child(poly)
+  var mat: ShaderMaterial = poly.material
+  mat.set_shader_parameter("seed", Global.rng.randf() * 1000 / 100.0)
+  mat.set_shader_parameter("colors", randomize_colors())
 
   # Collision polygon shape.
-  # This is commented out because I can't get it to be sane. The asteroids
-  # spin like crazy whenever they touch.
-  var collider : CollisionPolygon2D = CollisionPolygon2D.new()
-  collider.set_build_mode(CollisionPolygon2D.BUILD_SOLIDS)
+  var collider : CollisionPolygon2D = $CollisionPolygon2D
   collider.set_polygon(points)
-  collider
   add_child(collider)
 
   count += 1
