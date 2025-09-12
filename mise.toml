@@ -1,0 +1,66 @@
+[tools]
+
+[env]
+
+[tasks.export-web]
+description = "Export the web version to export/web/"
+run = """
+#!/usr/bin/env bash
+set -ex
+
+rm -rf export/web
+mkdir -p export
+mkdir export/web
+godot --headless --export-release "Web" export/web/index.html
+"""
+
+[tasks.deploy-web]
+description = "Deploy the web version to docwhat.org/"
+run = "rsync -av --delete-after --progress export/web/ gerf:/srv/website/srv/docwhat/files/void/"
+
+[tasks.export-macos]
+description = "Export the macOS version to export/macos/"
+run = """
+#!/usr/bin/env bash
+set -ex
+
+rm -rf export/macos
+mkdir -p export
+mkdir export/macos
+godot --headless --export-release "macOS" export/macos/void.app
+"""
+
+[tasks.export-windows]
+description = "Export the Windows version to export/windows/"
+run = """
+#!/usr/bin/env bash
+set -ex
+
+rm -rf export/windows
+mkdir -p export
+mkdir export/windows
+godot --headless --export-release "Windows Desktop" export/windows/void.exe
+"""
+
+[tasks.export-linux]
+description = "Export the Linux version to export/linux/"
+run = """
+#!/usr/bin/env bash
+set -ex
+
+rm -rf export/linux
+mkdir -p export
+mkdir export/linux
+godot --headless --export-release "Linux" export/linux/void
+"""
+
+[tasks.export-all]
+description = "Export all platforms to export/"
+depends = [
+    "export-web",
+    "export-macos",
+    "export-windows",
+    "export-linux"
+]
+
+# EOF
