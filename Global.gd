@@ -46,7 +46,7 @@ var HugeAsteroidSize = AsteroidSize.new(42, 5.0, 25, 0.2)
 var GargantuanAsteroidSize = AsteroidSize.new(64, 4.0, 40, 0.1)
 
 # TODO: Move this into the constructor for AsteroidSize.
-var ALL_ASTEROID_SIZES = [ 
+var ALL_ASTEROID_SIZES = [
   TinyAsteroidSize,
   SmallAsteroidSize,
   SpikySmallAsteroidSize,
@@ -65,3 +65,6 @@ func get_random_asteroid_size():
 
   var random_index = rng.rand_weighted(weights)
   return ALL_ASTEROID_SIZES[random_index]
+
+# Signals
+signal on_unpause_command()

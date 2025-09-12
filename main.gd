@@ -15,13 +15,30 @@ func _ready() -> void:
   # We're only using 2D here.
   viewport.set_disable_3d(true)
 
-  print_rich("display: %dx%d  window: %dx%d  scale: %s" % [
-    DisplayServer.screen_get_size().x,
-    DisplayServer.screen_get_size().y,
-    DisplayServer.window_get_size().x,
-    DisplayServer.window_get_size().y,
-    viewport.content_scale_size
-  ])
+  # Connect Signals
+  Global.on_unpause_command.connect(unpause)
+
+  # Pause everything.
+  pause()
+  
+func _unhandled_input(event: InputEvent) -> void:
+  if event.is_action_pressed("pause"):
+    toggle_pause()
+    get_viewport().set_input_as_handled()
+
+func pause() -> void:
+  get_tree().set_pause(true)
+  %PauseMenu.show()
+
+func unpause() -> void:
+  get_tree().set_pause(false)
+  %PauseMenu.hide()
+
+func toggle_pause() -> void:
+  if get_tree().is_paused():
+    unpause()
+  else:
+    pause()
 
 # Asteroids start off screen. We need to ensure they spawn far enough off screen
 # that they can't be seen.

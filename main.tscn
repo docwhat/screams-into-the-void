@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://drbf8d237goj"]
+[gd_scene load_steps=9 format=3 uid="uid://drbf8d237goj"]
 
 [ext_resource type="Script" uid="uid://3lpx3nh5ceyj" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="Shader" uid="uid://bxg7qu236s2yc" path="res://stars.gdshader" id="2_h2yge"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://caukx28w36jxj" path="res://player.tscn" id="4_1bvp3"]
 [ext_resource type="Script" uid="uid://5dbh8sao520s" path="res://hud.gd" id="5_7mycd"]
 [ext_resource type="Texture2D" uid="uid://doxs2idmx3bm3" path="res://art/ui-box.png" id="5_lquwl"]
+[ext_resource type="PackedScene" uid="uid://cxx6npgbsdpw" path="res://pause.tscn" id="7_272bh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xm2m"]
 shader = ExtResource("2_h2yge")
@@ -84,6 +85,12 @@ theme_override_constants/margin_bottom = 10
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD/Control/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="PauseScreen" type="CanvasLayer" parent="."]
+
+[node name="PauseMenu" parent="PauseScreen" instance=ExtResource("7_272bh")]
+unique_name_in_owner = true
+process_mode = 2
 
 [connection signal="timeout" from="AsteroidTimer" to="." method="_on_asteroid_timer_timeout"]
 [connection signal="timeout" from="HUD/UpdateHUD" to="HUD" method="update_hud"]
