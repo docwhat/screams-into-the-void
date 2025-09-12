@@ -66,5 +66,12 @@ func get_random_asteroid_size():
   var random_index = rng.rand_weighted(weights)
   return ALL_ASTEROID_SIZES[random_index]
 
+# Use this to quit the game. It'll work
+# reliably on all platforms.
+# See: https://docs.godotengine.org/en/stable/tutorials/inputs/handling_quit_requests.html
+func quit() -> void:
+  get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
+  get_tree().quit()
+
 # Signals
 signal on_unpause_command()

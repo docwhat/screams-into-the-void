@@ -6,7 +6,7 @@ func _unhandled_input(event: InputEvent) -> void:
     get_viewport().set_input_as_handled()
 
 func quit() -> void:
-   get_tree().quit()
+   Global.quit()
 
 func unpause() -> void:
   Global.on_unpause_command.emit()
