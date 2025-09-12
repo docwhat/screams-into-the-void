@@ -77,7 +77,6 @@ func _ready() -> void:
   # Collision polygon shape.
   var collider : CollisionPolygon2D = $CollisionPolygon2D
   collider.set_polygon(points)
-  add_child(collider)
 
   count += 1
 
