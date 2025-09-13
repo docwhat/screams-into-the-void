@@ -112,3 +112,5 @@ func _on_asteroid_timer_timeout() -> void:
 
   # Spawn it by adding to the Main scene
   add_child(asteroid)
+
+# EOF
