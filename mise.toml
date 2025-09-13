@@ -2,6 +2,18 @@
 
 [env]
 
+[tasks.game]
+description = "Run the game"
+run = "godot --path . --print-fps"
+
+[tasks.godot]
+description = "Run the Godot editor"
+run = "(godot --path . --editor >& /dev/null &)"
+
+[tasks.gut]
+description = "Run the GUT tests"
+run = "godot --path . --headless --debug --verbose --script addons/gut/gut_cmdln.gd --quit-after 1"
+
 [tasks.export-web]
 description = "Export the web version to export/web/"
 run = """
