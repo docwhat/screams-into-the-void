@@ -68,11 +68,10 @@ godot --headless --export-release "Linux" export/linux/void
 
 [tasks.export-all]
 description = "Export all platforms to export/"
-depends = [
-    "export-web",
-    "export-macos",
-    "export-windows",
-    "export-linux"
-]
+depends = ["export-web", "export-macos", "export-windows", "export-linux"]
+
+[tasks.clean]
+description = "Clean all exported builds and other cruft"
+run = "rm -rf export"
 
 # EOF
