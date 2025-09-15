@@ -9,7 +9,11 @@ func before_all():
 
 func before_each():
   # Create a test AsteroidSize instance with known parameters
-  asteroid_size = AsteroidSize.new(20.0, 5.0, 4, 1.0)
+  asteroid_size = AsteroidSize.new()
+  asteroid_size.radius = 20.0
+  asteroid_size.max_radius_delta = 5.0
+  asteroid_size.number_of_points = 4
+  asteroid_size.probability = 1.0
 
 func after_each():
   autofree(asteroid_size)
