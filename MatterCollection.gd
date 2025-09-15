@@ -1,11 +1,58 @@
 class_name MatterCollection
 
+# Materials. Never delete any. Never change any numbers. Otherwise
+# saves won't work.
+enum Matter {
+    CARBON = 0,
+    WATER = 1,
+    SILICON = 2,
+    IRON = 3,
+    COPPER = 4,
+    URANIUM = 5
+}
+
+var carbon : int:
+  set(value):
+    collection[Matter.CARBON] = abs(value)
+  get:
+    return collection[Matter.CARBON]
+
+var water : int:
+  set(value):
+    collection[Matter.WATER] = abs(value)
+  get:
+    return collection[Matter.WATER]
+
+var silicon : int:
+  set(value):
+    collection[Matter.SILICON] = abs(value)
+  get:
+    return collection[Matter.SILICON]
+
+var iron : int:
+  set(value):
+    collection[Matter.IRON] = abs(value)
+  get:
+    return collection[Matter.IRON]
+
+var copper : int:
+  set(value):
+    collection[Matter.COPPER] = abs(value)
+  get:
+    return collection[Matter.COPPER]
+
+var uranium : int:
+  set(value):
+    collection[Matter.URANIUM] = abs(value)
+  get:
+    return collection[Matter.URANIUM]
+
 # A float array to store the amount of each matter in the collection.
 var collection : Array[int]
 
 func _init() -> void:
   collection = []
-  collection.resize(Global.Matter.values().size())
+  collection.resize(Matter.values().size())
   clear()
 
 func clear() -> void:
@@ -14,28 +61,42 @@ func clear() -> void:
 func fill(value : int) -> void:
   collection.fill(max(0, value))
 
-func get_amount(matter : Global.Matter) -> int:
+# Enum get/set
+func get_amount(matter : Matter) -> int:
   return collection[matter]
 
-func set_amount(matter : Global.Matter, value : int) -> void:
+func set_amount(matter : Matter, value : int) -> void:
   collection[matter] = abs(value)
 
+
+# String get/set
 func get_by_string(matter : String) -> int:
-  return get_amount(Global.Matter[matter.to_upper()])
+  return get_amount(Matter[matter.to_upper()])
 
 func set_by_string(matter : String, value : int) -> void:
-  set_amount(Global.Matter[matter.to_upper()], abs(value))
+  set_amount(Matter[matter.to_upper()], abs(value))
 
-func add_amount(matter : Global.Matter, value : int) -> void:
-  collection[matter] = max(0, collection[matter] + value)
 
-func remove_amount(matter : Global.Matter, value : int) -> void:
-  collection[matter] = max(0, collection[matter] - value)
+# Increments a matter by amount.
+func incr_amount(matter : Matter, amount : int) -> void:
+  collection[matter] = max(0, collection[matter] + amount)
 
+# Decrements a matter by amount.
+func decr_amount(matter : Matter, amount : int) -> void:
+  collection[matter] = max(0, collection[matter] - amount)
+
+# Perform an operation on every matter in the collection.
+func each(lambda : Callable) -> void:
+  for matter : Matter in Matter.values():
+    lambda.call(matter)
+
+
+# Adds this collection to another collection.
 func add_collection(other : MatterCollection) -> void:
-  for matter_idx in Global.Matter.values():
-    add_amount(matter_idx, other.get_amount(matter_idx))
+  for matter_idx in Matter.values():
+    incr_amount(matter_idx, other.get_amount(matter_idx))
 
+# Subtracts another collection from this collection.
 func remove_collection(other : MatterCollection) -> void:
-  for matter_idx in Global.Matter.values():
-    remove_amount(matter_idx, other.get_amount(matter_idx))
+  for matter_idx in Matter.values():
+    decr_amount(matter_idx, other.get_amount(matter_idx))

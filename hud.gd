@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+const Matter = MatterCollection.Matter
+
 var value_labels = {}
 
 # FIXME: Need refactorization so I can understand it better.
@@ -29,7 +31,7 @@ func fnum(num : int) -> String:
 
 func _ready() -> void:
   # Add all the matter items.
-  for matter_name in Global.Matter.keys():
+  for matter_name in Matter.keys():
     # first we need an HBoxContainer.
     var hbox : HBoxContainer = HBoxContainer.new()
     hbox.name = matter_name.capitalize()
@@ -60,7 +62,7 @@ func _ready() -> void:
   update_hud()
 
 func update_hud() -> void:
-  for matter_name in Global.Matter.keys():
+  for matter_name in Matter.keys():
     var label : Label = value_labels[matter_name]
     var value : int = Global.collection.get_by_string(matter_name)
     label.text = fnum(value)
