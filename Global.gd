@@ -30,17 +30,6 @@ var asteroid_spawn_chances : Array[float] = [1, 6, 4, 2, 1, 0.5, 0.25, 0.125, 0.
 func number_of_asteroids_to_spawn() -> int:
   return rng.rand_weighted(asteroid_spawn_chances)
 
-# Materials. Never delete any. Never change any numbers. Otherwise
-# saves won't work.
-enum Matter {
-    CARBON = 0,
-    WATER = 1,
-    SILICON = 2,
-    IRON = 3,
-    COPPER = 4,
-    URANIUM = 5
-}
-
 # Use this to quit the game. It'll work
 # reliably on all platforms.
 # See: https://docs.godotengine.org/en/stable/tutorials/inputs/handling_quit_requests.html
