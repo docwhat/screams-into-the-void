@@ -6,7 +6,11 @@ var resolution := Vector2(
 )
 
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
-var star_speed : float = 0.01
+
+var debug_asteroid_size : bool = OS.is_debug_build() && false
+
+# Star background
+var star_speed : float = 0.03
 
 # Player information.
 var player_size : Vector2 = Vector2(64, 64)
@@ -15,9 +19,16 @@ var player_position : Vector2
 # How much rocks do we have. (PlayerState)
 var collection : MatterCollection = MatterCollection.new()
 
-# Asteroid system variables
-var asteroid_player_intercept_chance : float = 0.3  # 30% chance asteroids target player
-var asteroid_top_down_bias : float = 0.7  # 70% chance asteroids come from top
+# Chance that an asteroid aims directly for the player. 1.0 == 100%
+var asteroid_player_intercept_chance : float = 0.3
+
+# Change that an asteroid is spawned, weighted. The number of asteroids is
+# the index.
+var asteroid_spawn_chances : Array[float] = [1, 6, 4, 2, 1, 0.5, 0.25, 0.125, 0.0625]
+
+# The number of asteroids to spawn based on the spawn chances.
+func number_of_asteroids_to_spawn() -> int:
+  return rng.rand_weighted(asteroid_spawn_chances)
 
 # Materials. Never delete any. Never change any numbers. Otherwise
 # saves won't work.

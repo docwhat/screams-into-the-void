@@ -8,51 +8,6 @@ var asteroid_size : AsteroidSize
 
 var composition : MatterCollection = MatterCollection.new()
 
-# Using ideas from https://www.iquilezles.org/www/articles/palettes/palettes.htm
-func generate_colorscheme(n_colors : int, hue_diff : float = 0.9, saturation : float = 0.5) -> PackedColorArray:
-#       var a = Vector3(rand_range(0.0, 0.5), rand_range(0.0, 0.5), rand_range(0.0, 0.5))
-        var a = Vector3(0.5,0.5,0.5)
-#       var b = Vector3(rand_range(0.1, 0.6), rand_range(0.1, 0.6), rand_range(0.1, 0.6))
-        var b = Vector3(0.5,0.5,0.5) * saturation
-        var c = Vector3(
-          Global.rng.randf_range(0.5, 1.5),
-          Global.rng.randf_range(0.5, 1.5),
-          Global.rng.randf_range(0.5, 1.5)
-        ) * hue_diff
-        var d = Vector3(
-          Global.rng.randf_range(0.0, 1.0),
-          Global.rng.randf_range(0.0, 1.0),
-          Global.rng.randf_range(0.0, 1.0)
-        ) * Global.rng.randf_range(1.0, 3.0)
-
-        var cols = PackedColorArray()
-        var n = float(n_colors - 1.0)
-        n = max(1, n)
-        for i in range(0, n_colors, 1):
-                var vec3 = Vector3()
-                vec3.x = (a.x + b.x * cos(6.28318 * (c.x * float(i/n) + d.x)))
-                vec3.y = (a.y + b.y * cos(6.28318 * (c.y * float(i/n) + d.y)))
-                vec3.z = (a.z + b.z * cos(6.28318 * (c.z * float(i/n) + d.z)))
-
-                cols.append(Color(vec3.x, vec3.y, vec3.z))
-
-        return cols
-
-func randomize_colors() -> Array[Color]:
-  var seed_colors : PackedColorArray = generate_colorscheme(
-    3,
-    Global.rng.randf_range(0.3, 0.6),
-    0.5
-  )
-  var cols : Array[Color] = []
-  for i : int in 3:
-    var new_col : Color = seed_colors[i].darkened(i/3.0)
-    new_col = new_col.lightened((1.0 - (i/3.0)) * 0.2)
-
-    cols.append(new_col)
-
-  return cols
-
 func _ready() -> void:
   asteroid_size = AsteroidSize.get_random_asteroid_size()
   inertia = 1000000.0 * asteroid_size.radius
@@ -72,13 +27,18 @@ func _ready() -> void:
   poly.set_polygon(points)
   var mat: ShaderMaterial = poly.material
   mat.set_shader_parameter("seed", Global.rng.randf() * 1000 / 100.0)
-  mat.set_shader_parameter("colors", randomize_colors())
+  set_colors(ColorSchemes.randomize_colors())
+
+  asteroid_size.configure_shader(mat)
 
   # Collision polygon shape.
   var collider : CollisionPolygon2D = $CollisionPolygon2D
   collider.set_polygon(points)
 
   count += 1
+
+func set_colors(colors : Array[Color]) -> void:
+  $Polygon2D.material.set_shader_parameter("colors", colors)
 
 func be_absorbed() -> void:
   Global.collection.add_collection(composition)
@@ -104,3 +64,79 @@ func is_on_screen() -> bool:
          pos.x >= 0.0 - fudge && \
          pos.x <= screen.x + fudge && \
          pos.y <= screen.y + fudge
+
+enum Side {
+  TOP,
+  LEFT,
+  RIGHT,
+  BOTTOM
+}
+
+# Asteroids start off screen. We need to ensure they spawn far enough off screen
+# that they can't be seen.
+func calculate_asteroid_starting_position(screen_size : Vector2) -> Vector2:
+  # Distance from edge of screen to the asteroid off screen.
+  var spawn_margin : int = 100
+
+  # Where the asteroid should spawn.
+  var sides = [Side.TOP, Side.LEFT, Side.RIGHT, Side.BOTTOM]
+  var side_weights : PackedFloat32Array = [5, 1.5, 1.5, 0.2]
+
+  var side_index = Global.rng.rand_weighted(side_weights)
+  match sides[side_index]:
+    Side.LEFT:
+      return Vector2(
+        -spawn_margin,
+        Global.rng.randf_range(0, screen_size.y)
+      )
+    Side.RIGHT:
+      return Vector2(
+        screen_size.x + spawn_margin,
+        Global.rng.randf_range(0, screen_size.y)
+      )
+    Side.BOTTOM:
+      return Vector2(
+        Global.rng.randf_range(0, screen_size.x),
+        screen_size.y + spawn_margin
+      )
+    Side.TOP, _: # AKA Side.TOP
+      return Vector2(
+        Global.rng.randf_range(-spawn_margin, screen_size.x + spawn_margin),
+        -spawn_margin
+      )
+
+
+func launch(scene : Node, screen_size : Vector2, player_coord : Vector2) -> Node:
+  var target_coord : Vector2
+  var direction : float
+
+  # Determine if this asteroid should intercept the player
+  var should_intercept = Global.rng.randf() < Global.asteroid_player_intercept_chance
+
+  # Need to freeze the asteroid prior to making changes.
+  set_freeze_enabled(true)
+  position = calculate_asteroid_starting_position(screen_size)
+
+  if should_intercept:
+    target_coord = player_coord
+  else:
+    target_coord = Vector2(
+      Global.rng.randf_range(0, screen_size.x),
+      Global.rng.randf_range(0, screen_size.y)
+    )
+  direction = position.angle_to_point(target_coord)
+
+  # Choose a velocity
+  var speed = Global.rng.randf_range(100.0, 150.0)
+  var velocity = Vector2(speed, 0.0).rotated(direction)
+
+  # Restore the physics.
+  set_freeze_enabled(false)
+
+  # Send it on its way.
+  apply_impulse(velocity)
+
+  # Spawn it by adding to the Main scene
+  scene.add_child(self)
+
+  return self
