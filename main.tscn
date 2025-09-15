@@ -3,10 +3,10 @@
 [ext_resource type="Script" uid="uid://3lpx3nh5ceyj" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="Shader" uid="uid://bxg7qu236s2yc" path="res://stars.gdshader" id="2_h2yge"]
 [ext_resource type="Script" uid="uid://c0mgsc65vwhad" path="res://stars.gd" id="3_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://caukx28w36jxj" path="res://player.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://caukx28w36jxj" path="res://player/player.tscn" id="4_1bvp3"]
 [ext_resource type="Script" uid="uid://5dbh8sao520s" path="res://hud.gd" id="5_7mycd"]
-[ext_resource type="Texture2D" uid="uid://doxs2idmx3bm3" path="res://art/ui-box.png" id="5_lquwl"]
-[ext_resource type="PackedScene" uid="uid://cxx6npgbsdpw" path="res://pause.tscn" id="7_272bh"]
+[ext_resource type="Texture2D" uid="uid://doxs2idmx3bm3" path="res://ui/ui-box.png" id="5_lquwl"]
+[ext_resource type="PackedScene" uid="uid://cxx6npgbsdpw" path="res://ui/pause.tscn" id="7_272bh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xm2m"]
 shader = ExtResource("2_h2yge")

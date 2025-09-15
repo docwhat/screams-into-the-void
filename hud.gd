@@ -29,15 +29,15 @@ func fnum(num : int) -> String:
 
 func _ready() -> void:
   # Add all the matter items.
-  for name in Global.Matter.keys():
+  for matter_name in Global.Matter.keys():
     # first we need an HBoxContainer.
     var hbox : HBoxContainer = HBoxContainer.new()
-    hbox.name = name.capitalize()
-    
+    hbox.name = matter_name.capitalize()
+
     # then we need a left justified label for the name.
     var label : Label = Label.new()
     label.name = "name"
-    label.set_text(name.capitalize())
+    label.set_text(matter_name.capitalize())
     label.set_h_size_flags(label.SIZE_EXPAND_FILL)
     hbox.add_child(label)
 
@@ -47,9 +47,9 @@ func _ready() -> void:
     value_label.set_text("0")
     value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
     value_label.set_h_size_flags(label.SIZE_EXPAND_FILL)
-    
+
     # Save for updating.
-    value_labels[name] = value_label
+    value_labels[matter_name] = value_label
     hbox.add_child(value_label)
 
     # Add the hbox last, to prevent jiggling.

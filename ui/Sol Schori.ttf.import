@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://dtuw21iomnpob"
-path="res://.godot/imported/Sol Schori.ttf-866aaf635a030d409f8a065d43671de1.fontdata"
+path="res://.godot/imported/Sol Schori.ttf-a442cb0318da408b5f0ff16de14a80b0.fontdata"
 
 [deps]
 
-source_file="res://art/Sol Schori.ttf"
-dest_files=["res://.godot/imported/Sol Schori.ttf-866aaf635a030d409f8a065d43671de1.fontdata"]
+source_file="res://ui/Sol Schori.ttf"
+dest_files=["res://.godot/imported/Sol Schori.ttf-a442cb0318da408b5f0ff16de14a80b0.fontdata"]
 
 [params]
 

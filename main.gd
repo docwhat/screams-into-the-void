@@ -18,7 +18,6 @@ func _ready() -> void:
   # Connect Signals
   Global.on_unpause_command.connect(unpause)
 
-  # Pause everything.
   pause()
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -78,7 +77,7 @@ func calculate_asteroid_starting_position() -> Vector2:
 
 
 func _on_asteroid_timer_timeout() -> void:
-  var asteroid : RigidBody2D = preload("res://asteroid.tscn").instantiate()
+  var asteroid : RigidBody2D = preload("res://asteroid/asteroid.tscn").instantiate()
   var screen_size : Vector2 = get_viewport_rect().size
 
   var target_coord : Vector2

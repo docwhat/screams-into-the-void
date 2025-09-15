@@ -54,7 +54,7 @@ func randomize_colors() -> Array[Color]:
   return cols
 
 func _ready() -> void:
-  asteroid_size = Global.get_random_asteroid_size()
+  asteroid_size = AsteroidSize.get_random_asteroid_size()
   inertia = 1000000.0 * asteroid_size.radius
   set_mass(1000.0 * asteroid_size.radius)
 

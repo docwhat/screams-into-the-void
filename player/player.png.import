@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpnhykd2y703"
-path="res://.godot/imported/Sol Schori (White).png-3bccfb266538b438b44cfe8a3b649fb4.ctex"
+uid="uid://dvd4saob0msxn"
+path="res://.godot/imported/player.png-1ad27fc2a62fa126eae918723933dd6f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/Sol Schori (White).png"
-dest_files=["res://.godot/imported/Sol Schori (White).png-3bccfb266538b438b44cfe8a3b649fb4.ctex"]
+source_file="res://player/player.png"
+dest_files=["res://.godot/imported/player.png-1ad27fc2a62fa126eae918723933dd6f.ctex"]
 
 [params]
 
