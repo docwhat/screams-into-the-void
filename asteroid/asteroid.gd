@@ -5,18 +5,23 @@ static var count : int = 0
 var debuted : bool = false
 
 var asteroid_size : AsteroidSize
+var asteroid_kind : AsteroidKind
 
 var composition : MatterCollection = MatterCollection.new()
 
 func _ready() -> void:
-  asteroid_size = AsteroidSize.get_random_asteroid_size()
+  asteroid_size = AsteroidSize.random_size()
+  asteroid_kind = AsteroidKind.random_kind()
+
+  # TODO: calculate inertia based on asteroid size and kind.
   inertia = 1000000.0 * asteroid_size.radius
   set_mass(1000.0 * asteroid_size.radius)
 
+  # TODO: Move to launch function.
   var new_rotation_impulse : float = Global.rng.randf_range(-8.0, 8.0)
   apply_torque_impulse(new_rotation_impulse)
 
-  # Composition
+  # TODO: calculate composition based on asteroid size and kind.
   composition.fill(1)
 
   # Image shape.
@@ -25,10 +30,11 @@ func _ready() -> void:
   # Visible polygon shape
   var poly : Polygon2D = $Polygon2D
   poly.set_polygon(points)
+
+  # Shader setup.
   var mat: ShaderMaterial = poly.material
   mat.set_shader_parameter("seed", Global.rng.randf() * 1000 / 100.0)
   set_colors(ColorSchemes.randomize_colors())
-
   asteroid_size.configure_shader(mat)
 
   # Collision polygon shape.

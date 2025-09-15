@@ -138,7 +138,7 @@ var noise_size : float = 5.3
 var crater_size : float = 0.3
 
 # Retrieve a random asteroid size.
-static func get_random_asteroid_size() -> AsteroidSize:
+static func random_size() -> AsteroidSize:
   var weights : PackedFloat32Array
 
   for size in ALL_SIZES:

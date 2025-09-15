@@ -8,44 +8,58 @@ enum Matter {
     SILICON = 2,
     IRON = 3,
     COPPER = 4,
-    URANIUM = 5
+    URANIUM = 5,
+    NICKEL = 6,
+    MAGNESIUM = 7
 }
 
 var carbon : int:
   set(value):
-    collection[Matter.CARBON] = abs(value)
+    collection[Matter.CARBON] = max(0, abs(value))
   get:
     return collection[Matter.CARBON]
 
 var water : int:
   set(value):
-    collection[Matter.WATER] = abs(value)
+    collection[Matter.WATER] = max(0, abs(value))
   get:
     return collection[Matter.WATER]
 
 var silicon : int:
   set(value):
-    collection[Matter.SILICON] = abs(value)
+    collection[Matter.SILICON] = max(0, abs(value))
   get:
     return collection[Matter.SILICON]
 
 var iron : int:
   set(value):
-    collection[Matter.IRON] = abs(value)
+    collection[Matter.IRON] = max(0, abs(value))
   get:
     return collection[Matter.IRON]
 
 var copper : int:
   set(value):
-    collection[Matter.COPPER] = abs(value)
+    collection[Matter.COPPER] = max(0, abs(value))
   get:
     return collection[Matter.COPPER]
 
 var uranium : int:
   set(value):
-    collection[Matter.URANIUM] = abs(value)
+    collection[Matter.URANIUM] = max(0, abs(value))
   get:
     return collection[Matter.URANIUM]
+
+var nickel : int:
+  set(value):
+    collection[Matter.NICKEL] = max(0, abs(value))
+  get:
+    return collection[Matter.NICKEL]
+
+var magnesium : int:
+  set(value):
+    collection[Matter.MAGNESIUM] = max(0, abs(value))
+  get:
+    return collection[Matter.MAGNESIUM]
 
 # A float array to store the amount of each matter in the collection.
 var collection : Array[int]
