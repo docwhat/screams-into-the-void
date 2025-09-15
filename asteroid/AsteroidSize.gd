@@ -15,6 +15,9 @@ static var LargeAsteroidSize
 static var HugeAsteroidSize
 static var GargantuanAsteroidSize
 
+# Stores all asteroid sizes.
+static var ALL_SIZES : Array[AsteroidSize] = []
+
 static func _static_init():
   ##############################################
   TinyAsteroidSize = AsteroidSize.new()
@@ -133,9 +136,6 @@ var noise_size : float = 5.3
 
 # The size of the craters.
 var crater_size : float = 0.3
-
-# Stores all asteroid sizes.
-static var ALL_SIZES : Array[AsteroidSize] = []
 
 # Retrieve a random asteroid size.
 static func get_random_asteroid_size() -> AsteroidSize:
