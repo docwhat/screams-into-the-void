@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://cxx6npgbsdpw"]
+[gd_scene load_steps=9 format=3 uid="uid://cxx6npgbsdpw"]
 
 [ext_resource type="StyleBox" uid="uid://co6c4xnqtqn4h" path="res://Theme/normal_button.tres" id="1_6eyaj"]
 [ext_resource type="StyleBox" uid="uid://vyds6kiwtdt3" path="res://Theme/hover_button.tres" id="1_8u653"]
 [ext_resource type="StyleBox" uid="uid://c8pnis8pgg7ow" path="res://Theme/pressed_button.tres" id="3_bwtow"]
 [ext_resource type="Script" uid="uid://cbbrv0j4leoy2" path="res://ui/pause.gd" id="4_8u653"]
+[ext_resource type="Script" uid="uid://cwjb3x45e2r4k" path="res://addons/git_describe/label/git_describe_label.gd" id="5_iri2v"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bwtow"]
 
@@ -59,6 +60,26 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 text = "Quit"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -17.0
+offset_right = 260.0
+grow_vertical = 0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_bottom = 2
+
+[node name="GitDescribeLabel" type="Label" parent="MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "1.2.3-0-abcdef41"
+script = ExtResource("5_iri2v")
+setting_name = "addons/git_describe/describe_setting_path"
+default_value = "application/config/git_describe"
+metadata/_custom_type_script = "uid://cwjb3x45e2r4k"
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Play" to="." method="unpause"]
