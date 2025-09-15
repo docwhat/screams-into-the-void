@@ -49,14 +49,17 @@ layout_mode = 2
 theme_override_constants/separation = 32
 
 [node name="Play" type="Button" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 text = "Play"
 
 [node name="Quit" type="Button" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 text = "Quit"
 
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Play" to="." method="unpause"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Quit" to="." method="quit"]

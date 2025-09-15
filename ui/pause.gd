@@ -10,3 +10,7 @@ func quit() -> void:
 
 func unpause() -> void:
   Global.on_unpause_command.emit()
+
+func _on_visibility_changed() -> void:
+  if visible:
+    %Play.grab_focus.call_deferred()
