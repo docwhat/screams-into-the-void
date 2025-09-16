@@ -11,7 +11,7 @@ config_version=5
 [addons]
 
 git_describe/command_options="--always --tags --long"
-git_describe/commit_hash="3e8fb303a0f7ee1e03936358e26c6ec82efe28d4"
+git_describe/commit_hash="720e7944bfbd8702b8ad33bbc1f750449a0c1a0c"
 
 [application]
 
@@ -22,7 +22,7 @@ boot_splash/show_image=false
 boot_splash/fullsize=false
 boot_splash/use_filter=false
 config/icon="res://icon.svg"
-config/git_describe="0.2.0-1-g3e8fb30"
+config/git_describe="0.2.0-4-g720e794"
 
 [autoload]
 
@@ -41,7 +41,7 @@ window/handheld/orientation=6
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/git_describe/plugin.cfg", "res://addons/gut/plugin.cfg")
+enabled=PackedStringArray("res://addons/git_describe/plugin.cfg", "res://addons/godot-vim/plugin.cfg", "res://addons/gut/plugin.cfg")
 
 [gui]
 
