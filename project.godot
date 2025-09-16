@@ -11,6 +11,7 @@ config_version=5
 [addons]
 
 git_describe/command_options="--always --tags --long"
+git_describe/commit_hash="3e8fb303a0f7ee1e03936358e26c6ec82efe28d4"
 
 [application]
 
@@ -21,6 +22,7 @@ boot_splash/show_image=false
 boot_splash/fullsize=false
 boot_splash/use_filter=false
 config/icon="res://icon.svg"
+config/git_describe="0.2.0-1-g3e8fb30"
 
 [autoload]
 
