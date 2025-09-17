@@ -40,8 +40,6 @@ func _on_asteroid_timer_timeout() -> void:
   # Check if an asteroid should spawn.
   var count : int = Global.number_of_asteroids_to_spawn()
 
-  var colors : Array[Color] = ColorSchemes.randomize_colors()
-
   for i in range(count):
     # Sleep if this asteroid isn't the only one being spawned in a row.
     if i > 0:
@@ -49,7 +47,5 @@ func _on_asteroid_timer_timeout() -> void:
 
     var asteroid = scene.instantiate()
     asteroid.launch(self, screen_size, $Player.global_position)
-    asteroid.set_colors(colors)
-
 
 # EOF
