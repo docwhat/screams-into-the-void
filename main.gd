@@ -9,7 +9,8 @@ func _ready() -> void:
   viewport.set_disable_3d(true)
 
   # Connect Signals
-  Global.on_unpause_command.connect(unpause)
+  Events.unpause.connect(unpause)
+  Events.pause.connect(pause)
 
   pause()
 
@@ -28,9 +29,9 @@ func unpause() -> void:
 
 func toggle_pause() -> void:
   if get_tree().is_paused():
-    unpause()
+    Events.emit_unpause()
   else:
-    pause()
+    Events.emit_pause()
 
 
 func _on_asteroid_timer_timeout() -> void:
@@ -46,6 +47,10 @@ func _on_asteroid_timer_timeout() -> void:
       await get_tree().create_timer(0.15).timeout
 
     var asteroid = scene.instantiate()
-    asteroid.launch(self, screen_size, $Player.global_position)
+    asteroid.launch(screen_size, $Player.global_position)
+
+    if asteroid.is_valid():
+      add_child(asteroid)
+
 
 # EOF

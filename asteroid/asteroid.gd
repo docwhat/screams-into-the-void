@@ -1,4 +1,4 @@
-extends RigidBody2D
+class_name Asteroid extends RigidBody2D
 
 static var count : int = 0
 # Has this asteroid been made visible?
@@ -7,12 +7,11 @@ var debuted : bool = false
 var asteroid_size : AsteroidSize
 var asteroid_kind : AsteroidKind
 
-var composition : MatterCollection = MatterCollection.new()
-
-func _ready() -> void:
+func _init() -> void:
   asteroid_size = AsteroidSize.random_size()
   asteroid_kind = AsteroidKind.random_kind()
 
+func _ready() -> void:
   # TODO: calculate inertia based on asteroid size and kind.
   inertia = 1000000.0 * asteroid_size.radius
   set_mass(1000.0 * asteroid_size.radius)
@@ -20,9 +19,6 @@ func _ready() -> void:
   # TODO: Move to launch function.
   var new_rotation_impulse : float = Global.rng.randf_range(-8.0, 8.0)
   apply_torque_impulse(new_rotation_impulse)
-
-  # TODO: calculate composition based on asteroid size and kind.
-  composition.fill(1)
 
   # Image shape.
   var points = asteroid_size.generatePolygon()
@@ -34,7 +30,7 @@ func _ready() -> void:
   # Shader setup.
   var mat: ShaderMaterial = poly.material
   mat.set_shader_parameter("seed", Global.rng.randf() * 1000 / 100.0)
-  set_colors(ColorSchemes.randomize_colors())
+  set_colors(asteroid_kind.palette())
   asteroid_size.configure_shader(mat)
 
   # Collision polygon shape.
@@ -43,11 +39,14 @@ func _ready() -> void:
 
   count += 1
 
+func is_valid() -> bool:
+  return  asteroid_size && asteroid_kind
+
 func set_colors(colors : Array[Color]) -> void:
   $Polygon2D.material.set_shader_parameter("colors", colors)
 
 func be_absorbed() -> void:
-  Global.collection.add_collection(composition)
+  Events.emit_asteroid_hit(asteroid_kind, asteroid_size)
   count -= 1
 
 func die() -> void:
@@ -112,7 +111,7 @@ func calculate_asteroid_starting_position(screen_size : Vector2) -> Vector2:
       )
 
 
-func launch(scene : Node, screen_size : Vector2, player_coord : Vector2) -> Node:
+func launch(screen_size : Vector2, player_coord : Vector2) -> Node:
   var target_coord : Vector2
   var direction : float
 
@@ -141,8 +140,5 @@ func launch(scene : Node, screen_size : Vector2, player_coord : Vector2) -> Node
 
   # Send it on its way.
   apply_impulse(velocity)
-
-  # Spawn it by adding to the Main scene
-  scene.add_child(self)
 
   return self

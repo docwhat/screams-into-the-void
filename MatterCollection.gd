@@ -13,6 +13,13 @@ enum Matter {
     MAGNESIUM = 7
 }
 
+static var AntiMatter : Dictionary[Matter, String]
+
+static func _static_init() -> void:
+  for k : String in Matter.keys():
+    var v : Matter = Matter[k]
+    AntiMatter[v] = k
+
 var carbon : int:
   set(value):
     collection[Matter.CARBON] = max(0, abs(value))
@@ -82,7 +89,6 @@ func get_amount(matter : Matter) -> int:
 func set_amount(matter : Matter, value : int) -> void:
   collection[matter] = abs(value)
 
-
 # String get/set
 func get_by_string(matter : String) -> int:
   return get_amount(Matter[matter.to_upper()])
@@ -90,20 +96,19 @@ func get_by_string(matter : String) -> int:
 func set_by_string(matter : String, value : int) -> void:
   set_amount(Matter[matter.to_upper()], abs(value))
 
-
 # Increments a matter by amount.
 func incr_amount(matter : Matter, amount : int) -> void:
-  collection[matter] = max(0, collection[matter] + amount)
+  set_amount(matter, max(0, collection[matter] + amount))
 
 # Decrements a matter by amount.
 func decr_amount(matter : Matter, amount : int) -> void:
-  collection[matter] = max(0, collection[matter] - amount)
+  set_amount(matter, max(0, collection[matter] - amount))
 
 # Perform an operation on every matter in the collection.
+# lambda should accept matter and amount.
 func each(lambda : Callable) -> void:
   for matter : Matter in Matter.values():
-    lambda.call(matter)
-
+    lambda.call(matter, get_amount(matter))
 
 # Adds this collection to another collection.
 func add_collection(other : MatterCollection) -> void:
@@ -114,3 +119,5 @@ func add_collection(other : MatterCollection) -> void:
 func remove_collection(other : MatterCollection) -> void:
   for matter_idx in Matter.values():
     decr_amount(matter_idx, other.get_amount(matter_idx))
+
+# EOF

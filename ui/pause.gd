@@ -9,7 +9,7 @@ func quit() -> void:
    Global.quit()
 
 func unpause() -> void:
-  Global.on_unpause_command.emit()
+  Events.emit_unpause()
 
 func _on_visibility_changed() -> void:
   if visible:

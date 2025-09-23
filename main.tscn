@@ -43,9 +43,6 @@ position = Vector2(540, 656)
 [node name="HUD" type="CanvasLayer" parent="."]
 script = ExtResource("5_7mycd")
 
-[node name="UpdateHUD" type="Timer" parent="HUD"]
-autostart = true
-
 [node name="Control" type="Control" parent="HUD"]
 layout_mode = 3
 anchors_preset = 0
@@ -92,4 +89,3 @@ unique_name_in_owner = true
 process_mode = 2
 
 [connection signal="timeout" from="AsteroidTimer" to="." method="_on_asteroid_timer_timeout"]
-[connection signal="timeout" from="HUD/UpdateHUD" to="HUD" method="update_hud"]

@@ -59,7 +59,8 @@ func _ready() -> void:
 
   # TODO: The HUD isn't vertically resizing based on the contents.
   # TODO: The HUD isn't horizontally resizing based on the contents.
-  update_hud()
+  Events.update_hud.connect(update_hud)
+  Events.emit_update_hud()
 
 func update_hud() -> void:
   for matter_name in Matter.keys():

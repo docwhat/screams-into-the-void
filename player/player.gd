@@ -1,8 +1,19 @@
 class_name Player extends Area2D
 
+# The player's ability to absorb things.
+var absorber : Absorber
+
 func _ready() -> void:
+  absorber = StarterAbsorber.new()
+  
   get_viewport().connect("size_changed", _on_resized)
   recenter_player.call_deferred()
+  
+  Events.asteroid_hit.connect(asteroid_hit)
+
+# Used when an asteroid hits the player.
+func asteroid_hit(kind: AsteroidKind, size: AsteroidSize) -> void:
+  absorber.absorb_asteroid(kind, size)
 
 func recenter_player():
   var screen_size = get_viewport_rect().size
