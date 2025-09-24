@@ -13,7 +13,7 @@ run = "(godot --path . --editor >& /dev/null &)"
 [tasks.gut]
 alias = "test"
 description = "Run the GUT tests"
-run = "godot --path . --headless --debug --script addons/gut/gut_cmdln.gd --quit-after 1"
+run = "godot --path . --headless --debug --script addons/gut/gut_cmdln.gd -gexit"
 
 [tasks.export-web]
 description = "Export the web version to export/web/"
