@@ -35,7 +35,7 @@ func toggle_pause() -> void:
 
 
 func _on_asteroid_timer_timeout() -> void:
-  const scene = preload("res://asteroid/asteroid.tscn")
+  const scene = preload("res://Asteroid/Asteroid.tscn")
   var screen_size : Vector2 = get_viewport_rect().size
 
   # Check if an asteroid should spawn.
