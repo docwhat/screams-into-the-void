@@ -1,5 +1,9 @@
 extends Control
 
+func _ready() -> void:
+  if OS.has_feature("wasm"):
+    %Quit.hide()
+
 func _unhandled_input(event: InputEvent) -> void:
   if event.is_action_pressed("pause"):
     unpause()
