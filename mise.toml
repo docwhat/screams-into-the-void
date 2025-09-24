@@ -28,8 +28,8 @@ godot --headless --export-release "Web" export/web/index.html
 """
 
 [tasks.deploy-web]
-description = "Deploy the web version to docwhat.org/"
-run = "rsync -av --delete-after --progress export/web/ gerf:/srv/website/srv/docwhat/files/void/"
+description = "Deploy the web version to void.docwhat.org"
+run = "rsync -av --delete-after --progress export/web/ gerf:/srv/website/srv/void/"
 
 [tasks.export-macos]
 description = "Export the macOS version to export/macos/"
