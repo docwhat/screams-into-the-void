@@ -3,8 +3,8 @@ extends Node
 # Signal Bus pattern. All signals go here.
 
 signal asteroid_hit
-func emit_asteroid_hit(kind: AsteroidKind, size: AsteroidSize) -> void:
-  asteroid_hit.emit(kind, size)
+func emit_asteroid_hit(asteroid: Asteroid) -> void:
+  asteroid_hit.emit(asteroid)
 
 # Send to update the HUD.
 # Listen if you need to do something when the HUD is updated.

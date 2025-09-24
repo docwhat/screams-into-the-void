@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AsteroidSize" load_steps=2 format=3 uid="uid://bmyvvo50mhgyq"]
+
+[ext_resource type="Script" uid="uid://cgft0s3gn2qny" path="res://Resources/AsteroidSize.gd" id="1_bqf48"]
+
+[resource]
+script = ExtResource("1_bqf48")
+name = "Huge"
+probability = 0.3
+shape_radius = 42.0
+shape_max_radius_delta = 7.0
+shape_number_of_points = 25
+shader_crater_size = 0.3
+metadata/_custom_type_script = "uid://cgft0s3gn2qny"

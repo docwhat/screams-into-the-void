@@ -12,8 +12,8 @@ func _ready() -> void:
   Events.asteroid_hit.connect(asteroid_hit)
 
 # Used when an asteroid hits the player.
-func asteroid_hit(kind: AsteroidKind, size: AsteroidSize) -> void:
-  absorber.absorb_asteroid(kind, size)
+func asteroid_hit(asteroid: Asteroid) -> void:
+  absorber.absorb_asteroid(asteroid)
 
 func recenter_player():
   var screen_size = get_viewport_rect().size

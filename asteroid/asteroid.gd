@@ -14,14 +14,23 @@ var dissolve_tween : Tween
 @export_range(0.0, 1.5, 0.1) var dissolve_beam_size : float = 0.1
 @export_group("")
 
+# Deligation
+var radius : float:
+  get: return self.asteroid_size.shape_radius
+var matter : Array[MatterCollection.Matter]:
+  get: return self.asteroid_kind.matter
+var noise_size : float:
+  get: return self.asteroid_size.shader_noise_size
+
 func _init() -> void:
   asteroid_size = AsteroidSize.random_size()
   asteroid_kind = AsteroidKind.random_kind()
 
 func _ready() -> void:
   # TODO: calculate inertia based on asteroid size and kind.
-  inertia = 1000000.0 * asteroid_size.radius
-  set_mass(1000.0 * asteroid_size.radius)
+  assert(radius > 0.0)
+  inertia = 1000000.0 * radius
+  set_mass(1000.0 * radius)
 
   # TODO: Move to launch function.
   var new_rotation_impulse : float = Global.rng.randf_range(-8.0, 8.0)
@@ -43,7 +52,7 @@ func _ready() -> void:
   collider.set_polygon(points)
 
   count += 1
-
+  
 func is_valid() -> bool:
   return  asteroid_size && asteroid_kind
 
@@ -51,7 +60,7 @@ func set_colors(colors : Array[Color]) -> void:
   $Polygon2D.material.set_shader_parameter("colors", colors)
 
 func be_absorbed() -> void:
-  Events.emit_asteroid_hit(asteroid_kind, asteroid_size)
+  Events.emit_asteroid_hit(self)
   $CollisionPolygon2D.set_disabled.call_deferred(true)
   set_freeze_enabled.call_deferred(true)
   trigger_dissolve.call_deferred()
@@ -64,7 +73,7 @@ func trigger_dissolve() -> void:
   dissolve_material.set_shader_parameter("dissolving", true)
   dissolve_material.set_shader_parameter("dissolve_progress", 0.0)
   dissolve_material.set_shader_parameter("dissolve_color", dissolve_color)
-  dissolve_material.set_shader_parameter("dissolve_noise_density", asteroid_size.noise_size * 4.0)
+  dissolve_material.set_shader_parameter("dissolve_noise_density", noise_size * 4.0)
   dissolve_material.set_shader_parameter("dissolve_beam_size", dissolve_beam_size)
 
   dissolve_tween = create_tween()
@@ -164,3 +173,17 @@ func launch(screen_size : Vector2, player_coord : Vector2) -> Node:
   apply_impulse(velocity)
 
   return self
+
+func random_matter() -> MatterCollection:
+  var matter_collection = MatterCollection.new()
+  var max_amount : float = radius / 8.0
+
+  if Global.debug_asteroid_kind:
+    print_rich("[b]== %s (%f) ==[/b]" % [name, radius])
+  for m : MatterCollection.Matter in matter:
+    var amount : int = floor(max_amount * Global.rng.randf())
+    matter_collection.set_amount(m, amount)
+    if Global.debug_asteroid_kind:
+      print_rich("   %10s: %-5d" % [MatterCollection.AntiMatter[m], amount])
+
+  return matter_collection

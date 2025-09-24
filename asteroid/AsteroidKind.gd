@@ -158,19 +158,4 @@ func print_color(n : String, c : Color) -> void:
   var h : String = "#" + c.to_html(true)
   print_rich("   %3s  [b]%s[/b]  [bgcolor=%s]      [/bgcolor]  Color(%f, %f, %f)" % [n, h, h, c.r, c.g, c.b])
 
-func random_matter(size: AsteroidSize) -> MatterCollection:
-  var matter_collection = MatterCollection.new()
-  var max_amount : float = size.radius / 8.0
-
-
-  if Global.debug_asteroid_kind:
-    print_rich("[b]== %s (%f) ==[/b]" % [name, size.radius])
-  for m : Matter in matter:
-    var amount : int = floor(max_amount * Global.rng.randf())
-    matter_collection.set_amount(m, amount)
-    if Global.debug_asteroid_kind:
-      print_rich("   %10s: %-5d" % [MatterCollection.AntiMatter[m], amount])
-
-  return matter_collection
-
 # EOF

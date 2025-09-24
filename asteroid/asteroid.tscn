@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dgo8gq5d22uf"]
 
 [ext_resource type="Shader" uid="uid://b2jdvm5frkqlx" path="res://asteroid/asteroid.gdshader" id="1_gm5ib"]
-[ext_resource type="Script" uid="uid://b2samh810qdpg" path="res://asteroid/asteroid.gd" id="1_p0ukn"]
+[ext_resource type="Script" uid="uid://b2samh810qdpg" path="res://asteroid/Asteroid.gd" id="1_p0ukn"]
 [ext_resource type="Texture2D" uid="uid://bh0mbmredemri" path="res://128x128-transparent.png" id="3_gm5ib"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_p0ukn"]

@@ -11,8 +11,8 @@ static func limit_one(_mat: MatterCollection.Matter, amt: int) -> int:
   return amt
 
 # Absorb an asteroid with a given kind and size.  
-func absorb_asteroid(kind: AsteroidKind, size: AsteroidSize) -> void:
-  var source_matter : MatterCollection = kind.random_matter(size)
+func absorb_asteroid(asteroid: Asteroid) -> void:
+  var source_matter : MatterCollection = asteroid.random_matter()
   var absorbed_matter : MatterCollection =  absorption_limiter(source_matter)
   
   Global.collection.add_collection(absorbed_matter)
