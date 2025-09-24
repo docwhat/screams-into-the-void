@@ -16,6 +16,11 @@ shader_parameter/noise_size = 5.3
 shader_parameter/crater_size = 0.3
 shader_parameter/colors = PackedColorArray(0.639, 0.655, 0.761, 1, 0.298, 0.408, 0.522, 1, 0.227, 0.247, 0.369, 1)
 shader_parameter/seed = 1.567
+shader_parameter/dissolving = false
+shader_parameter/dissolve_progress = 0.0
+shader_parameter/dissolve_color = Color(0, 1.02, 1.2, 1)
+shader_parameter/dissolve_noise_density = 60.0
+shader_parameter/dissolve_beam_size = 0.0
 
 [node name="Asteroid" type="RigidBody2D"]
 top_level = true
@@ -23,7 +28,6 @@ collision_layer = 2
 collision_mask = 3
 physics_material_override = SubResource("PhysicsMaterial_p0ukn")
 gravity_scale = 0.0
-center_of_mass_mode = 1
 linear_damp_mode = 1
 angular_damp_mode = 1
 constant_force = Vector2(0, -10)

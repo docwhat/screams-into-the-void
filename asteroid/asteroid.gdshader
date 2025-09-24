@@ -1,5 +1,6 @@
 shader_type canvas_item;
-render_mode blend_mix;
+render_mode blend_mix, unshaded;
+
 
 uniform float pixels: hint_range(1, 128, 1) = 75.0;
 uniform float noise_size : hint_range(1, 20, 0.1) = 5.3;
@@ -8,11 +9,27 @@ uniform vec4[3] colors : source_color;
 uniform float seed: hint_range(1, 10) = 1.567;
 const vec2 light_origin = vec2(0.39, 0.39);
 
+
+uniform bool dissolving = false;
+uniform float dissolve_progress : hint_range(0.0, 1.0) = 0.0;
+uniform vec4 dissolve_color : source_color = vec4(0.0, 1.02, 1.2, 1.0);
+uniform float dissolve_noise_density : hint_range(1.0, 100.0, 1.0) = 60.0;
+uniform float dissolve_beam_size : hint_range(0.0, 1.5, 0.1) = 0.1;
+
 float rand(vec2 coord) {
   return fract(sin(dot(coord.xy ,vec2(12.9898,78.233))) * 15.5453 * seed);
 }
 
-float noise(vec2 coord){
+// We are generating our own noise here. You could experiment with the 
+// built in SimplexNoise or your own noise texture for other effects.
+vec2 rand_v2(vec2 uv) {
+    uv = vec2( dot(uv, vec2(127.1,311.7) ),
+               dot(uv, vec2(269.5,183.3) ) );
+    return -1.0 + 2.0 * fract(sin(uv) * 43758.5453123);
+}
+
+
+float dither_noise(vec2 coord){
   vec2 i = floor(coord);
   vec2 f = fract(coord);
 
@@ -26,12 +43,24 @@ float noise(vec2 coord){
   return mix(a, b, cubic.x) + (c - a) * cubic.y * (1.0 - cubic.x) + (d - b) * cubic.x * cubic.y;
 }
 
+float dissolve_noise(vec2 uv) {
+    vec2 uv_index = floor(uv);
+    vec2 uv_fract = fract(uv);
+
+    vec2 blur = smoothstep(0.0, 1.0, uv_fract);
+
+    return mix( mix( dot( rand_v2(uv_index + vec2(0.0,0.0) ), uv_fract - vec2(0.0,0.0) ),
+                     dot( rand_v2(uv_index + vec2(1.0,0.0) ), uv_fract - vec2(1.0,0.0) ), blur.x),
+                mix( dot( rand_v2(uv_index + vec2(0.0,1.0) ), uv_fract - vec2(0.0,1.0) ),
+                     dot( rand_v2(uv_index + vec2(1.0,1.0) ), uv_fract - vec2(1.0,1.0) ), blur.x), blur.y) * 0.5 + 0.5;
+}
+
 float fbm(vec2 coord){
   float value = 0.0;
   float scale = 0.5;
 
   for(int i = 0; i < 4 ; i++){
-    value += noise(coord) * scale;
+    value += dither_noise(coord) * scale;
     coord *= 2.0;
     scale *= 0.5;
   }
@@ -67,12 +96,17 @@ float crater(vec2 uv) {
   return 1.0 - c;
 }
 
+
+
 void fragment() {
+  // Make UV 0.0 to 1.0 instead of -0.5 to 0.5
+  vec2 norm_uv = UV + 0.5;
+
   //pixelize uv
-  vec2 uv = floor(UV*pixels)/pixels;
+  vec2 uv = floor(norm_uv*pixels)/pixels;
 
   // we use this val later to interpolate between shades
-  bool dith = dither(uv, UV);
+  bool dith = dither(uv, norm_uv);
 
   // two crater values, again one extra for the shadows
   float c1 = crater(uv) * 0.5;
@@ -101,5 +135,21 @@ void fragment() {
     col = colors[2];
   }
 
-  COLOR = vec4(col.rgb, 1.0);
+  // dissolve effect
+  if (dissolving) {
+    float noise = dither_noise(uv * dissolve_noise_density);
+
+    // Interface between visible and invisible.
+    float d1 = step(dissolve_progress, noise);
+    float d2 = step(dissolve_progress - dissolve_beam_size, noise);
+
+    // Add a glowing beam at the interface. 
+    vec3 beam = vec3(d2 - d1) * dissolve_color.rgb;
+    col.rgb += beam;
+
+    // Fade out the whole thing as it dissolves.
+    col.a *= d2;
+  }
+	
+	COLOR = col;
 }

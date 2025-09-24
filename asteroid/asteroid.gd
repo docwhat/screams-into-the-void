@@ -7,6 +7,13 @@ var debuted : bool = false
 var asteroid_size : AsteroidSize
 var asteroid_kind : AsteroidKind
 
+@export_group("Dissolve", "dissolve_")
+var dissolve_tween : Tween
+@export_color_no_alpha var dissolve_color : Color = Color(0.0, 1.0, 0.18, 1.0)
+@export_range(0.1, 5.0, 0.1) var dissolve_duration : float = 1.0
+@export_range(0.0, 1.5, 0.1) var dissolve_beam_size : float = 0.1
+@export_group("")
+
 func _init() -> void:
   asteroid_size = AsteroidSize.random_size()
   asteroid_kind = AsteroidKind.random_kind()
@@ -24,14 +31,12 @@ func _ready() -> void:
   var points = asteroid_size.generatePolygon()
 
   # Visible polygon shape
-  var poly : Polygon2D = $Polygon2D
-  poly.set_polygon(points)
+  $Polygon2D.set_polygon(points)
 
-  # Shader setup.
-  var mat: ShaderMaterial = poly.material
-  mat.set_shader_parameter("seed", Global.rng.randf() * 1000 / 100.0)
+  # Texture Shader setup.
+  $Polygon2D.material.set_shader_parameter("seed", Global.rng.randf() * 1000 / 100.0)
   set_colors(asteroid_kind.palette())
-  asteroid_size.configure_shader(mat)
+  asteroid_size.configure_shader($Polygon2D.material)
 
   # Collision polygon shape.
   var collider : CollisionPolygon2D = $CollisionPolygon2D
@@ -47,7 +52,24 @@ func set_colors(colors : Array[Color]) -> void:
 
 func be_absorbed() -> void:
   Events.emit_asteroid_hit(asteroid_kind, asteroid_size)
+  $CollisionPolygon2D.set_disabled.call_deferred(true)
+  set_freeze_enabled.call_deferred(true)
+  trigger_dissolve.call_deferred()
   count -= 1
+  
+func trigger_dissolve() -> void:
+  if dissolve_tween: return
+  
+  var dissolve_material : ShaderMaterial = $Polygon2D.material
+  dissolve_material.set_shader_parameter("dissolving", true)
+  dissolve_material.set_shader_parameter("dissolve_progress", 0.0)
+  dissolve_material.set_shader_parameter("dissolve_color", dissolve_color)
+  dissolve_material.set_shader_parameter("dissolve_noise_density", asteroid_size.noise_size * 4.0)
+  dissolve_material.set_shader_parameter("dissolve_beam_size", dissolve_beam_size)
+
+  dissolve_tween = create_tween()
+  dissolve_tween.tween_property(dissolve_material, "shader_parameter/dissolve_progress", 1.0, dissolve_duration)
+  dissolve_tween.tween_callback(func(): queue_free())
 
 func die() -> void:
   count -= 1
