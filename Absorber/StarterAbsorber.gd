@@ -2,7 +2,7 @@ class_name StarterAbsorber extends Absorber
 
 static func get_name() -> String:
   return "Barely functioning processor"
-  
+
 static func get_description() -> String:
   return "The best you're able to do, given your condition."
 
@@ -10,5 +10,5 @@ static func get_description() -> String:
 static func limit_one(_mat: MatterCollection.Matter, amt: int) -> int:
   if amt <= 0:
     return 0
-    
+
   return Global.rng.randi_range(0,1)

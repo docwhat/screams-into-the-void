@@ -10,8 +10,26 @@ enum Matter {
     COPPER = 4,
     URANIUM = 5,
     NICKEL = 6,
-    MAGNESIUM = 7
+    MAGNESIUM = 7,
+    HYDROGEN = 8,
+    OXYGEN = 9,
 }
+
+static func mass(matter : Matter) -> float:
+  match matter:
+    Matter.CARBON: return 12.0096
+    Matter.WATER: return mass(Matter.HYDROGEN) * 2.0 + mass(Matter.OXYGEN)
+    Matter.SILICON: return 28.084
+    Matter.IRON: return 55.845
+    Matter.COPPER: return 12.0096
+    Matter.URANIUM: return 238.02891
+    Matter.NICKEL: return 58.6934
+    Matter.HYDROGEN: return 1.00784
+    Matter.OXYGEN: return 15.999
+    Matter.MAGNESIUM: return 54.938043
+
+  assert(false, "Unknown matter %s" % str(matter))
+  return 1.0
 
 # Reverse Lookup
 static var AntiMatter : Dictionary[Matter, String]
@@ -80,6 +98,12 @@ func _init() -> void:
   _collection = []
   _collection.resize(Matter.values().size())
 
+func matter_mass() -> float:
+  var total_mass : float = 0.0
+  for m : Matter in Matter.values():
+    total_mass += float(get_amount(m)) * mass(m)
+  return total_mass
+
 func fill(value : int) -> void:
   var changed_matter : Array[Matter] = []
   for m : Matter in Matter.values():
@@ -100,16 +124,16 @@ func set_amount(matter : Matter, value : int) -> void:
 # Alias for fill(0)
 func clear() -> void:
   fill(0)
- 
-# Functions to call when any value changes. 
+
+# Functions to call when any value changes.
 func _changed(changed_matters: Array[Matter]) -> void:
   for fn in _on_change_callbacks:
     fn.call(changed_matters)
 
-# Add a function to call when any value changes.    
+# Add a function to call when any value changes.
 func register_on_change_callback(fn: Callable) -> void:
   _on_change_callbacks.append(fn)
-  
+
 # String get/set
 func get_by_string(matter : String) -> int:
   return get_amount(Matter[matter.to_upper()])
