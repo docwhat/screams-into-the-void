@@ -16,7 +16,6 @@ func absorb_asteroid(asteroid: Asteroid) -> void:
   var absorbed_matter : MatterCollection =  absorption_limiter(source_matter)
   
   Global.collection.add_collection(absorbed_matter)
-  Events.emit_update_hud()
 
 # Override this in sub-classes if overriding limit_one() isn't enough.
 func absorption_limiter(to_absorb: MatterCollection) -> MatterCollection:

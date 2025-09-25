@@ -42,13 +42,13 @@ func test_clear_resets_all_matter_to_zero():
 
 # Test get_amount functionality
 func test_get_amount_returns_correct_value():
-  matter_collection.collection[Matter.CARBON] = 15
+  matter_collection.set_amount(Matter.CARBON, 15)
   assert_eq(matter_collection.get_amount(Matter.CARBON), 15,
     "get_amount should return the exact value stored")
 
 func test_get_amount_different_matter_types():
-  matter_collection.collection[Matter.WATER] = 7
-  matter_collection.collection[Matter.IRON] = 12
+  matter_collection.set_amount(Matter.WATER, 7)
+  matter_collection.set_amount(Matter.IRON, 12)
 
   assert_eq(matter_collection.get_amount(Matter.WATER), 7)
   assert_eq(matter_collection.get_amount(Matter.IRON), 12)
@@ -71,8 +71,7 @@ func test_set_amount_zero_value():
 
 func test_set_amount_negative_numbers_are_not_allowed():
   matter_collection.set_amount(Matter.URANIUM, -15)
-  assert_eq(matter_collection.get_amount(Matter.URANIUM), 15,
-    "set_amount should convert negative values to positive using abs()")
+  assert_eq(matter_collection.get_amount(Matter.URANIUM), 0)
 
 func test_set_amount_overwrites_existing():
   matter_collection.set_amount(Matter.CARBON, 10)
@@ -183,4 +182,44 @@ func test_fill_works():
 func test_fill_negative_value():
   matter_collection.fill(-5)
   for matter in Matter.values():
-    assert_eq(matter_collection.get_amount(matter), 0)
+    var got : int = matter_collection.get_amount(matter)
+    var expected : int = 0
+    assert_eq(got, expected, "fill() with negative should set all to %d, got %d" % [expected, got])
+
+func test_add_collection():
+  matter_collection.set_amount(Matter.WATER, 10)
+  other_collection.set_amount(Matter.WATER, 5)
+  other_collection.set_amount(Matter.IRON, 3)
+
+  matter_collection.add_collection(other_collection)
+
+  assert_eq(matter_collection.get_amount(Matter.WATER), 15,
+    "After adding collections, WATER should be summed correctly")
+  assert_eq(matter_collection.get_amount(Matter.IRON), 3,
+    "After adding collections, IRON should be added correctly")
+  assert_eq(matter_collection.get_amount(Matter.CARBON), 0,
+    "After adding collections, CARBON should remain zero if not present")
+
+func test_callback_for_set_amount():
+  var data = {
+    called = false,
+    changed_matters = []
+  }
+
+  var callback = func(matter_list):
+      data.called = true
+      data.changed_matters = matter_list
+
+  matter_collection.register_on_change_callback(callback)
+  matter_collection.set_amount(Matter.URANIUM, 10)
+
+  assert_true(data.called, "Callback should be called")
+  assert_eq(data.changed_matters, [Matter.URANIUM])
+
+  matter_collection.set_amount(Matter.NICKEL, 10)
+  data.called = false
+  data.changed_matters = [] 
+  matter_collection.clear()
+
+  assert_true(data.called, "Callback should be called")
+  assert_eq(data.changed_matters, [Matter.URANIUM, Matter.NICKEL])

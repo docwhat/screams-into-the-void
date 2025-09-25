@@ -43,7 +43,9 @@ func number_of_asteroids_to_spawn() -> int:
 
 func _ready() -> void:
   rng.randomize()
-  collection = PlayerMatterCollection.new()
+  
+  collection = MatterCollection.new()
+  collection.register_on_change_callback(Events.emit_update_hud)
   
 # Use this to quit the game. It'll work
 # reliably on all platforms.

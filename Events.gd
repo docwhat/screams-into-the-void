@@ -9,8 +9,8 @@ func emit_asteroid_hit(asteroid: Asteroid) -> void:
 # Send to update the HUD.
 # Listen if you need to do something when the HUD is updated.
 signal update_hud
-func emit_update_hud() -> void:
-  update_hud.emit()
+func emit_update_hud(changed: Array[MatterCollection.Matter]) -> void:
+  update_hud.emit(changed)
 
 # Send to unpause the game.
 # Listen if you need to perform an action when the game resumes.

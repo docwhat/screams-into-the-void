@@ -60,10 +60,12 @@ func _ready() -> void:
   # TODO: The HUD isn't vertically resizing based on the contents.
   # TODO: The HUD isn't horizontally resizing based on the contents.
   Events.update_hud.connect(update_hud)
-  Events.emit_update_hud()
+  Events.emit_update_hud([])
 
-func update_hud() -> void:
+func update_hud(_changed: Array[MatterCollection.Matter]) -> void:
   for matter_name in Matter.keys():
+    var matter : Matter = Matter[matter_name]
+    # TODO: Add fadding hightlight when matter is in changed.
     var label : Label = value_labels[matter_name]
-    var value : int = Global.collection.get_by_string(matter_name)
+    var value : int = Global.collection.get_amount(matter)
     label.text = fnum(value)
