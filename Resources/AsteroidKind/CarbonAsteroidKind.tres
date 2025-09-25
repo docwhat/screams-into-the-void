@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="AsteroidKind" load_steps=2 format=3 uid="uid://bs4sgwf45sxnn"]
+
+[ext_resource type="Script" uid="uid://dy15xjwx353q5" path="res://Resources/AsteroidKind.gd" id="1_62x2l"]
+
+[resource]
+script = ExtResource("1_62x2l")
+name = "Carbon"
+notes = "Black colored. Lots of carbon."
+probability = 3.0
+matter = Array[int]([0])
+color_base_color = Color(0.25, 0.25, 0.25, 1)
+color_saturation = Color(0.25, 0.25, 0.25, 1)
+color_hue_diff = Color(0.4, 0.4, 0.4, 1)
+metadata/_custom_type_script = "uid://dy15xjwx353q5"

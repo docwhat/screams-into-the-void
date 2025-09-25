@@ -42,7 +42,7 @@ const RES_PATHS: Array[String] = [
     "res://Resources/AsteroidSize/MediumAsteroidSize.tres",
     "res://Resources/AsteroidSize/SmallAsteroidSize.tres",
     "res://Resources/AsteroidSize/SpikySmallAsteroidSize.tres",
-    "res://Resources/AsteroidSize/TinyAsteroidSize.tres"
+    "res://Resources/AsteroidSize/TinyAsteroidSize.tres",
   ]
 static var sizes : Array[AsteroidSize]
 

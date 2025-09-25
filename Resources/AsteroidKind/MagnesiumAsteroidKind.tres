@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="AsteroidKind" load_steps=2 format=3 uid="uid://xlqvrv6idgxv"]
+
+[ext_resource type="Script" uid="uid://dy15xjwx353q5" path="res://Resources/AsteroidKind.gd" id="1_uveid"]
+
+[resource]
+script = ExtResource("1_uveid")
+name = "Magnesium"
+notes = "Red/Yellow colored. Contains magnesium."
+probability = 0.5
+matter = Array[int]([7])
+color_base_color = Color(0.7, 0, 0, 1)
+color_saturation = Color(0.32742003, 0.34, 0.0884, 1)
+color_hue_diff = Color(0.4, 0.4, 0.4, 1)
+metadata/_custom_type_script = "uid://dy15xjwx353q5"

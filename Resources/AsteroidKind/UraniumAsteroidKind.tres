@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="AsteroidKind" load_steps=2 format=3 uid="uid://p5lcx7bq6ti2"]
+
+[ext_resource type="Script" uid="uid://dy15xjwx353q5" path="res://Resources/AsteroidKind.gd" id="1_bwvgh"]
+
+[resource]
+script = ExtResource("1_bwvgh")
+name = "Uranium"
+notes = "Green colored. Contains Uranium."
+probability = 0.1
+matter = Array[int]([5])
+color_base_color = Color(0.31, 0.51699996, 1, 1)
+color_saturation = Color(0, 0.784, 0.98, 1)
+color_hue_diff = Color(0.408329, 0.408329, 0.408329, 1)
+metadata/_custom_type_script = "uid://dy15xjwx353q5"

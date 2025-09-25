@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="AsteroidKind" load_steps=2 format=3 uid="uid://ddb3j4h35rymf"]
+
+[ext_resource type="Script" uid="uid://dy15xjwx353q5" path="res://Resources/AsteroidKind.gd" id="1_78gdr"]
+
+[resource]
+script = ExtResource("1_78gdr")
+name = "Icey"
+notes = "Blue colored. Lots of water and bits of things like copper."
+probability = 2.0
+matter = Array[int]([1, 4])
+color_base_color = Color(0.30240002, 0.42768002, 0.72, 1)
+color_saturation = Color(0.13, 0.25, 0.25, 1)
+color_hue_diff = Color(0.4, 0.4, 0.4, 1)
+metadata/_custom_type_script = "uid://dy15xjwx353q5"
