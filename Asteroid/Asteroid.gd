@@ -4,8 +4,10 @@ static var count : int = 0
 # Has this asteroid been made visible?
 var debuted : bool = false
 
-var asteroid_size : AsteroidSize
-var asteroid_kind : AsteroidKind
+@export var asteroid_size : AsteroidSize
+@export var asteroid_kind : AsteroidKind
+var last_asteroid_size : AsteroidSize
+var last_asteroid_kind : AsteroidKind
 
 @export_group("Dissolve", "dissolve_")
 var dissolve_tween : Tween
@@ -27,37 +29,33 @@ func _init() -> void:
   asteroid_kind = AsteroidKind.random_kind()
 
 func _ready() -> void:
-  # TODO: calculate inertia based on asteroid size and kind.
+  rebuild()
+  count += 1
+
+# Sets up the shape, size, color, etc.
+func rebuild() -> void:
+  # Save these off, in case we need them.
+  last_asteroid_kind = asteroid_kind
+  last_asteroid_size = asteroid_size
+
   assert(radius > 0.0)
   inertia = 1000000.0 * radius
   set_mass(1000.0 * radius)
 
-  # TODO: Move to launch function.
-  var new_rotation_impulse : float = Global.rng.randf_range(-8.0, 8.0)
-  apply_torque_impulse(new_rotation_impulse)
-
   # Image shape.
   var points = asteroid_size.generatePolygon()
 
-  # Visible polygon shape
+  # Set the shapes.
   $Polygon2D.set_polygon(points)
+  $CollisionPolygon2D.set_polygon(points)
 
   # Texture Shader setup.
   $Polygon2D.material.set_shader_parameter("seed", Global.rng.randf() * 1000 / 100.0)
-  set_colors(asteroid_kind.palette())
   asteroid_size.configure_shader($Polygon2D.material)
+  asteroid_kind.configure_shader($Polygon2D.material)
 
-  # Collision polygon shape.
-  var collider : CollisionPolygon2D = $CollisionPolygon2D
-  collider.set_polygon(points)
-
-  count += 1
-  
 func is_valid() -> bool:
   return  asteroid_size && asteroid_kind
-
-func set_colors(colors : Array[Color]) -> void:
-  $Polygon2D.material.set_shader_parameter("colors", colors)
 
 func be_absorbed() -> void:
   Events.emit_asteroid_hit(self)
@@ -65,10 +63,10 @@ func be_absorbed() -> void:
   set_freeze_enabled.call_deferred(true)
   trigger_dissolve.call_deferred()
   count -= 1
-  
+
 func trigger_dissolve() -> void:
   if dissolve_tween: return
-  
+
   var dissolve_material : ShaderMaterial = $Polygon2D.material
   dissolve_material.set_shader_parameter("dissolving", true)
   dissolve_material.set_shader_parameter("dissolve_progress", 0.0)
@@ -165,11 +163,19 @@ func launch(screen_size : Vector2, player_coord : Vector2) -> Node:
   # Choose a velocity
   var speed = Global.rng.randf_range(100.0, 150.0)
   var velocity = Vector2(speed, 0.0).rotated(direction)
+  var torque : float = Global.rng.randf() * 1000 + 1000
+
+  # Randomize direction of spin.
+  if Global.rng.randi_range(0, 1) != 0:
+    torque = 0 - torque
 
   # Restore the physics.
   set_freeze_enabled(false)
 
-  # Send it on its way.
+  # Start it spinning...
+  apply_torque_impulse(torque)
+
+  # ... and send it on its way.
   apply_impulse(velocity)
 
   return self

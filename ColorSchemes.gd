@@ -1,41 +1,5 @@
 extends Node
 
-@export_group("Carbon")
-@export_color_no_alpha var CarbonAsteroidColor : Color      = Color(0.25, 0.25, 0.25)
-@export_color_no_alpha var CarbonAsteroidSaturation : Color = Color(0.25, 0.25, 0.25)
-@export_color_no_alpha var CarbonAsteroidHueDiff : Color    = Color(0.40, 0.40, 0.40)
-
-@export_group("Icey")
-@export_color_no_alpha var IceyAsteroidColor : Color        = Color(0.4464, 0.5285, 0.72)
-@export_color_no_alpha var IceyAsteroidSaturation : Color   = Color(0.25, 0.25, 0.25)
-@export_color_no_alpha var IceyAsteroidHueDiff : Color      = Color(0.40, 0.40, 0.40)
-
-@export_group("Organic")
-@export_color_no_alpha var OrganicAsteroidColor : Color     = Color(0.1935, 0.43, 0.1935)
-@export_color_no_alpha var OrganicAsteroidSaturation : Color = Color(0.25, 0.25, 0.25)
-@export_color_no_alpha var OrganicAsteroidHueDiff : Color   = Color(0.40, 0.40, 0.40)
-
-@export_group("Uranium")
-@export_color_no_alpha var UraniumAsteroidColor : Color       = Color(0.1961, 0.4431, 1.0)
-@export_color_no_alpha var UraniumAsteroidSaturation : Color  = Color(0.000000, 0.784000, 0.980000)
-@export_color_no_alpha var UraniumAsteroidHueDiff : Color     = Color(0.408329, 0.408329, 0.408329)
-
-@export_group("Stony")
-@export_color_no_alpha var StonyAsteroidColor : Color       = Color(0.3216, 0.1608, 0.1608)
-@export_color_no_alpha var StonyAsteroidSaturation : Color   = Color(0.25, 0.25, 0.25)
-@export_color_no_alpha var StonyAsteroidHueDiff : Color     = Color(0.40, 0.40, 0.40)
-
-@export_group("Magnesium")
-@export_color_no_alpha var MagnesiumAsteroidColor : Color   = Color(0.1, 0.1, 0.1)
-@export_color_no_alpha var MagnesiumAsteroidSaturation : Color = Color(0.25, 0.25, 0.25)
-@export_color_no_alpha var MagnesiumAsteroidHueDiff : Color = Color(0.40, 0.40, 0.40)
-
-@export_group("Iron")
-@export_color_no_alpha var IronAsteroidColor : Color        = Color(0.0575, 0.173, 0.25)
-@export_color_no_alpha var IronAsteroidSaturation : Color   = Color(0.25, 0.25, 0.25)
-@export_color_no_alpha var IronAsteroidHueDiff : Color     = Color(0.40, 0.40, 0.40)
-
-
 # One dimensional palette_float function from
 # https://iquilezles.org/articles/palettes/
 func palette_float(a: float, b: float, c: float, d: float, t: float) -> float:

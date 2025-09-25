@@ -43,17 +43,19 @@ func number_of_asteroids_to_spawn() -> int:
 
 func _ready() -> void:
   rng.randomize()
-  
+
   collection = MatterCollection.new()
   collection.register_on_change_callback(Events.emit_update_hud)
-  
+
 # Use this to quit the game. It'll work
 # reliably on all platforms.
 # See: https://docs.godotengine.org/en/stable/tutorials/inputs/handling_quit_requests.html
 func quit() -> void:
   get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
   get_tree().quit()
-  
 
+# Returns 0 or 1 50% of the time.
+func flip_coin() -> int:
+  return Global.rng.randi_range(0, 1)
 
 # EOF

@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dgo8gq5d22uf"]
 
 [ext_resource type="Shader" uid="uid://b2jdvm5frkqlx" path="res://Asteroid/asteroid.gdshader" id="1_gm5ib"]
-[ext_resource type="Script" uid="uid://ljcv3qc76g40" path="res://Asteroid/Asteroid.gd" id="1_p0ukn"]
+[ext_resource type="Script" uid="uid://b2samh810qdpg" path="res://Asteroid/Asteroid.gd" id="1_p0ukn"]
 [ext_resource type="Texture2D" uid="uid://bh0mbmredemri" path="res://128x128-transparent.png" id="3_gm5ib"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_p0ukn"]
@@ -39,4 +39,5 @@ texture = ExtResource("3_gm5ib")
 polygon = PackedVector2Array(16, 0, 5.19, 15.97, -11.39, 8.27, -13.188, -9.58, 4.8, -14.79)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+visible = false
 polygon = PackedVector2Array(16, 0, 5.19, 15.97, -11.39, 8.27, -13.188, -9.58, 4.8, -14.79)

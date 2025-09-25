@@ -83,4 +83,7 @@ func print_color(n : String, c : Color) -> void:
   var h : String = "#" + c.to_html(true)
   print_rich("   %3s  [b]%s[/b]  [bgcolor=%s]      [/bgcolor]  Color(%f, %f, %f)" % [n, h, h, c.r, c.g, c.b])
 
+func configure_shader(material : ShaderMaterial) -> void:
+  material.set_shader_parameter("colors", palette())  
+
 # EOF
