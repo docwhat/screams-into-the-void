@@ -1,13 +1,24 @@
-[gd_resource type="Resource" script_class="AsteroidKind" load_steps=2 format=3 uid="uid://dmlwsi6xenuex"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dmlwsi6xenuex"]
 
-[ext_resource type="Script" uid="uid://dy15xjwx353q5" path="res://Resources/AsteroidKind.gd" id="1_mcshx"]
+[sub_resource type="GDScript" id="GDScript_orgaak"]
+script/source = "extends AsteroidKind
+
+func _ready() -> void:
+    matter = {
+      Matter.Silicon: 10,
+      Matter.Carbon: 20,
+      Matter.Water: 20,
+      Matter.Nitrogen: 10,
+      Matter.Helium: 1,
+      Matter.Silicon: 10,
+    }
+"
 
 [resource]
-script = ExtResource("1_mcshx")
+script = SubResource("GDScript_orgaak")
 name = "Organic"
 notes = "Brown colored. Contains silicon, carbon, water, nitrogen, sulfur."
 probability = 0.1
-matter = Array[int]([0, 2, 1])
 color_base_color = Color(0.1935, 0.43, 0.1935, 1)
 color_saturation = Color(0.30692276, 0.30692267, 0.30692264, 1)
 color_hue_diff = Color(0.4, 0.4, 0.4, 1)

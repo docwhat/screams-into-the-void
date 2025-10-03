@@ -1,8 +1,8 @@
 extends Node
 
-var resolution := Vector2(
-    ProjectSettings.get_setting("display/window/size/viewport_width"),
-    ProjectSettings.get_setting("display/window/size/viewport_height")
+var resolution: Vector2 = Vector2(
+	ProjectSettings.get_setting("display/window/size/viewport_width"),
+	ProjectSettings.get_setting("display/window/size/viewport_height")
 )
 
 var rng : RandomNumberGenerator = RandomNumberGenerator.new()
@@ -10,9 +10,13 @@ var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 # Debugging flags
 @export_group("Debugging", "debug_")
 @export_subgroup("Asteroid", "debug_asteroid_")
-@export var debug_asteroid_size : bool = OS.is_debug_build() && false
-@export var debug_asteroid_kind : bool = OS.is_debug_build() && false
+@export var debug_asteroid_launch : bool = false
+@export var debug_asteroid_size : bool = false
+@export var debug_asteroid_kind : bool = false
 @export var debug_asteroid_colors : bool = false
+@export_subgroup("")
+
+@export var debug_reactive : bool = false
 @export_group("")
 
 
@@ -25,9 +29,6 @@ var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 var player_size : Vector2 = Vector2(64, 64)
 var player_position : Vector2
 
-# How much rocks do we have. (PlayerState)
-var collection : MatterCollection
-
 @export_group("Asteroids", "asteroid_")
 # Chance that an asteroid aims directly for the player. 1.0 == 100%
 @export_range(0.0, 1.0, 0.01) var asteroid_player_intercept_chance : float = 0.3
@@ -39,23 +40,20 @@ var collection : MatterCollection
 
 # The number of asteroids to spawn based on the spawn chances.
 func number_of_asteroids_to_spawn() -> int:
-  return rng.rand_weighted(asteroid_spawn_chances)
+	return rng.rand_weighted(asteroid_spawn_chances)
 
 func _ready() -> void:
-  rng.randomize()
-
-  collection = MatterCollection.new()
-  collection.register_on_change_callback(Events.emit_update_hud)
+	rng.randomize()
 
 # Use this to quit the game. It'll work
 # reliably on all platforms.
 # See: https://docs.godotengine.org/en/stable/tutorials/inputs/handling_quit_requests.html
 func quit() -> void:
-  get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
-  get_tree().quit()
+	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
+	get_tree().quit()
 
 # Returns 0 or 1 50% of the time.
 func flip_coin() -> int:
-  return Global.rng.randi_range(0, 1)
+	return Global.rng.randi_range(0, 1)
 
 # EOF

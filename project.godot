@@ -28,6 +28,11 @@ config/icon="res://icon.svg"
 Global="*res://Global.tscn"
 ColorSchemes="*res://ColorSchemes.gd"
 Events="*res://Events.gd"
+State="*res://State.gd"
+
+[debug]
+
+gdscript/warnings/inferred_declaration=2
 
 [display]
 

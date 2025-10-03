@@ -1,27 +1,26 @@
 class_name Absorber
 
 static func get_name() -> String:
-  return "The perfect processor"
+	return "The perfect processor"
 
 static func get_description() -> String:
-  return "Processes and absorbs 100% of all resources."
+	return "Processes and absorbs 100% of all resources."
 
 # A non-limiter. Override to behave differently.
-static func limit_one(_mat: MatterCollection.Matter, amt: int) -> int:
-  return amt
+static func limit_one(_mat: Matter, amt: int) -> int:
+	return amt
 
 # Absorb an asteroid with a given kind and size.
 func absorb_asteroid(asteroid: Asteroid) -> void:
-  var absorbed_matter : MatterCollection =  absorption_limiter(asteroid.matter_collection)
+	var absorbed_matter : MatterBag =  absorption_limiter(asteroid.matter_collection)
 
-  Global.collection.add_collection(absorbed_matter)
+	State.matter.add_bag(absorbed_matter)
 
 # Override this in sub-classes if overriding limit_one() isn't enough.
-func absorption_limiter(to_absorb: MatterCollection) -> MatterCollection:
-  var absorbed : MatterCollection = MatterCollection.new()
+func absorption_limiter(to_absorb: MatterBag) -> MatterBag:
+	var absorbed : MatterBag = MatterBag.new()
 
-  to_absorb.each(
-    func (mat: MatterCollection.Matter, amt: int): absorbed.set_amount(mat, limit_one(mat, amt))
-  )
+	for matter: Matter in to_absorb.matter():
+		absorbed.set_matter(limit_one(matter, to_absorb.get_matter(matter)))
 
-  return absorbed
+	return absorbed

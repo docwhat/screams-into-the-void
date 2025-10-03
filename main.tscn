@@ -43,44 +43,37 @@ position = Vector2(540, 656)
 [node name="HUD" type="CanvasLayer" parent="."]
 script = ExtResource("5_7mycd")
 
-[node name="Control" type="Control" parent="HUD"]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 301.0
-offset_bottom = 170.0
+[node name="Panel" type="PanelContainer" parent="HUD"]
+custom_minimum_size = Vector2(100, 100)
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 120.0
+offset_bottom = 120.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="NinePatchRect" type="NinePatchRect" parent="HUD/Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="NinePatchRect" type="NinePatchRect" parent="HUD/Panel"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
 texture = ExtResource("5_lquwl")
 patch_margin_left = 8
 patch_margin_top = 8
 patch_margin_right = 8
 patch_margin_bottom = 8
 
-[node name="MarginContainer" type="MarginContainer" parent="HUD/Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Control/MarginContainer"]
-unique_name_in_owner = true
+[node name="MarginContainer" type="MarginContainer" parent="HUD/Panel"]
 layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Panel/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 
 [node name="PauseScreen" type="CanvasLayer" parent="."]
 
