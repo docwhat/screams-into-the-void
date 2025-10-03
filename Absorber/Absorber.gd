@@ -20,7 +20,7 @@ func absorb_asteroid(asteroid: Asteroid) -> void:
 func absorption_limiter(to_absorb: MatterBag) -> MatterBag:
 	var absorbed : MatterBag = MatterBag.new()
 
-	for matter: Matter in to_absorb.matter():
-		absorbed.set_matter(limit_one(matter, to_absorb.get_matter(matter)))
+	for matter: Matter in to_absorb.keys():
+		absorbed.set_matter(matter, limit_one(matter, to_absorb.get_matter(matter)))
 
 	return absorbed

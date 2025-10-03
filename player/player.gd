@@ -12,10 +12,10 @@ func _ready() -> void:
 	Events.asteroid_hit.connect(asteroid_hit)
 
 # Used when an asteroid hits the player.
-	func asteroid_hit(asteroid: Asteroid) -> void:
+func asteroid_hit(asteroid: Asteroid) -> void:
 	absorber.absorb_asteroid(asteroid)
 
-	func recenter_player():
+func recenter_player():
 	var screen_size = get_viewport_rect().size
 	var new_position = Vector2(
 		screen_size.x / 2.0,
@@ -25,9 +25,9 @@ func _ready() -> void:
 	position = new_position
 	Global.player_position = new_position
 
-	func _on_resized():
+func _on_resized():
 	recenter_player.call_deferred()
 
-	func _on_body_entered(body: Node2D) -> void:
+func _on_body_entered(body: Node2D) -> void:
 	if body.has_method("be_absorbed"):
 		body.be_absorbed()

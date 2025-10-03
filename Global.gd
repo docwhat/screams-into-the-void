@@ -14,9 +14,7 @@ var rng : RandomNumberGenerator = RandomNumberGenerator.new()
 @export var debug_asteroid_size : bool = false
 @export var debug_asteroid_kind : bool = false
 @export var debug_asteroid_colors : bool = false
-@export_subgroup("")
 
-@export var debug_reactive : bool = false
 @export_group("")
 
 

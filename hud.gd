@@ -1,6 +1,7 @@
 extends CanvasLayer
 
-var matter_boxes : Dictionary[Matter, BoxContainer]= {}
+var matter_boxes : Dictionary[Matter, HBoxContainer]= {}
+var update_tweens: Dictionary[Matter, Tween] = {}
 
 # FIXME: Need refactorization so I can understand it better.
 # From https://gist.github.com/t-karcher/053b7097e744bc3ba4e1d20441ab72a7
@@ -27,13 +28,14 @@ func fnum(num : int) -> String:
 	else:
 		return str(num)
 
-func get_box(mat : Matter) -> BoxContainer:
+func get_box(mat : Matter) -> HBoxContainer:
 	return matter_boxes[mat]
 
 func add_label(matter : Matter):
 	# first we need an HBoxContainer.
 	var hbox : HBoxContainer = HBoxContainer.new()
 	hbox.name = matter.name.capitalize()
+	hbox.visible = false
 
 	# Save for updating.
 	matter_boxes[matter] = hbox
@@ -41,7 +43,7 @@ func add_label(matter : Matter):
 	# then we need a left justified label for the name.
 	var label : Label = Label.new()
 	label.name = "name"
-	label.set_text(matter.name.capitalize())
+	label.text = matter.preferred_name
 	label.set_h_size_flags(label.SIZE_EXPAND_FILL)
 	hbox.add_child(label)
 
@@ -52,38 +54,52 @@ func add_label(matter : Matter):
 	value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	value_label.set_h_size_flags(label.SIZE_EXPAND_FILL)
 
-	# NARF: Hook up reactive_changed for each ReactiveInt and then trigger it.
-
 	hbox.add_child(value_label)
 
 	# Add the hbox last, to prevent jiggling.
 	%VBoxContainer.add_child(hbox)
 
 func _ready() -> void:
-	# Initialize Elements and Molecules.
+	$".".visible = false
+
 	for matter: Matter in Matter.ALL:
 		add_label(matter)
 
-	State.matter.reactive_changed.connect(update_hud)
+	State.matter.matter_changed.connect(update_hud)
 	update_hud()
+
 
 func update_hud(matter: Matter = null) -> void:
 	var to_update: Array[Matter]
-	
-	if matter == null:
-		to_update = State.matter.matter()
-	else:
-		to_update = [matter]
-	
-	for mat : Matter in to_update:
-		var amt : int = State.matter.get_int_by_key(mat)
-		var box : BoxContainer = get_box(mat)
-		var label : Label = box.get_node("value")
+	var any_visible: bool = false
 
-		print("NARF update_hud(): %s %s" % [ mat, amt])
+	if matter:
+		to_update = [matter]
+	else:
+		to_update = Matter.ALL.duplicate()
+
+	for mat : Matter in to_update:
+		var amt : int = State.matter.get_matter(mat)
+		var box : HBoxContainer = get_box(mat)
+		var value_label : Label = box.get_node("value")
+		var name_label : Label = box.get_node("name")
+
 
 		if amt > 0:
-			label.text = fnum(amt)
+			name_label.text = mat.preferred_name
+			value_label.text = fnum(amt)
 			box.visible = true
+			any_visible = true
+			
+			if update_tweens.get(mat):
+				update_tweens[mat].kill()
+				
+			update_tweens[mat] = get_tree().create_tween()
+			update_tweens[mat].tween_property(box, 'modulate', Color.YELLOW, 0.1)
+			update_tweens[mat].tween_property(box, 'modulate', Color.WHITE, 0.9)
+
 		else:
 			box.visible = false
+
+	if any_visible:
+		$".".visible = true

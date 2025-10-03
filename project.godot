@@ -28,11 +28,13 @@ config/icon="res://icon.svg"
 Global="*res://Global.tscn"
 ColorSchemes="*res://ColorSchemes.gd"
 Events="*res://Events.gd"
-State="*res://State.gd"
+State="*res://State.tscn"
 
 [debug]
 
+gdscript/warnings/shadowed_global_identifier=2
 gdscript/warnings/inferred_declaration=2
+gdscript/warnings/confusable_identifier=2
 
 [display]
 

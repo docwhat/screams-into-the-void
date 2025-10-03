@@ -35,22 +35,22 @@ func toggle_pause() -> void:
 
 
 func _on_asteroid_timer_timeout() -> void:
-	const scene = preload("res://Asteroid/Asteroid.tscn")
+	var scene = preload("res://Asteroid/Asteroid.tscn")
 	var screen_size : Vector2 = get_viewport_rect().size
 
 	# Check if an asteroid should spawn.
 	var count : int = Global.number_of_asteroids_to_spawn()
 
-	for i in range(count):
+	for i: int in range(count):
 		# Sleep if this asteroid isn't the only one being spawned in a row.
 		if i > 0:
-		await get_tree().create_timer(0.15).timeout
+			await get_tree().create_timer(0.15).timeout
 
 		var asteroid = scene.instantiate()
 		asteroid.launch(screen_size, $Player.global_position)
 
 		if asteroid.is_valid():
-		add_child(asteroid)
+			add_child(asteroid)
 
 
 # EOF

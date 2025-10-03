@@ -1,20 +1,9 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://ddb3j4h35rymf"]
 
-[sub_resource type="GDScript" id="GDScript_iceyak"]
-script/source = "extends AsteroidKind
-
-func _ready() -> void:
-    matter = {
-      Matter.Water: 70,
-      Matter.Copper: 2,
-      Matter.Helium: 2,
-      Matter.Nitrogen: 2,
-      Matter.Nickel: 2,
-    }
-"
+[ext_resource type="Script" uid="uid://dpr6japhsih8e" path="res://Resources/AsteroidKind/IceyAsteroidKind.gd" id="1_78gdr"]
 
 [resource]
-script = SubResource("GDScript_iceyak")
+script = ExtResource("1_78gdr")
 name = "Icey"
 notes = "Blue colored. Lots of water and bits of things like copper."
 probability = 2.0

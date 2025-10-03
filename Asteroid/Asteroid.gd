@@ -16,7 +16,7 @@ var dissolve_tween : Tween
 @export_range(0.0, 1.5, 0.1) var dissolve_beam_size : float = 0.1
 @export_group("")
 
-var matter_collection : Dictionary[Matter, int]
+var matter_collection: MatterBag
 
 # Deligation
 var radius : float:
@@ -44,7 +44,7 @@ func rebuild() -> void:
 	assert(radius > 0.0)
 	var m : float = 0.0
 	for mat : Matter in matter_collection.keys():
-		m += mat.mass * matter_collection[mat]
+		m += mat.mass * matter_collection.get_matter(mat)
 	m += 1.0001
 	assert(m > 1.0)
 	#set_inertia(1_000_000.0 * radius)
@@ -206,15 +206,16 @@ func calculate_asteroid_starting_position(screen_size : Vector2) -> Vector2:
 
 
 # Generate a random matter collection for this asteroid.
-func _random_matter() -> Dictionary[Matter, int]:
-	var collection : Dictionary[Matter, int] = {}
+func _random_matter() -> MatterBag:
+	var collection : MatterBag = MatterBag.new()
 	var max_amount : float = radius / 8.0
 
 	if Global.debug_asteroid_kind:
-		print_rich("[b]== %s (%f) ==[/b]" % [name, radius])
+		print_rich("[b]== %s (%f) ==[/b]" % [asteroid_kind.name, radius])
+
 	for m : Matter in matter:
 		var amount : int = floor(max_amount * Global.rng.randf())
-		collection[m] = amount
+		collection.set_matter(m, amount)
 		if Global.debug_asteroid_kind:
 			print_rich("   %10s: %-5d" % [m.name, amount])
 

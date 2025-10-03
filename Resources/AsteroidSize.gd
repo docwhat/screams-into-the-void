@@ -76,7 +76,7 @@ func generatePolygon() -> PackedVector2Array:
 	polygon.append(Vector2(shape_radius, 0))
 
 	# The algorithm is to just go around a circle at evenly spaced points at random radii.
-	for point in range(1, shape_number_of_points):
+	for point: int in range(1, shape_number_of_points):
 		# Randomize the radius.
 		var rad : float = Global.rng.randf_range(
 			shape_radius - Global.rng.randf_range(0.0, shape_max_radius_delta),

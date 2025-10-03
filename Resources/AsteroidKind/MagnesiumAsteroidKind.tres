@@ -1,16 +1,9 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://xlqvrv6idgxv"]
 
-[sub_resource type="GDScript" id="GDScript_magnak"]
-script/source = "extends AsteroidKind
-
-func _ready() -> void:
-    matter = {
-      Matter.Magnesium: 40,
-    }
-"
+[ext_resource type="Script" uid="uid://h1fuqd2q7u4n" path="res://Resources/AsteroidKind/MagnesiumAsteroidKind.gd" id="1_uveid"]
 
 [resource]
-script = SubResource("GDScript_magnak")
+script = ExtResource("1_uveid")
 name = "Magnesium"
 notes = "Red/Yellow colored. Contains magnesium."
 probability = 0.5

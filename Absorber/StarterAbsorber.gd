@@ -8,7 +8,7 @@ static func get_description() -> String:
 
 # Only absorbs 0 or 1, based on a coin flip.
 static func limit_one(_mat: Matter, _amt: int) -> int:
-  return 1
+  return 900
   #if amt <= 0:
 	#return 0
 #

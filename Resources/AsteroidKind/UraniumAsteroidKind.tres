@@ -1,16 +1,9 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://p5lcx7bq6ti2"]
 
-[sub_resource type="GDScript" id="GDScript_uranak"]
-script/source = "extends AsteroidKind
-
-func _ready() -> void:
-    matter = {
-      Matter.Uranium: 20,
-    }
-"
+[ext_resource type="Script" uid="uid://bhsfk68glabsl" path="res://Resources/AsteroidKind/UraniumAsteroidKind.gd" id="1_bwvgh"]
 
 [resource]
-script = SubResource("GDScript_uranak")
+script = ExtResource("1_bwvgh")
 name = "Uranium"
 notes = "Green colored. Contains Uranium."
 probability = 0.1

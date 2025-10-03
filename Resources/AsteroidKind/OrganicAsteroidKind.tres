@@ -1,21 +1,9 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://dmlwsi6xenuex"]
 
-[sub_resource type="GDScript" id="GDScript_orgaak"]
-script/source = "extends AsteroidKind
-
-func _ready() -> void:
-    matter = {
-      Matter.Silicon: 10,
-      Matter.Carbon: 20,
-      Matter.Water: 20,
-      Matter.Nitrogen: 10,
-      Matter.Helium: 1,
-      Matter.Silicon: 10,
-    }
-"
+[ext_resource type="Script" uid="uid://bekjdbg3eip6y" path="res://Resources/AsteroidKind/OrganicAsteroidKind.gd" id="1_mcshx"]
 
 [resource]
-script = SubResource("GDScript_orgaak")
+script = ExtResource("1_mcshx")
 name = "Organic"
 notes = "Brown colored. Contains silicon, carbon, water, nitrogen, sulfur."
 probability = 0.1

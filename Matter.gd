@@ -2,14 +2,18 @@
 class_name Matter extends Resource
 
 var name : String
-var abbr : String
+var symbol : String
 var mass : float
 
 static var ALL : Array[Matter]
 
-func _init(name_ : String, abbr_ : String, mass_ : float) -> void:
+var preferred_name: String:
+	get():
+		return symbol if State.use_symbols else name
+
+func _init(name_ : String, symbol_ : String, mass_ : float) -> void:
 	name = name_
-	abbr = abbr_
+	symbol = symbol_
 	mass = mass_
 	ALL.append(self)
 	ALL.sort_custom(func sort_by_mass(a: Matter, b: Matter) -> bool: return a.mass < b.mass)

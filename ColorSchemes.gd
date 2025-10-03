@@ -3,7 +3,7 @@ extends Node
 # One dimensional palette_float function from
 # https://iquilezles.org/articles/palettes/
 func palette_float(a: float, b: float, c: float, d: float, t: float) -> float:
-  return a + b * cos(2.0 * PI * (c * t + d))
+	return a + b * cos(2.0 * PI * (c * t + d))
 
 func phase_shift(a : Color, b : Color, c : Color, d : Color, t : float) -> Color:
 	return Color(
@@ -70,9 +70,9 @@ func generate_colorscheme(n_colors : int, hue_diff : float = 0.9, saturation : f
 		Global.rng.randf_range(0.0, 1.0)
 	) * Global.rng.randf_range(1.0, 3.0)
 
-	var cols : PackedColorArray = PackedColorArray()
-	var n : float = max(1.0, float(n_colors - 1.0))
-	for i in range(0, n_colors, 1):
+	var cols: PackedColorArray = PackedColorArray()
+	var n: float = max(1.0, float(n_colors - 1.0))
+	for i: int in range(0, n_colors, 1):
 		var t : float = float(i) / n
 		var color = Color(
 			palette_float(a.r, b.r, c.r, d.r, t),
@@ -97,19 +97,19 @@ func generate_colorscheme(n_colors : int, hue_diff : float = 0.9, saturation : f
 
 # Returns a set of related colors.
 func randomize_colors(count : int = 3) -> Array[Color]:
-  var seed_colors : PackedColorArray = generate_colorscheme(
-    3,
-    Global.rng.randf_range(0.3, 0.6),
-    0.5
-  )
-  var cols : Array[Color] = []
-  for i : int in count:
-    var new_col : Color = seed_colors[i].darkened(i/float(count))
-    new_col = new_col.lightened((1.0 - (i/float(count))) * 0.2)
+	var seed_colors : PackedColorArray = generate_colorscheme(
+		3,
+		Global.rng.randf_range(0.3, 0.6),
+		0.5
+	)
+	var cols : Array[Color] = []
+	for i : int in count:
+		var new_col : Color = seed_colors[i].darkened(i/float(count))
+		new_col = new_col.lightened((1.0 - (i/float(count))) * 0.2)
 
-    cols.append(new_col)
+		cols.append(new_col)
 
-  return cols
+	return cols
 
 # color0
 #   darkened(0/3 = 0)

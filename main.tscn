@@ -44,16 +44,14 @@ position = Vector2(540, 656)
 script = ExtResource("5_7mycd")
 
 [node name="Panel" type="PanelContainer" parent="HUD"]
-custom_minimum_size = Vector2(100, 100)
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 120.0
-offset_bottom = 120.0
+custom_minimum_size = Vector2(10, 10)
+offset_right = 156.0
+offset_bottom = 26.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
 [node name="NinePatchRect" type="NinePatchRect" parent="HUD/Panel"]
-custom_minimum_size = Vector2(100, 100)
+custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 texture = ExtResource("5_lquwl")
 patch_margin_left = 8
@@ -62,6 +60,7 @@ patch_margin_right = 8
 patch_margin_bottom = 8
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/Panel"]
+custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
@@ -70,7 +69,7 @@ theme_override_constants/margin_bottom = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD/Panel/MarginContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(10, 10)
+custom_minimum_size = Vector2(140, 10)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0

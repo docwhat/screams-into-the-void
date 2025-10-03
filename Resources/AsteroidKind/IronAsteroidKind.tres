@@ -1,17 +1,9 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://bqnx4s8pw3qie"]
 
-[sub_resource type="GDScript" id="GDScript_ironak"]
-script/source = "extends AsteroidKind
-
-func _ready() -> void:
-    matter = {
-      Matter.Iron: 50,
-      Matter.Nickel: 20,
-    }
-"
+[ext_resource type="Script" uid="uid://d1kfqr4j5unpn" path="res://Resources/AsteroidKind/IronAsteroidKind.gd" id="1_g508d"]
 
 [resource]
-script = SubResource("GDScript_ironak")
+script = ExtResource("1_g508d")
 name = "Iron"
 notes = "Gray colored. Contains iron & nickel."
 probability = 1.5

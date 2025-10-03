@@ -4,7 +4,7 @@ class_name AsteroidKind extends Resource
 @export_multiline var notes : String
 @export var probability : float = 1
 
-var matter : Dictionary[Matter,int]
+var matter : MatterBag
 
 @export_group("Colors", "color_")
 @export_color_no_alpha var color_base_color : Color
