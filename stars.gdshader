@@ -9,6 +9,8 @@ const float twinkle_speed = 0.2358404332;
 uniform float stars_ratio : hint_range(1.5, 30.0, 0.1) = 5;
 // Overall brighness of all stars.
 uniform float all_brightness : hint_range(0.1, 1.0, 0.01) = 1.0;
+// Synced time from the game.
+uniform float time = 0.0;
 
 // The percentage of each color in stars, randomly distributed.
 const vec3 starTint = vec3(0.4, 0.1, 0.9);
@@ -109,7 +111,7 @@ void fragment() {
   uv = uv / vec2(SCREEN_PIXEL_SIZE.x / SCREEN_PIXEL_SIZE.y, 1.0);
 
   // Keep the background moving.
-  uv.y -= TIME * speed;
+  uv.y -= time * speed;
 
   // Increase the number of UV repitions per fragment.
   uv *= stars_ratio;
