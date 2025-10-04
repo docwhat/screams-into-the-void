@@ -25,10 +25,10 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Global="*res://Global.tscn"
-ColorSchemes="*res://ColorSchemes.gd"
-Events="*res://Events.gd"
-State="*res://State.tscn"
+Global="*res://global.tscn"
+ColorSchemes="*res://color_schemes.gd"
+Events="*res://events.gd"
+State="*res://state.tscn"
 
 [debug]
 
