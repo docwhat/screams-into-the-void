@@ -75,18 +75,4 @@ depends = ["export-web", "export-macos", "export-windows", "export-linux"]
 description = "Clean all exported builds and other cruft"
 run = "rm -rf export"
 
-[tools."http:trunk"]
-version = "latest"
-url = "https://trunk.io/releases/trunk"
-
-[tasks.format]
-alias = "fmt"
-description = "Lint the code"
-run = "trunk fmt"
-
-[tasks.check]
-alias = "lint"
-description = "Lint and analyze the code"
-run = "trunk check"
-
 # EOF
