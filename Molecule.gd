@@ -1,1 +1,2 @@
-class_name Molecule extends Matter
+class_name Molecule
+extends Matter

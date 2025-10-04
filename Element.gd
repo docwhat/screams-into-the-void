@@ -1,1 +1,2 @@
-class_name Element extends Matter
+class_name Element
+extends Matter

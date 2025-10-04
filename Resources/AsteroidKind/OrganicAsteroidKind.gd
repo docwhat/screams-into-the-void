@@ -1,11 +1,13 @@
 extends AsteroidKind
 
 func _init() -> void:
-	matter = MatterBag.new({
-	  Matter.Silicon: 10,
-	  Matter.Carbon: 20,
-	  Matter.Water: 20,
-	  Matter.Nitrogen: 10,
-	  Matter.Helium: 1,
-	  Matter.Silicon: 10,
-	})
+	matter = MatterBag.new(
+		{
+			Matter.silicon: 10,
+			Matter.carbon: 20,
+			Matter.water: 20,
+			Matter.nitrogen: 10,
+			Matter.helium: 1,
+			Matter.silicon: 10,
+		},
+	)

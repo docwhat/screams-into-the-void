@@ -1,39 +1,50 @@
 extends CanvasLayer
 
-var matter_boxes : Dictionary[Matter, HBoxContainer]= {}
-var update_tweens: Dictionary[Matter, Tween] = {}
+var matter_boxes: Dictionary[Matter, HBoxContainer] = { }
+var update_tweens: Dictionary[Matter, Tween] = { }
+
 
 # FIXME: Need refactorization so I can understand it better.
 # From https://gist.github.com/t-karcher/053b7097e744bc3ba4e1d20441ab72a7
-func get_scientific_notation(number: float, precision: int = 99, use_engineering_notation: bool = false) -> String:
+func get_scientific_notation(
+		number: float,
+		precision: int = 99,
+		use_engineering_notation: bool = false,
+) -> String:
 	var sign_ = sign(number)
 	number = abs(number)
 	if number < 1:
 		var exp_ = step_decimals(number)
-		if use_engineering_notation: exp_ = snapped(exp_ + 1, 3)
+		if use_engineering_notation:
+			exp_ = snapped(exp_ + 1, 3)
 		var coeff = sign_ * number * pow(10, exp_)
 		return str(snapped(coeff, pow(10, -precision))) + "e" + str(-exp_)
-	elif number >= 10:
+
+	if number >= 10:
 		var exp_ = str(number).split(".")[0].length() - 1
-		if use_engineering_notation: exp_ = snapped(exp_ - 1, 3)
+		if use_engineering_notation:
+			exp_ = snapped(exp_ - 1, 3)
 		var coeff = sign_ * number / pow(10, exp_)
 		return str(snapped(coeff, pow(10, -precision))) + "e" + str(exp_)
-	else:
-		return str(snapped(sign_ * number, pow(10, -precision))) + "e0"
+
+	return str(snapped(sign_ * number, pow(10, -precision))) + "e0"
+
 
 # Format numbers
-func fnum(num : int) -> String:
+func fnum(num: int) -> String:
 	if num >= 10000:
 		return get_scientific_notation(num, 2, false) # TODO: scientific, eng, etc.
-	else:
-		return str(num)
 
-func get_box(mat : Matter) -> HBoxContainer:
+	return str(num)
+
+
+func get_box(mat: Matter) -> HBoxContainer:
 	return matter_boxes[mat]
 
-func add_label(matter : Matter):
+
+func add_label(matter: Matter):
 	# first we need an HBoxContainer.
-	var hbox : HBoxContainer = HBoxContainer.new()
+	var hbox: HBoxContainer = HBoxContainer.new()
 	hbox.name = matter.name.capitalize()
 	hbox.visible = false
 
@@ -41,14 +52,14 @@ func add_label(matter : Matter):
 	matter_boxes[matter] = hbox
 
 	# then we need a left justified label for the name.
-	var label : Label = Label.new()
+	var label: Label = Label.new()
 	label.name = "name"
-	label.text = matter.preferred_name
+	label.text = matter.preferred_name.capitalize()
 	label.set_h_size_flags(label.SIZE_EXPAND_FILL)
 	hbox.add_child(label)
 
 	# then we need a right justified label for the value.
-	var value_label : Label = Label.new()
+	var value_label: Label = Label.new()
 	value_label.name = "value"
 	value_label.text = "0"
 	value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -59,10 +70,11 @@ func add_label(matter : Matter):
 	# Add the hbox last, to prevent jiggling.
 	%VBoxContainer.add_child(hbox)
 
+
 func _ready() -> void:
 	$".".visible = false
 
-	for matter: Matter in Matter.ALL:
+	for matter: Matter in Matter.all_matter:
 		add_label(matter)
 
 	State.matter.matter_changed.connect(update_hud)
@@ -76,24 +88,23 @@ func update_hud(matter: Matter = null) -> void:
 	if matter:
 		to_update = [matter]
 	else:
-		to_update = Matter.ALL.duplicate()
+		to_update = Matter.all_matter.duplicate()
 
-	for mat : Matter in to_update:
-		var amt : int = State.matter.get_matter(mat)
-		var box : HBoxContainer = get_box(mat)
-		var value_label : Label = box.get_node("value")
-		var name_label : Label = box.get_node("name")
-
+	for mat: Matter in to_update:
+		var amt: int = State.matter.get_matter(mat)
+		var box: HBoxContainer = get_box(mat)
+		var value_label: Label = box.get_node("value")
+		var name_label: Label = box.get_node("name")
 
 		if amt > 0:
-			name_label.text = mat.preferred_name
+			name_label.text = mat.preferred_name.capitalize()
 			value_label.text = fnum(amt)
 			box.visible = true
 			any_visible = true
-			
+
 			if update_tweens.get(mat):
 				update_tweens[mat].kill()
-				
+
 			update_tweens[mat] = get_tree().create_tween()
 			update_tweens[mat].tween_property(box, 'modulate', Color.YELLOW, 0.1)
 			update_tweens[mat].tween_property(box, 'modulate', Color.WHITE, 0.9)
