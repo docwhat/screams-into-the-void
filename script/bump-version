@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+die() {
+	printf "%s" -- "$*" >&2
+	exit 1
+}
+
+ver="$(git describe --tags --abbrev=0)" || die "Failed to get latest tag"
+
+if git diff --quiet "$ver"..HEAD; then
+	echo "No new commits since last tag ($ver), skipping version bump"
+	exit 0
+fi
+
+new_ver="$(semver bump patch "$ver")" || die "Failed to bump version"
+
+git tag "$new_ver"
+
+# EOF

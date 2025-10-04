@@ -76,6 +76,9 @@ run = "godot --path . --headless --debug --script addons/gut/gut_cmdln.gd -gexit
 [tasks.pre-commit]
 run = "hk run pre-commit"
 
+[tasks.post-push]
+run = "script/bump-version"
+
 [tools]
 hk = "1.16.0"
 pkl = "0.29.1"
