@@ -1,6 +1,12 @@
 [tools]
+semver = "3.4.0"
+hk = "1.16.0"
+pkl = "0.29.1"
 
 [env]
+
+[tasks.pre-commit]
+run = "hk run pre-commit"
 
 [tasks.game]
 description = "Run the game"
