@@ -6,12 +6,18 @@ env {
     ["HK_MISE"] = "1"
 }
 exclude = List(
-    "addons/**"
+    "addons/**",
+    "Planets/**"
 )
 
 local linters = new Mapping<String, Step> {
     ["markdown"] = Builtins.markdown_lint
     ["pickle"] = Builtins.pkl
+    ["gdscript-formatter"] {
+        glob = List("**/*.gd")
+        check = "gdscript-formatter lint {{files}}"
+        fix = "gdscript-formatter --safe {{files}}"
+    }
 }
 
 hooks {

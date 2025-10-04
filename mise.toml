@@ -1,41 +1,28 @@
-[tools]
-semver = "3.4.0"
-hk = "1.16.0"
-pkl = "0.29.1"
-
 [env]
 
-[tasks.pre-commit]
-run = "hk run pre-commit"
-
-[tasks.game]
-description = "Run the game"
-run = "godot --path . --print-fps"
-
-[tasks.godot]
-description = "Run the Godot editor"
-run = "(godot --path . --editor >& /dev/null &)"
-
-[tasks.gut]
-alias = "test"
-description = "Run the GUT tests"
-run = "godot --path . --headless --debug --script addons/gut/gut_cmdln.gd -gexit"
-
-[tasks.export-web]
-description = "Export the web version to export/web/"
-run = """
-#!/usr/bin/env bash
-set -ex
-
-rm -rf export/web
-mkdir -p export
-mkdir export/web
-godot --headless --export-release "Web" export/web/index.html
-"""
+[tasks.clean]
+description = "Clean all exported builds and other cruft"
+run = "rm -rf export"
 
 [tasks.deploy-web]
 description = "Deploy the web version to void.docwhat.org"
 run = "rsync -av --delete-after --progress export/web/ gerf:/srv/website/srv/void/"
+
+[tasks.export-all]
+depends = ["export-web", "export-macos", "export-windows", "export-linux"]
+description = "Export all platforms to export/"
+
+[tasks.export-linux]
+description = "Export the Linux version to export/linux/"
+run = """
+#!/usr/bin/env bash
+set -ex
+
+rm -rf export/linux
+mkdir -p export
+mkdir export/linux
+godot --headless --export-release "Linux" export/linux/void
+"""
 
 [tasks.export-macos]
 description = "Export the macOS version to export/macos/"
@@ -47,6 +34,18 @@ rm -rf export/macos
 mkdir -p export
 mkdir export/macos
 godot --headless --export-release "macOS" export/macos/void.app
+"""
+
+[tasks.export-web]
+description = "Export the web version to export/web/"
+run = """
+#!/usr/bin/env bash
+set -ex
+
+rm -rf export/web
+mkdir -p export
+mkdir export/web
+godot --headless --export-release "Web" export/web/index.html
 """
 
 [tasks.export-windows]
@@ -61,24 +60,34 @@ mkdir export/windows
 godot --headless --export-release "Windows Desktop" export/windows/void.exe
 """
 
-[tasks.export-linux]
-description = "Export the Linux version to export/linux/"
-run = """
-#!/usr/bin/env bash
-set -ex
+[tasks.game]
+description = "Run the game"
+run = "godot --path . --print-fps"
 
-rm -rf export/linux
-mkdir -p export
-mkdir export/linux
-godot --headless --export-release "Linux" export/linux/void
-"""
+[tasks.godot]
+description = "Run the Godot editor"
+run = "(godot --path . --editor >& /dev/null &)"
 
-[tasks.export-all]
-description = "Export all platforms to export/"
-depends = ["export-web", "export-macos", "export-windows", "export-linux"]
+[tasks.gut]
+alias = "test"
+description = "Run the GUT tests"
+run = "godot --path . --headless --debug --script addons/gut/gut_cmdln.gd -gexit"
 
-[tasks.clean]
-description = "Clean all exported builds and other cruft"
-run = "rm -rf export"
+[tasks.pre-commit]
+run = "hk run pre-commit"
 
-# EOF
+[tools]
+hk = "1.16.0"
+pkl = "0.29.1"
+semver = "3.4.0"
+
+[tools."ubi:GDQuest/GDScript-formatter"]
+version = "0.12.0"
+matching_regex = "gdscript-formatter-macos-aarch64\\.zip"
+exe = "gdscript-formatter-macos-aarch64"
+rename_exe = "gdscript-formatter"
+
+# This doesn't work. See https://github.com/jdx/mise/discussions/6532
+# [tools."github:GDQuest/GDScript-formatter"]
+# bin = "gdscript-formatter"
+# version = "0.12.0"
