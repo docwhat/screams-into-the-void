@@ -36,14 +36,14 @@ extends Resource
 
 # This can be rebuilt by dragging from the FileSystem panel.
 const RES_PATHS: Array[String] = [
-	"res://Resources/AsteroidSize/BigAsteroidSize.tres",
-	"res://Resources/AsteroidSize/GargantuanAsteroidSize.tres",
-	"res://Resources/AsteroidSize/HugeAsteroidSize.tres",
-	"res://Resources/AsteroidSize/LargeAsteroidSize.tres",
-	"res://Resources/AsteroidSize/MediumAsteroidSize.tres",
-	"res://Resources/AsteroidSize/SmallAsteroidSize.tres",
-	"res://Resources/AsteroidSize/SpikySmallAsteroidSize.tres",
-	"res://Resources/AsteroidSize/TinyAsteroidSize.tres",
+	"res://Asteroid/AsteroidSize/big_asteroid_size.tres",
+	"res://Asteroid/AsteroidSize/gargantuan_asteroid_size.tres",
+	"res://Asteroid/AsteroidSize/huge_asteroid_size.tres",
+	"res://Asteroid/AsteroidSize/large_asteroid_size.tres",
+	"res://Asteroid/AsteroidSize/medium_asteroid_size.tres",
+	"res://Asteroid/AsteroidSize/small_asteroid_size.tres",
+	"res://Asteroid/AsteroidSize/spiky_small_asteroid_size.tres",
+	"res://Asteroid/AsteroidSize/tiny_asteroid_size.tres",
 ]
 static var sizes: Array[AsteroidSize]
 

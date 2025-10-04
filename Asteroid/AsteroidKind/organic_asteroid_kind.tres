@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://dmlwsi6xenuex"]
 
-[ext_resource type="Script" uid="uid://bekjdbg3eip6y" path="res://Resources/AsteroidKind/OrganicAsteroidKind.gd" id="1_mcshx"]
+[ext_resource type="Script" uid="uid://bekjdbg3eip6y" path="res://Asteroid/AsteroidKind/organic_asteroid_kind.gd" id="1_mcshx"]
 
 [resource]
 script = ExtResource("1_mcshx")

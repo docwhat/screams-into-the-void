@@ -14,13 +14,13 @@ var matter: MatterBag
 
 # This can be rebuilt by dragging from the FileSystem panel.
 const RES_PATHS: Array[String] = [
-	"res://Resources/AsteroidKind/CarbonAsteroidKind.tres",
-	"res://Resources/AsteroidKind/IceyAsteroidKind.tres",
-	"res://Resources/AsteroidKind/IronAsteroidKind.tres",
-	"res://Resources/AsteroidKind/MagnesiumAsteroidKind.tres",
-	"res://Resources/AsteroidKind/OrganicAsteroidKind.tres",
-	"res://Resources/AsteroidKind/StonyAsteroidKind.tres",
-	"res://Resources/AsteroidKind/UraniumAsteroidKind.tres",
+	"res://Asteroid/AsteroidKind/carbon_asteroid_kind.tres",
+	"res://Asteroid/AsteroidKind/icey_asteroid_kind.tres",
+	"res://Asteroid/AsteroidKind/iron_asteroid_kind.tres",
+	"res://Asteroid/AsteroidKind/magnesium_asteroid_kind.tres",
+	"res://Asteroid/AsteroidKind/organic_asteroid_kind.tres",
+	"res://Asteroid/AsteroidKind/stony_asteroid_kind.tres",
+	"res://Asteroid/AsteroidKind/uranium_asteroid_kind.tres",
 ]
 static var kinds: Array[AsteroidKind]
 

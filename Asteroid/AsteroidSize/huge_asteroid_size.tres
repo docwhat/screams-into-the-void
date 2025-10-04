@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="AsteroidSize" load_steps=2 format=3 uid="uid://bmyvvo50mhgyq"]
 
-[ext_resource type="Script" uid="uid://cgft0s3gn2qny" path="res://Resources/AsteroidSize.gd" id="1_bqf48"]
+[ext_resource type="Script" uid="uid://cgft0s3gn2qny" path="res://Asteroid/asteroid_size.gd" id="1_bqf48"]
 
 [resource]
 script = ExtResource("1_bqf48")

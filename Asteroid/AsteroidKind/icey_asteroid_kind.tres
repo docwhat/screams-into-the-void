@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://ddb3j4h35rymf"]
 
-[ext_resource type="Script" uid="uid://dpr6japhsih8e" path="res://Resources/AsteroidKind/IceyAsteroidKind.gd" id="1_78gdr"]
+[ext_resource type="Script" uid="uid://dpr6japhsih8e" path="res://Asteroid/AsteroidKind/icey_asteroid_kind.gd" id="1_78gdr"]
 
 [resource]
 script = ExtResource("1_78gdr")

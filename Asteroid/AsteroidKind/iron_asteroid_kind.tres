@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://bqnx4s8pw3qie"]
 
-[ext_resource type="Script" uid="uid://d1kfqr4j5unpn" path="res://Resources/AsteroidKind/IronAsteroidKind.gd" id="1_g508d"]
+[ext_resource type="Script" uid="uid://d1kfqr4j5unpn" path="res://Asteroid/AsteroidKind/iron_asteroid_kind.gd" id="1_g508d"]
 
 [resource]
 script = ExtResource("1_g508d")
