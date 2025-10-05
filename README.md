@@ -10,7 +10,8 @@ not Open Source._
 Prerequisites:
 
 - Install [mise-en-place](https://mise.jdx.dev) (pronounced _MEEZ ahn plahs_).
-- Install [Godot 4.4+](https://godotengine.org).
+- Run `mise install` to get all the required tools.
+- Install [Godot](https://godotengine.org) (currently, 4.5 minimum).
 
 Once you have `mise` installed, you can ask it for the list of tasks it has:
 
@@ -18,18 +19,19 @@ Once you have `mise` installed, you can ask it for the list of tasks it has:
 # This is what it looked like when I wrote this.
 ❯ mise tasks
 Name            Description
-check           Lint and analyze the code
 clean           Clean all exported builds and other cruft
-deploy-web      Deploy the web version to docwhat.org/
+deploy-web      Deploy the web version to void.docwhat.org
 export-all      Export all platforms to export/
 export-linux    Export the Linux version to export/linux/
 export-macos    Export the macOS version to export/macos/
 export-web      Export the web version to export/web/
 export-windows  Export the Windows version to export/windows/
-format          Lint the code
 game            Run the game
 godot           Run the Godot editor
-gut             Run the GUT tests
+post-push
+pre-commit
+report          Show the latest report
+test            Run the tests
 ```
 
 ## Copyright & License
