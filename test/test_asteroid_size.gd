@@ -30,9 +30,14 @@ func test_all_have_required_values():
 		assert_int(size.shape_number_of_points).is_greater_equal(3)
 
 
+func test_generate_polygon_returns_packed_vector_2_array():
+	var result = asteroid_size.generate_polygon()
+	assert_object(result).is_instanceof(PackedVector2Array)
+
+
 func test_generate_polygon_returns_valid_number_of_points():
-	var poly: PackedVector2Array = asteroid_size.generate_polygon()
-	assert_int(poly.size()).is_equal(4)
+	var got: int = asteroid_size.generate_polygon().size()
+	assert_int(got).is_equal(4)
 
 
 func test_generate_polygon_first_point_at_radius():
@@ -43,8 +48,12 @@ func test_generate_polygon_first_point_at_radius():
 
 func test_generate_polygon_points_within_radius_bounds():
 	var result: PackedVector2Array = asteroid_size.generate_polygon()
-	var min_expected_radius: float = asteroid_size.shape_radius - asteroid_size.shape_max_radius_delta
-	var max_expected_radius: float = asteroid_size.shape_radius + asteroid_size.shape_max_radius_delta
+	var min_expected_radius: float = (
+		asteroid_size.shape_radius - asteroid_size.shape_max_radius_delta
+	)
+	var max_expected_radius: float = (
+		asteroid_size.shape_radius + asteroid_size.shape_max_radius_delta
+	)
 
 	for point: Vector2 in result:
 		assert_float(point.length()).is_between(min_expected_radius, max_expected_radius)
