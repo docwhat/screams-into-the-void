@@ -30,14 +30,10 @@ func test_all_have_required_values():
 		assert_int(size.shape_number_of_points).is_greater_equal(3)
 
 
-func test_generate_polygon_returns_packed_vector_2_array():
-	var result = asteroid_size.generate_polygon()
-	assert_object(result).is_instanceof(PackedVector2Array)
-
-
 func test_generate_polygon_returns_valid_number_of_points():
-	var got: int = asteroid_size.generate_polygon().size()
-	assert_int(got).is_equal(4)
+	var poly: PackedVector2Array = asteroid_size.generate_polygon()
+
+	assert_int(poly.size()).is_equal(4)
 
 
 func test_generate_polygon_first_point_at_radius():
