@@ -1,0 +1,17 @@
+name: GDScript Lint
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  format-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up mise
+        uses: jdx/mise-action@v2
+      - name: Run lint (check)
+        run: hk lint
