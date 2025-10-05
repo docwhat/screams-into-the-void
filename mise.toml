@@ -68,10 +68,45 @@ run = "godot --path . --print-fps"
 description = "Run the Godot editor"
 run = "(godot --path . --editor >& /dev/null &)"
 
-[tasks.gut]
-alias = "test"
-description = "Run the GUT tests"
-run = "godot --path . --headless --debug --script addons/gut/gut_cmdln.gd -gexit"
+[tasks.test]
+description = "Run the tests"
+run = """
+#!/usr/bin/env bash
+
+godot --path . \
+--no-header \
+--debug \
+--script res://addons/gdUnit4/bin/GdUnitCmdTool.gd \
+--ignoreHeadlessMode \
+--add test
+exit_code=$?
+echo "Test run ends with exit code $exit_code"
+
+# Run the copy log command
+godot --path . \
+--no-header \
+--headless \
+--quiet \
+--script res://addons/gdUnit4/bin/GdUnitCopyLog.gd \
+--add test > /dev/null
+
+exit $exit_code
+"""
+
+[tasks.report]
+description = "Show the latest report"
+run = """
+#!/usr/bin/env bash
+
+n=$(printf "%s\n" -- reports/report_* | sed 's!.*_!!' | sort -n | tail -n1)
+
+if [[ -f "reports/report_$n/index.html" ]]; then
+  xdg-open "reports/report_$n/index.html" || open "reports/report_$n/index.html"
+else
+  echo "No report found"
+  exit 1
+fi
+"""
 
 [tasks.pre-commit]
 run = "hk run pre-commit"
