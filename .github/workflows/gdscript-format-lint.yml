@@ -13,5 +13,5 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up mise
         uses: jdx/mise-action@v2
-      - name: Run lint (check)
-        run: hk lint
+      - name: Run check
+        run: hk check
