@@ -4,8 +4,8 @@ var matter_boxes: Dictionary[Matter, HBoxContainer] = { }
 var update_tweens: Dictionary[Matter, Tween] = { }
 
 
-# FIXME: Need refactorization so I can understand it better.
-# From https://gist.github.com/t-karcher/053b7097e744bc3ba4e1d20441ab72a7
+## FIXME: Need refactorization so I can understand it better.
+## From https://gist.github.com/t-karcher/053b7097e744bc3ba4e1d20441ab72a7
 func get_scientific_notation(
 		number: float,
 		precision: int = 99,
@@ -30,7 +30,7 @@ func get_scientific_notation(
 	return str(snapped(sign_ * number, pow(10, -precision))) + "e0"
 
 
-# Format numbers
+## Format numbers
 func fnum(num: int) -> String:
 	if num >= 10000:
 		return get_scientific_notation(num, 2, false) # TODO: scientific, eng, etc.

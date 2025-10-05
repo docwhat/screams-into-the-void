@@ -1,7 +1,7 @@
 extends Node
 
-# One dimensional palette_float function from
-# https://iquilezles.org/articles/palettes/
+## One dimensional palette_float function from
+## https://iquilezles.org/articles/palettes/
 func palette_float(a: float, b: float, c: float, d: float, t: float) -> float:
 	return a + b * cos(2.0 * PI * (c * t + d))
 
@@ -56,7 +56,7 @@ func threecolor() -> PackedColorArray:
 	# v@Cd = min(a, b) / pow(max(a, b), 0.25)
 
 
-# Using ideas from https://www.iquilezles.org/www/articles/palettes/palettes.htm
+## Using ideas from https://www.iquilezles.org/www/articles/palettes/palettes.htm
 func generate_colorscheme(
 		n_colors: int,
 		hue_diff: float = 0.9,
@@ -107,7 +107,7 @@ func generate_colorscheme(
 	return cols
 
 
-# Returns a set of related colors.
+## Returns a set of related colors.
 func randomize_colors(count: int = 3) -> Array[Color]:
 	var seed_colors: PackedColorArray = generate_colorscheme(
 		3,

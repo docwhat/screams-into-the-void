@@ -25,13 +25,13 @@ const RES_PATHS: Array[String] = [
 static var kinds: Array[AsteroidKind]
 
 
-# Load up the kinds array.
 static func _static_init() -> void:
+	# Load up the kinds array.
 	for path: String in RES_PATHS:
 		kinds.append(load(path))
 
 
-# Retrieve a random asteroid size.
+## Retrieve a random asteroid kind.
 static func random_kind() -> AsteroidKind:
 	if kinds.size() == 0:
 		return null

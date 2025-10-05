@@ -8,6 +8,7 @@ var mass: float
 
 static var all_matter: Array[Matter]
 
+## The name, as set in user preferences.
 var preferred_name: String:
 	get():
 		return symbol if State.use_symbols else name

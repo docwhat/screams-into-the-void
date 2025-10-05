@@ -2,7 +2,8 @@ class_name Asteroid
 extends RigidBody2D
 
 static var count: int = 0
-# Has this asteroid been made visible?
+
+## Has this asteroid been made visible?
 var debuted: bool = false
 
 @export var asteroid_size: AsteroidSize
@@ -41,7 +42,7 @@ func _ready() -> void:
 	count += 1
 
 
-# Sets up the shape, size, color, etc.
+## Sets up the shape, size, color, etc.
 func rebuild() -> void:
 	# Save these off, in case we need them.
 	last_asteroid_kind = asteroid_kind
@@ -86,6 +87,7 @@ func rebuild() -> void:
 	asteroid_kind.configure_shader($Polygon2D.material)
 
 
+## Fling an asteroid at someone.
 func launch(screen_size: Vector2, player_coord: Vector2) -> Node:
 	var target_coord: Vector2
 	var direction: float
@@ -141,6 +143,7 @@ func is_valid() -> bool:
 	return asteroid_size && asteroid_kind
 
 
+## Contract method for Absorbers.
 func be_absorbed() -> void:
 	Events.emit_asteroid_hit(self)
 	$CollisionPolygon2D.set_disabled.call_deferred(true)
@@ -149,6 +152,7 @@ func be_absorbed() -> void:
 	count -= 1
 
 
+## Animate the dissolution of the asteroid.
 func trigger_dissolve() -> void:
 	if dissolve_tween:
 		return
@@ -170,6 +174,7 @@ func trigger_dissolve() -> void:
 	dissolve_tween.tween_callback(func(): queue_free())
 
 
+## Buh-bye.
 func die() -> void:
 	count -= 1
 	queue_free()
@@ -183,7 +188,7 @@ func _physics_process(_delta: float) -> void:
 		die()
 
 
-# check if the position is within the viewport
+## check if the position is within the viewport
 func is_on_screen() -> bool:
 	var screen: Vector2 = get_viewport().size
 	var pos: Vector2 = position # position
@@ -203,8 +208,8 @@ enum Side {
 }
 
 
-# Asteroids start off screen. We need to ensure they spawn far enough off screen
-# that they can't be seen.
+## Asteroids start off screen. We need to ensure they spawn far enough off screen
+## that they can't be seen.
 func calculate_asteroid_starting_position(screen_size: Vector2) -> Vector2:
 	# Distance from edge of screen to the asteroid off screen.
 	var spawn_margin: int = 100
@@ -237,7 +242,7 @@ func calculate_asteroid_starting_position(screen_size: Vector2) -> Vector2:
 			)
 
 
-# Generate a random matter collection for this asteroid.
+## Generate a random matter collection for this asteroid.
 func _random_matter() -> MatterBag:
 	var collection: MatterBag = MatterBag.new()
 	var max_amount: float = radius / 8.0

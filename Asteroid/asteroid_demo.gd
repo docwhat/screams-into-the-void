@@ -1,6 +1,6 @@
 extends Node2D
 
-# Returns a randomly modulated number that is possible negative.
+## Returns a randomly modulated number that is possible negative.
 func rand_torque(t: float) -> float:
 	var variation: float = t * 0.20
 	var base: float = t - variation
