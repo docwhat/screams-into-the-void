@@ -1,5 +1,10 @@
+@tool
 class_name AsteroidKind
 extends Resource
+
+## What kind of Asteroid is it?
+##
+## This represents the composition of the Asteroid.
 
 @export var name: String
 @export_multiline var notes: String
@@ -12,23 +17,30 @@ var matter: MatterBag
 @export_color_no_alpha var color_saturation: Color
 @export_color_no_alpha var color_hue_diff: Color
 
-# This can be rebuilt by dragging from the FileSystem panel.
-const RES_PATHS: Array[String] = [
-	"res://Asteroid/AsteroidKind/carbon_asteroid_kind.tres",
-	"res://Asteroid/AsteroidKind/icey_asteroid_kind.tres",
-	"res://Asteroid/AsteroidKind/iron_asteroid_kind.tres",
-	"res://Asteroid/AsteroidKind/magnesium_asteroid_kind.tres",
-	"res://Asteroid/AsteroidKind/organic_asteroid_kind.tres",
-	"res://Asteroid/AsteroidKind/stony_asteroid_kind.tres",
-	"res://Asteroid/AsteroidKind/uranium_asteroid_kind.tres",
-]
 static var kinds: Array[AsteroidKind]
 
 
+static func load_resources(dir_path: String) -> Array[AsteroidKind]:
+	dir_path = dir_path.trim_suffix("/")
+	var dir: DirAccess = DirAccess.open(dir_path)
+	var resources: Array[AsteroidKind] = []
+
+	if dir:
+		dir.list_dir_begin()
+
+	var file_name: String = dir.get_next()
+	while file_name != "":
+		if file_name.ends_with(".tres"):
+			var file_path: String = "%s/%s" % [dir_path, file_name]
+			var res: AsteroidKind = load(file_path)
+			resources.append(res)
+
+		file_name = dir.get_next()
+	return resources
+
+
 static func _static_init() -> void:
-	# Load up the kinds array.
-	for path: String in RES_PATHS:
-		kinds.append(load(path))
+	kinds = load_resources("res://Asteroid/AsteroidKind/")
 
 
 ## Retrieve a random asteroid kind.
@@ -43,6 +55,66 @@ static func random_kind() -> AsteroidKind:
 
 	var random_index = Global.rng.rand_weighted(weights)
 	return kinds[random_index]
+
+
+func _init() -> void:
+	if not matter:
+		matter = MatterBag.new()
+	# Ensure property list is updated when matter is initialized
+	if Engine.is_editor_hint():
+		notify_property_list_changed()
+
+
+## This is used to expose each Matter as a property in the editor, so we can set
+## the amount of each matter in this asteroid kind.
+##
+## The property name is "matter_<matter name>".
+## The properties are grouped under "matter".
+func _get_property_list() -> Array[Dictionary]:
+	var props: Array[Dictionary] = []
+
+	# Add all the matter types as integer properties.
+	for mat: Matter in Matter.all_matter:
+		var prop: Dictionary = {
+			"name": "matter/%s" % mat.name,
+			"type": TYPE_INT,
+			"hint": PROPERTY_HINT_RANGE,
+			"hint_string": "0,300.0,1",
+			"usage": PROPERTY_USAGE_DEFAULT,
+		}
+		props.append(prop)
+
+	return props
+
+
+## Get the amount of a specific matter, by property name.
+##
+## If the property is a matter property, return the value from the matter
+## bag.
+##
+## Return 0 if we aren't handling this property.
+func _get(property: StringName) -> Variant:
+	if property.begins_with("matter/"):
+		var mat_name: StringName = property.get_slice("/", 1)
+		if mat_name and Matter.lookup.has(mat_name):
+			return matter.get_by_name(mat_name)
+
+	return null
+
+
+## Set the amount of a specific matter, by property name.
+##
+## If the property is a matter property, set the value in the matter
+## bag.
+##
+## Return true if we handled this property, false otherwise.
+func _set(property: StringName, value: Variant) -> bool:
+	if property.begins_with("matter/"):
+		var mat_name: StringName = property.get_slice("/", 1)
+		if mat_name and Matter.lookup.has(mat_name):
+			matter.set_by_name(mat_name, int(value))
+			return true
+	return false
 
 
 func palette() -> PackedColorArray:

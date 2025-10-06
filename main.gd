@@ -54,6 +54,6 @@ func _on_asteroid_timer_timeout() -> void:
 		asteroid.launch(screen_size, $Player.global_position)
 
 		if asteroid.is_valid():
-			add_child(asteroid)
+			add_child(asteroid, true)
 
 # EOF

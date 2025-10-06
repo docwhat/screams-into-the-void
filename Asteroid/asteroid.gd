@@ -20,6 +20,9 @@ var dissolve_tween: Tween
 
 var matter_collection: MatterBag
 
+@onready var polygon_2d: Polygon2D = $Polygon2D
+@onready var collision_polygon_2d: CollisionPolygon2D = $CollisionPolygon2D
+
 # Deligation
 var radius: float:
 	get:
@@ -44,15 +47,20 @@ func _ready() -> void:
 
 ## Sets up the shape, size, color, etc.
 func rebuild() -> void:
+	if not is_valid():
+		push_error("Asteroid.rebuild() called with invalid object.")
+		return
+
 	# Save these off, in case we need them.
 	last_asteroid_kind = asteroid_kind
 	last_asteroid_size = asteroid_size
+
 	matter_collection = _random_matter()
 
 	assert(radius > 0.0)
 	var m: float = 0.0
 	for mat: Matter in matter_collection.keys():
-		m += mat.mass * matter_collection.get_matter(mat)
+		m += mat.mass * matter_collection.get_by_matter(mat)
 	m += 1.0001
 	assert(m > 1.0)
 	#set_inertia(1_000_000.0 * radius)
@@ -78,8 +86,8 @@ func rebuild() -> void:
 	var points = asteroid_size.generate_polygon()
 
 	# Set the shapes.
-	$Polygon2D.set_polygon(points)
-	$CollisionPolygon2D.set_polygon(points)
+	polygon_2d.set_polygon(points)
+	collision_polygon_2d.set_polygon(points)
 
 	# Texture Shader setup.
 	$Polygon2D.material.set_shader_parameter("seed", Global.rng.randf() * 1000 / 100.0)
@@ -146,7 +154,7 @@ func is_valid() -> bool:
 ## Contract method for Absorbers.
 func be_absorbed() -> void:
 	Events.emit_asteroid_hit(self)
-	$CollisionPolygon2D.set_disabled.call_deferred(true)
+	collision_polygon_2d.set_disabled.call_deferred(true)
 	set_freeze_enabled.call_deferred(true)
 	trigger_dissolve.call_deferred()
 	count -= 1
@@ -177,6 +185,7 @@ func trigger_dissolve() -> void:
 ## Buh-bye.
 func die() -> void:
 	count -= 1
+	get_parent().remove_child(self)
 	queue_free()
 
 
@@ -252,7 +261,7 @@ func _random_matter() -> MatterBag:
 
 	for m: Matter in matter:
 		var amount: int = floor(max_amount * Global.rng.randf())
-		collection.set_matter(m, amount)
+		collection.set_by_matter(m, amount)
 		if Global.debug_asteroid_kind:
 			print_rich("   %10s: %-5d" % [m.name, amount])
 

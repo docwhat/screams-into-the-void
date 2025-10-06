@@ -34,24 +34,31 @@ extends Resource
 ## The ratio of pixels on the asteroid's surface.
 @export var shader_pixels: float = 75.0
 
-# This can be rebuilt by dragging from the FileSystem panel.
-const RES_PATHS: Array[String] = [
-	"res://Asteroid/AsteroidSize/big_asteroid_size.tres",
-	"res://Asteroid/AsteroidSize/gargantuan_asteroid_size.tres",
-	"res://Asteroid/AsteroidSize/huge_asteroid_size.tres",
-	"res://Asteroid/AsteroidSize/large_asteroid_size.tres",
-	"res://Asteroid/AsteroidSize/medium_asteroid_size.tres",
-	"res://Asteroid/AsteroidSize/small_asteroid_size.tres",
-	"res://Asteroid/AsteroidSize/spiky_small_asteroid_size.tres",
-	"res://Asteroid/AsteroidSize/tiny_asteroid_size.tres",
-]
 static var sizes: Array[AsteroidSize]
+
+
+static func load_resources(dir_path: String) -> Array[AsteroidSize]:
+	dir_path = dir_path.trim_suffix("/")
+	var dir: DirAccess = DirAccess.open(dir_path)
+	var resources: Array[AsteroidSize] = []
+
+	if dir:
+		dir.list_dir_begin()
+
+	var file_name: String = dir.get_next()
+	while file_name != "":
+		if file_name.ends_with(".tres"):
+			var file_path: String = "%s/%s" % [dir_path, file_name]
+			var res: AsteroidSize = load(file_path)
+			resources.append(res)
+
+		file_name = dir.get_next()
+	return resources
 
 
 ## Load up the sizes array.
 static func _static_init() -> void:
-	for path: String in RES_PATHS:
-		sizes.append(load(path))
+	sizes = load_resources("res://Asteroid/AsteroidSize")
 
 
 ## Select a random size resource.

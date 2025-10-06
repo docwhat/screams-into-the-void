@@ -1,6 +1,6 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dbkvaqqq083ex"]
+[gd_resource type="Resource" script_class="AsteroidKind" load_steps=2 format=3 uid="uid://dbkvaqqq083ex"]
 
-[ext_resource type="Script" uid="uid://dam2gm265jwea" path="res://Asteroid/AsteroidKind/stony_asteroid_kind.gd" id="1_ddav2"]
+[ext_resource type="Script" uid="uid://dy15xjwx353q5" path="res://Asteroid/asteroid_kind.gd" id="1_ddav2"]
 
 [resource]
 script = ExtResource("1_ddav2")
@@ -10,4 +10,17 @@ probability = 3.0
 color_base_color = Color(0.3216, 0.1608, 0.1608, 1)
 color_saturation = Color(0.25, 0.25, 0.25, 1)
 color_hue_diff = Color(0.4, 0.4, 0.4, 1)
+matter/hydrogen = 0
+matter/helium = 0
+matter/carbon = 0
+matter/nitrogen = 0
+matter/oxygen = 0
+matter/water = 0
+matter/magnesium = 10
+matter/silicon = 40
+matter/sulfer = 0
+matter/iron = 0
+matter/nickel = 0
+matter/copper = 0
+matter/uranium = 0
 metadata/_custom_type_script = "uid://dy15xjwx353q5"

@@ -91,7 +91,7 @@ func update_hud(matter: Matter = null) -> void:
 		to_update = Matter.all_matter.duplicate()
 
 	for mat: Matter in to_update:
-		var amt: int = State.matter.get_matter(mat)
+		var amt: int = State.matter.get_by_matter(mat)
 		var box: HBoxContainer = get_box(mat)
 		var value_label: Label = box.get_node("value")
 		var name_label: Label = box.get_node("name")
