@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://drbf8d237goj"]
 
 [ext_resource type="Script" uid="uid://3lpx3nh5ceyj" path="res://main.gd" id="1_h2yge"]
-[ext_resource type="Shader" uid="uid://bxg7qu236s2yc" path="res://stars.gdshader" id="2_h2yge"]
+[ext_resource type="Shader" uid="uid://bxg7qu236s2yc" path="res://Shaders/stars.gdshader" id="2_h2yge"]
 [ext_resource type="Script" uid="uid://c0mgsc65vwhad" path="res://stars.gd" id="3_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://caukx28w36jxj" path="res://player/player.tscn" id="4_1bvp3"]
 [ext_resource type="Script" uid="uid://5dbh8sao520s" path="res://hud.gd" id="5_7mycd"]
@@ -12,7 +12,7 @@
 shader = ExtResource("2_h2yge")
 shader_parameter/speed = 0.002
 shader_parameter/stars_ratio = 5.0
-shader_parameter/all_brightness = 1.0
+shader_parameter/all_brightness = 0.79999998584372
 shader_parameter/time = 0.0
 
 [node name="Main" type="Control"]

@@ -6,22 +6,35 @@ static var count: int = 0
 ## Has this asteroid been made visible?
 var debuted: bool = false
 
+## The size of the asteroid.
 @export var asteroid_size: AsteroidSize
+
+## The kind of asteroid (e.g., Carbon, Ice, Organic, etc.)
 @export var asteroid_kind: AsteroidKind
+
+## How long it takes to dissolve an Asteroid (in seconds).
+@export_range(0.1, 3.0, 0.1) var dissolve_duration: float = 2.0
+
+## Save off the previous size, in case it changed.
 var last_asteroid_size: AsteroidSize
+
+## Save off the previous kind, in case it changed.
 var last_asteroid_kind: AsteroidKind
 
-@export_group("Dissolve", "dissolve_")
+## Used to dissolve an asteroid upon absorption.
 var dissolve_tween: Tween
-@export_color_no_alpha var dissolve_color: Color = Color(0.0, 1.0, 0.18, 1.0)
-@export_range(0.1, 5.0, 0.1) var dissolve_duration: float = 1.0
-@export_range(0.0, 1.5, 0.1) var dissolve_beam_size: float = 0.1
-@export_group("")
 
+## The matter contained in this asteroid.
 var matter_collection: MatterBag
 
-@onready var polygon_2d: Polygon2D = $Polygon2D
-@onready var collision_polygon_2d: CollisionPolygon2D = $CollisionPolygon2D
+## For making pretty pictures.
+@onready var polygon_2d: Polygon2D = %Polygon2D
+
+## For colliding.
+@onready var collision_polygon_2d: CollisionPolygon2D = %CollisionPolygon2D
+
+## The CanvasGroup that is wrapping the whole shebang.
+@onready var dissolver: CanvasGroup = %Dissolver
 
 # Deligation
 var radius: float:
@@ -58,15 +71,15 @@ func rebuild() -> void:
 	matter_collection = _random_matter()
 
 	assert(radius > 0.0)
-	var m: float = 0.0
-	for mat: Matter in matter_collection.keys():
-		m += mat.mass * matter_collection.get_by_matter(mat)
-	m += 1.0001
-	assert(m > 1.0)
+	var calculated_mass: float = 0.0
+	for stuff: Matter in matter_collection.keys():
+		calculated_mass += stuff.mass * matter_collection.get_by_matter(stuff)
+	calculated_mass += 1.0001
+	assert(calculated_mass > 1.0)
 	#set_inertia(1_000_000.0 * radius)
 	#set_mass(1_000.0 * radius)
-	set_inertia(m * 10_000_000.0)
-	set_mass(m * 1_000.0)
+	set_inertia(calculated_mass * 10_000_000.0)
+	set_mass(calculated_mass * 1_000.0)
 
 	PhysicsServer2D.body_reset_mass_properties(get_rid())
 	#var i : float = 1.0 / PhysicsServer2D.body_get_direct_state(get_rid()).inverse_inertia
@@ -90,9 +103,160 @@ func rebuild() -> void:
 	collision_polygon_2d.set_polygon(points)
 
 	# Texture Shader setup.
-	$Polygon2D.material.set_shader_parameter("seed", Global.rng.randf() * 1000 / 100.0)
-	asteroid_size.configure_shader($Polygon2D.material)
-	asteroid_kind.configure_shader($Polygon2D.material)
+	var polymat = polygon_2d.material
+	polymat.set_shader_parameter("seed", Global.rng.randf() * 1000 / 100.0)
+	asteroid_size.configure_shader(polymat)
+	asteroid_kind.configure_shader(polymat)
+
+
+func is_valid() -> bool:
+	return asteroid_size && asteroid_kind
+
+
+## Contract method for Absorbers.
+func be_absorbed() -> void:
+	Events.emit_asteroid_hit(self)
+	collision_polygon_2d.set_disabled.call_deferred(true)
+	set_freeze_enabled.call_deferred(true)
+	trigger_dissolve.call_deferred()
+	count -= 1
+
+
+## Draw an arrow from origin to target.
+##
+## [node] is the Node2D to draw on.
+## [origin] is the starting point of the arrow.
+## [target] is the ending point of the arrow.
+## [color] is the color of the arrow.
+## [width] is the width of the arrow line. If -1, uses default width.
+## [filled] if true, draws a filled arrowhead; otherwise, draws an outline.
+## [head_length] is the length of the arrowhead.
+## [head_angle] is the angle of the arrowhead (in radians).
+static func draw_arrow(
+		node: Node2D,
+		origin: Vector2,
+		target: Vector2,
+		color: Color,
+		width: float = -1,
+		filled: bool = false,
+		head_length: float = 2.5,
+		head_angle: float = TAU / 2.0,
+) -> void:
+	target -= origin * 2
+	var head: Vector2 = -target.normalized() * head_length
+	var end = -target.normalized() * head_length / 2 + target + origin
+	target += origin
+	var head_right = target + head.rotated(head_angle)
+	var head_left = target + head.rotated(-head_angle)
+
+	if filled:
+		node.draw_line(origin, end, color, width)
+		node.draw_colored_polygon([head_right, target, head_left], color)
+	else:
+		node.draw_line(origin, target, color, width)
+		node.draw_polyline([head_right, target, head_left], color, width)
+
+
+## Calculates the height and width of a box that would contain a Polygon2D
+##
+## This returns the height (y) and width (x) of the polygon.
+static func calculate_polygon_bounds(polygon: PackedVector2Array) -> Vector2:
+	var min_x: float = 0.0
+	var max_x: float = 0.0
+	var min_y: float = 0.0
+	var max_y: float = 0.0
+
+	for point: Vector2 in polygon:
+		min_x = minf(min_x, point.x)
+		max_x = maxf(max_x, point.x)
+		min_y = minf(min_y, point.y)
+		max_y = maxf(max_y, point.y)
+
+	return Vector2(max_x - min_x, max_y - min_y)
+
+
+## Animate the dissolution of the asteroid.
+func trigger_dissolve() -> void:
+	if dissolve_tween:
+		return
+
+	var dissolver_material: ShaderMaterial = dissolver.material.duplicate()
+	dissolver.set_material(dissolver_material)
+
+	dissolver_material.set_shader_parameter("progress", 0.0)
+
+	# Calculate the angle to the player.
+	var player_angle: float = global_position.angle_to_point(Global.player_position)
+
+	# Angle to the player.
+	var angle: float = TAU * 3.0 / 4.0 - player_angle + TAU * 2.0 / 4.0
+
+	# Compensate for any asteroid rotation.
+	angle += rotation
+
+	dissolver_material.set_shader_parameter("rotation", angle)
+
+	# var size: Vector2 = calculate_polygon_bounds(polygon_2d.polygon)
+
+	# Scaling is a number from 0.0 to 1.0 based on the radius of the asteroid.
+	var scaling: float = (radius - 8) / (64.0 - 8.0)
+
+	# TODO: The beam size should be based on the size of the asteroid.
+	dissolver_material.set_shader_parameter("beam_size", min(0.1, 0.2 + 0.2 * scaling))
+	# dissolver_material.set_shader_parameter("noise_density", noise_size + noise_size / scaling)
+
+	# TODO: The duration should be based on the size of the asteroid.
+	var duration: float = 0.15 + 4.0 * scaling
+
+	# Give the big boys an extra boost.
+	if scaling > 0.75:
+		duration *= 4.0
+
+	# TODO: Scoring should either be done after the dissolve, or be done
+	# in parts during the dissolve as another Tween.
+	dissolve_tween = create_tween()
+
+	# IDEA: Alternate dissolve method: Move the asteroid towards the player as it dissolves.
+	# Flip the dissolve so it moves from the player outward, giving the impression
+	# that the asteroid is being sucked into the player.
+
+	# Animate the dissolve.
+	dissolve_tween.tween_property(
+		dissolver_material,
+		"shader_parameter/progress",
+		1.0,
+		duration,
+	)
+
+	# Die when dissolved.
+	dissolve_tween.tween_callback(die)
+
+
+## Buh-bye.
+func die() -> void:
+	count -= 1
+	get_parent().remove_child(self)
+	queue_free()
+
+
+func _physics_process(_delta: float) -> void:
+	if is_on_screen():
+		if not debuted:
+			debuted = true
+	elif debuted:
+		die()
+
+
+## check if the position is within the viewport
+func is_on_screen() -> bool:
+	var screen: Vector2 = get_viewport().size
+	var pos: Vector2 = position # position
+	var fudge: float = 64 * 4
+
+	return pos.y >= 0.0 - fudge && \
+	pos.x >= 0.0 - fudge && \
+	pos.x <= screen.x + fudge && \
+	pos.y <= screen.y + fudge
 
 
 ## Fling an asteroid at someone.
@@ -145,68 +309,6 @@ func launch(screen_size: Vector2, player_coord: Vector2) -> Node:
 		)
 
 	return self
-
-
-func is_valid() -> bool:
-	return asteroid_size && asteroid_kind
-
-
-## Contract method for Absorbers.
-func be_absorbed() -> void:
-	Events.emit_asteroid_hit(self)
-	collision_polygon_2d.set_disabled.call_deferred(true)
-	set_freeze_enabled.call_deferred(true)
-	trigger_dissolve.call_deferred()
-	count -= 1
-
-
-## Animate the dissolution of the asteroid.
-func trigger_dissolve() -> void:
-	if dissolve_tween:
-		return
-
-	var dissolve_material: ShaderMaterial = $Polygon2D.material
-	dissolve_material.set_shader_parameter("dissolving", true)
-	dissolve_material.set_shader_parameter("dissolve_progress", 0.0)
-	dissolve_material.set_shader_parameter("dissolve_color", dissolve_color)
-	dissolve_material.set_shader_parameter("dissolve_noise_density", noise_size * 4.0)
-	dissolve_material.set_shader_parameter("dissolve_beam_size", dissolve_beam_size)
-
-	dissolve_tween = create_tween()
-	dissolve_tween.tween_property(
-		dissolve_material,
-		"shader_parameter/dissolve_progress",
-		1.0,
-		dissolve_duration,
-	)
-	dissolve_tween.tween_callback(func(): queue_free())
-
-
-## Buh-bye.
-func die() -> void:
-	count -= 1
-	get_parent().remove_child(self)
-	queue_free()
-
-
-func _physics_process(_delta: float) -> void:
-	if is_on_screen():
-		if not debuted:
-			debuted = true
-	elif debuted:
-		die()
-
-
-## check if the position is within the viewport
-func is_on_screen() -> bool:
-	var screen: Vector2 = get_viewport().size
-	var pos: Vector2 = position # position
-	var fudge: float = 64 * 4
-
-	return pos.y >= 0.0 - fudge && \
-	pos.x >= 0.0 - fudge && \
-	pos.x <= screen.x + fudge && \
-	pos.y <= screen.y + fudge
 
 
 enum Side {

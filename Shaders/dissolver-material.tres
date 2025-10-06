@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bbe0mwwx7i71l"]
+
+[ext_resource type="Shader" uid="uid://bg7dwu5whfxw3" path="res://Shaders/dissolver.gdshader" id="1_p10uq"]
+
+[resource]
+shader = ExtResource("1_p10uq")
+shader_parameter/progress = 0.0
+shader_parameter/noise_density = 58.0
+shader_parameter/beam_size = 0.035000000963979996
+shader_parameter/rotation = 0.0
+shader_parameter/color = Color(0, 1.199976, 0, 1)
