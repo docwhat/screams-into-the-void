@@ -35,7 +35,9 @@ func test_set_matter_by_invalid_name():
 
 	var got: int = asteroid_kind.matter.get_by_name("invalid_matter_name")
 	var expected: int = 0
-	assert_int(got).append_failure_message("Matter value for invalid name should be 0").is_equal(expected)
+	assert_int(got) \
+	.append_failure_message("Matter value for invalid name should be 0") \
+	.is_equal(expected)
 
 
 ## Test that _get() works with a valid matter StringName.

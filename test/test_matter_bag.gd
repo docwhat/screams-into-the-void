@@ -143,7 +143,9 @@ func test_set_by_name_invalid():
 
 	# The bag should be unchanged.
 	for mat: Matter in Matter.all_matter:
-		assert_int(bag.get_by_matter(mat)).append_failure_message("for %s" % mat.name).is_equal(original_bag.get_by_matter(mat))
+		assert_int(bag.get_by_matter(mat)) \
+		.append_failure_message("for %s" % mat.name) \
+		.is_equal(original_bag.get_by_matter(mat))
 
 
 ## set_by_name() with a new value should emit the changed signal.
