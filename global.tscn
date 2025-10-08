@@ -4,6 +4,5 @@
 
 [node name="Global" type="Node"]
 script = ExtResource("1_4mbhf")
-debug_asteroid_launch = true
 star_speed = 0.01
 asteroid_player_intercept_chance = 0.87
