@@ -33,16 +33,16 @@ var player_position: Vector2
 
 ## Change that an asteroid is spawned, weighted. The number of asteroids is
 ## the index.
-@export_range(0.0, 10.0, 0.01, "or_greater") var asteroid_spawn_chances: Array[float] = [
-	1,
-	6,
+@export_range(0, 96, 1, "or_greater") var asteroid_spawn_chances: Array[float] = [
+	16,
+	96,
+	64,
+	32,
+	16,
+	8,
 	4,
 	2,
 	1,
-	0.5,
-	0.25,
-	0.125,
-	0.0625,
 ]
 @export_group("")
 
