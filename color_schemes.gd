@@ -43,17 +43,17 @@ func threecolor() -> PackedColorArray:
 	colors.append(recolor(c))
 
 	return colors
-	# vector a = rand(0, seed)
-	# vector b = rand(1, seed)
+# vector a = rand(0, seed)
+# vector b = rand(1, seed)
 
-	# a = recolor(a)
-	# b = recolor(b)
+# a = recolor(a)
+# b = recolor(b)
 
-	# int class = i@primnum % 3
-	# if(class == 1) b = a
-	# if(class == 2) a = b
+# int class = i@primnum % 3
+# if(class == 1) b = a
+# if(class == 2) a = b
 
-	# v@Cd = min(a, b) / pow(max(a, b), 0.25)
+# v@Cd = min(a, b) / pow(max(a, b), 0.25)
 
 
 ## Using ideas from https://www.iquilezles.org/www/articles/palettes/palettes.htm
