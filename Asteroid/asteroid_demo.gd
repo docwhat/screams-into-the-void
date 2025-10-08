@@ -12,11 +12,8 @@ func rand_torque(t: float) -> float:
 
 func _ready() -> void:
 	# Find all the Asteroids under the Node2D grouping nodes and start them spinning.
-	for grouping: Node in $Asteroids.get_children():
-		if grouping is not Node2D:
-			continue
-
-		var asteroid: Asteroid = grouping.get_node("Asteroid")
+	for asteroid: Asteroid in get_tree().get_nodes_in_group(&"asteroid"):
 		asteroid.apply_torque_impulse(rand_torque(asteroid.inertia * 0.8))
+		asteroid.freeze = false
 
 # EOF

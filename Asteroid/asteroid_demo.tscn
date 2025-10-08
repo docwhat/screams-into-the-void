@@ -35,7 +35,7 @@ metadata/_edit_lock_ = true
 
 [node name="Gargantuan Icy" type="Node2D" parent="Asteroids"]
 
-[node name="Asteroid" parent="Asteroids/Gargantuan Icy" instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Gargantuan Icy" groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(1030, 552)
 asteroid_size = ExtResource("2_ocfal")
 asteroid_kind = ExtResource("3_ocfal")
@@ -57,7 +57,7 @@ horizontal_alignment = 1
 
 [node name="Tiny Stony" type="Node2D" parent="Asteroids"]
 
-[node name="Asteroid" parent="Asteroids/Tiny Stony" instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Tiny Stony" groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(189, 113)
 asteroid_size = ExtResource("4_x0xei")
 asteroid_kind = ExtResource("3_vbwx6")
@@ -73,7 +73,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Tiny Uranium" type="Node2D" parent="Asteroids"]
 
-[node name="Asteroid" parent="Asteroids/Tiny Uranium" instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Tiny Uranium" groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(448, 120)
 asteroid_size = ExtResource("4_x0xei")
 asteroid_kind = ExtResource("3_ivpih")
@@ -89,7 +89,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Small Organic" type="Node2D" parent="Asteroids"]
 
-[node name="Asteroid" parent="Asteroids/Small Organic" instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Small Organic" groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(727, 125)
 asteroid_size = ExtResource("7_uhw5y")
 asteroid_kind = ExtResource("8_3al8o")
@@ -104,7 +104,7 @@ horizontal_alignment = 1
 
 [node name="Medium Uranium" type="Node2D" parent="Asteroids"]
 
-[node name="Asteroid" parent="Asteroids/Medium Uranium" instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Medium Uranium" groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(719, 347)
 asteroid_size = ExtResource("9_kh20f")
 asteroid_kind = ExtResource("3_ivpih")
@@ -119,7 +119,7 @@ horizontal_alignment = 1
 
 [node name="Spiky Magnesium" type="Node2D" parent="Asteroids"]
 
-[node name="Asteroid" parent="Asteroids/Spiky Magnesium" instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Spiky Magnesium" groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(217, 334)
 asteroid_size = ExtResource("11_kh20f")
 asteroid_kind = ExtResource("12_g5exe")
@@ -135,7 +135,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Spiky Icey" type="Node2D" parent="Asteroids"]
 
-[node name="Asteroid" parent="Asteroids/Spiky Icey" instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Spiky Icey" groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(492, 343)
 asteroid_size = ExtResource("11_kh20f")
 asteroid_kind = ExtResource("3_ocfal")
@@ -151,7 +151,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Large Carbon" type="Node2D" parent="Asteroids"]
 
-[node name="Asteroid" parent="Asteroids/Large Carbon" instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Large Carbon" groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(227, 546)
 asteroid_size = ExtResource("6_8rxj1")
 asteroid_kind = ExtResource("7_f1j48")
@@ -166,7 +166,7 @@ horizontal_alignment = 1
 
 [node name="Huge Iron" type="Node2D" parent="Asteroids"]
 
-[node name="Asteroid" parent="Asteroids/Huge Iron" instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Huge Iron" groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(537, 557)
 asteroid_size = ExtResource("4_ivpih")
 asteroid_kind = ExtResource("5_st53i")

@@ -51,6 +51,10 @@ window/handheld/orientation=6
 
 enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/git_describe/plugin.cfg")
 
+[global_group]
+
+asteroid="An asteroid floating in space."
+
 [gui]
 
 theme/custom_font="uid://dtuw21iomnpob"
