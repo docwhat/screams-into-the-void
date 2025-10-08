@@ -33,7 +33,7 @@ set -ex
 rm -rf export/macos
 mkdir -p export
 mkdir export/macos
-godot --headless --export-release "macOS" export/macos/void.app
+godot --headless --export-release "macOS" export/macos/Void.app
 """
 
 [tasks.export-web]

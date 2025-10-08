@@ -180,7 +180,8 @@ func trigger_dissolve() -> void:
 	if dissolve_tween:
 		return
 
-	var dissolver_material: ShaderMaterial = dissolver.material.duplicate()
+	var dissolver_material: ShaderMaterial = \
+	load("res://Shaders/dissolver-material.tres").duplicate()
 	dissolver.set_material(dissolver_material)
 
 	dissolver_material.set_shader_parameter("progress", 0.0)
@@ -266,6 +267,16 @@ func launch(screen_size: Vector2, player_coord: Vector2) -> Node:
 
 	# Determine if this asteroid should intercept the player
 	var should_intercept = Global.rng.randf() < Global.asteroid_player_intercept_chance
+
+	if not is_valid():
+		push_error(
+			"This asteroid is invalid: name: %s   size: %s   kind: %s" % [
+				name,
+				asteroid_size,
+				asteroid_kind,
+			],
+		)
+		return
 
 	# Need to freeze the asteroid prior to making changes.
 	set_freeze_enabled(true)

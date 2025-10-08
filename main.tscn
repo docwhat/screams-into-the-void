@@ -10,7 +10,6 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xm2m"]
 shader = ExtResource("2_h2yge")
-shader_parameter/speed = 0.002
 shader_parameter/stars_ratio = 5.0
 shader_parameter/all_brightness = 0.79999998584372
 shader_parameter/time = 0.0

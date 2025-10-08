@@ -37,39 +37,35 @@ extends Resource
 static var sizes: Array[AsteroidSize]
 
 
-static func load_resources(dir_path: String) -> Array[AsteroidSize]:
-	dir_path = dir_path.trim_suffix("/")
-	var dir: DirAccess = DirAccess.open(dir_path)
+## Load the AsteroidSize resources dynamically from disk.
+static func load_resources() -> Array[AsteroidSize]:
 	var resources: Array[AsteroidSize] = []
+	var file_paths: Array[String] = ResourceTools.find_resources("res://Asteroid/AsteroidSize")
 
-	if dir:
-		dir.list_dir_begin()
-
-	var file_name: String = dir.get_next()
-	while file_name != "":
-		if file_name.ends_with(".tres"):
-			var file_path: String = "%s/%s" % [dir_path, file_name]
-			var res: AsteroidSize = load(file_path)
+	for file_path: String in file_paths:
+		var res: AsteroidSize = load(file_path)
+		if res:
 			resources.append(res)
+		else:
+			push_error("Failed to load resource  AsteroidSize from %s" % [file_path])
 
-		file_name = dir.get_next()
 	return resources
 
 
 ## Load up the sizes array.
 static func _static_init() -> void:
-	sizes = load_resources("res://Asteroid/AsteroidSize")
+	sizes = load_resources()
 
 
 ## Select a random size resource.
 static func random_size() -> AsteroidSize:
-	var weights: PackedFloat32Array
+	var size_weights: PackedFloat32Array = []
 	var random_index: int
 
 	for size: AsteroidSize in sizes:
-		weights.push_back(size.probability)
+		size_weights.push_back(size.probability)
 
-	random_index = Global.rng.rand_weighted(weights)
+	random_index = Global.rng.rand_weighted(size_weights)
 	return sizes[random_index]
 
 

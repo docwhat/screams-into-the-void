@@ -1,7 +1,6 @@
 @tool
 class_name AsteroidKind
 extends Resource
-
 ## What kind of Asteroid is it?
 ##
 ## This represents the composition of the Asteroid.
@@ -20,27 +19,23 @@ var matter: MatterBag
 static var kinds: Array[AsteroidKind]
 
 
-static func load_resources(dir_path: String) -> Array[AsteroidKind]:
-	dir_path = dir_path.trim_suffix("/")
-	var dir: DirAccess = DirAccess.open(dir_path)
+## Load the AsteroidKind resources dynamically from disk.
+static func load_resources() -> Array[AsteroidKind]:
 	var resources: Array[AsteroidKind] = []
+	var file_paths: Array[String] = ResourceTools.find_resources("res://Asteroid/AsteroidKind")
 
-	if dir:
-		dir.list_dir_begin()
-
-	var file_name: String = dir.get_next()
-	while file_name != "":
-		if file_name.ends_with(".tres"):
-			var file_path: String = "%s/%s" % [dir_path, file_name]
-			var res: AsteroidKind = load(file_path)
+	for file_path: String in file_paths:
+		var res: AsteroidKind = load(file_path)
+		if res:
 			resources.append(res)
+		else:
+			push_error("Failed to load resource  AsteroidKind from %s" % [file_path])
 
-		file_name = dir.get_next()
 	return resources
 
 
 static func _static_init() -> void:
-	kinds = load_resources("res://Asteroid/AsteroidKind/")
+	kinds = load_resources()
 
 
 ## Retrieve a random asteroid kind.
@@ -48,12 +43,12 @@ static func random_kind() -> AsteroidKind:
 	if kinds.size() == 0:
 		return null
 
-	var weights: PackedFloat32Array
+	var kind_weights: PackedFloat32Array = []
 
 	for kind: AsteroidKind in kinds:
-		weights.push_back(kind.probability)
+		kind_weights.push_back(kind.probability)
 
-	var random_index = Global.rng.rand_weighted(weights)
+	var random_index = Global.rng.rand_weighted(kind_weights)
 	return kinds[random_index]
 
 

@@ -19,7 +19,7 @@ var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 ## Star background
 @export_group("Background")
-@export_range(0.01, 2.0, 0.01, "or_greater") var star_speed: float = 0.03
+@export_range(0.01, 2.0, 0.01) var star_speed: float = 0.03
 @export_group("")
 
 ## Player information.

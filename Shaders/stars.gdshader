@@ -1,8 +1,6 @@
 shader_type canvas_item;
 render_mode unshaded;
 
-// The speed that the stars move towards the bottom of the screen.
-uniform float speed : hint_range(0.0, 10.0, 0.001) = 0.01;
 // How fast the stars dim and undim.
 const float twinkle_speed = 0.2358404332;
 // How many stars per fragment.
@@ -111,7 +109,7 @@ void fragment() {
   uv = uv / vec2(SCREEN_PIXEL_SIZE.x / SCREEN_PIXEL_SIZE.y, 1.0);
 
   // Keep the background moving.
-  uv.y -= time * speed;
+  uv.y -= time;
 
   // Increase the number of UV repitions per fragment.
   uv *= stars_ratio;
