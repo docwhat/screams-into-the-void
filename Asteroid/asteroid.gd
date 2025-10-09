@@ -58,6 +58,15 @@ func _ready() -> void:
 	count += 1
 
 
+func _process(_delta: float) -> void:
+	if is_on_screen():
+		if not debuted:
+			debuted = true
+	elif debuted:
+		die()
+		return
+
+
 ## Sets up the shape, size, color, etc.
 func rebuild() -> void:
 	if not is_valid():
@@ -238,14 +247,6 @@ func die() -> void:
 	count -= 1
 	get_parent().remove_child(self)
 	queue_free()
-
-
-func _physics_process(_delta: float) -> void:
-	if is_on_screen():
-		if not debuted:
-			debuted = true
-	elif debuted:
-		die()
 
 
 ## check if the position is within the viewport
