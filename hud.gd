@@ -1,55 +1,60 @@
 extends CanvasLayer
 
-var matter_boxes: Dictionary[Matter, HBoxContainer] = { }
-var update_tweens: Dictionary[Matter, Tween] = { }
+var name_labels: Dictionary[Matter, Label] = { }
+var value_labels: Dictionary[Matter, Label] = { }
+
+var name_tweens: Dictionary[Matter, Tween] = { }
+var value_tweens: Dictionary[Matter, Tween] = { }
+
+@onready var grid_container: GridContainer = %GridContainer
 
 
-func get_box(mat: Matter) -> HBoxContainer:
-	return matter_boxes[mat]
-
-
+## Adds the name and value label for a specific matter to the grid.
 func add_label(matter: Matter):
-	# first we need an HBoxContainer.
-	var hbox: HBoxContainer = HBoxContainer.new()
-	hbox.name = matter.name.capitalize()
-	hbox.visible = false
+	# Add name label.
+	var name_label: Label = Label.new()
+	name_label.name = "name_%s" % matter.name.replace(" ", "_")
+	name_label.text = matter.preferred_name.capitalize()
+	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	name_labels[matter] = name_label
 
-	# Save for updating.
-	matter_boxes[matter] = hbox
-
-	# then we need a left justified label for the name.
-	var label: Label = Label.new()
-	label.name = "name"
-	label.text = matter.preferred_name.capitalize()
-	label.set_h_size_flags(label.SIZE_EXPAND_FILL)
-	hbox.add_child(label)
-
-	# then we need a right justified label for the value.
+	# Add value label.
 	var value_label: Label = Label.new()
-	value_label.name = "value"
+	value_label.name = "value_%s" % matter.name.replace(" ", "_")
 	value_label.text = "0"
 	value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	value_label.set_h_size_flags(label.SIZE_EXPAND_FILL)
+	value_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	value_labels[matter] = value_label
 
-	hbox.add_child(value_label)
-
-	# Add the hbox last, to prevent jiggling.
-	%VBoxContainer.add_child(hbox)
+	# Add to the grid.
+	grid_container.add_child(name_label)
+	grid_container.add_child(value_label)
 
 
 func _ready() -> void:
-	$".".visible = false
+	visible = false
 
+	# Clear out any existing labels used for
+	# for the 2d view in the editor.
+	for child: Node in grid_container.get_children():
+		grid_container.remove_child(child)
+		child.queue_free()
+
+	# Add labels for each matter type.
 	for matter: Matter in Matter.all_matter:
 		add_label(matter)
 
 	State.matter.matter_changed.connect(update_hud)
+
+	# Wait a frame to ensure all nodes are ready.
+	await Engine.get_main_loop().process_frame
 	update_hud()
 
 
 func update_hud(matter: Matter = null) -> void:
 	var to_update: Array[Matter]
-	var any_visible: bool = false
+	var any_label_visible: bool = false
 
 	if matter:
 		to_update = [matter]
@@ -58,25 +63,34 @@ func update_hud(matter: Matter = null) -> void:
 
 	for mat: Matter in to_update:
 		var amt: int = State.matter.get_by_matter(mat)
-		var box: HBoxContainer = get_box(mat)
-		var value_label: Label = box.get_node("value")
-		var name_label: Label = box.get_node("name")
+		var name_label: Label = name_labels[mat]
+		var value_label: Label = value_labels[mat]
 
 		if amt > 0:
 			name_label.text = mat.preferred_name.capitalize()
 			value_label.text = Global.format_number(amt)
-			box.visible = true
-			any_visible = true
+			name_label.visible = true
+			value_label.visible = true
+			any_label_visible = true
 
-			if update_tweens.get(mat):
-				update_tweens[mat].kill()
+			if name_tweens.get(mat):
+				name_tweens[mat].kill()
+			if value_tweens.get(mat):
+				value_tweens[mat].kill()
 
-			update_tweens[mat] = get_tree().create_tween()
-			update_tweens[mat].tween_property(box, 'modulate', Color.YELLOW, 0.1)
-			update_tweens[mat].tween_property(box, 'modulate', Color.WHITE, 0.9)
+			var name_tween: Tween = get_tree().create_tween()
+			var value_tween: Tween = get_tree().create_tween()
+			name_tweens[mat] = name_tween
+			value_tweens[mat] = value_tween
 
+			name_tween.tween_property(name_label, 'modulate', Color.YELLOW, 0.1)
+			name_tween.tween_property(name_label, 'modulate', Color.WHITE, 0.9)
+
+			value_tween.tween_property(value_label, 'modulate', Color.YELLOW, 0.1)
+			value_tween.tween_property(value_label, 'modulate', Color.WHITE, 0.9)
 		else:
-			box.visible = false
+			name_label.visible = false
+			value_label.visible = false
 
-	if any_visible:
-		$".".visible = true
+	# Show ourself if any label is visible.
+	visible = any_label_visible
