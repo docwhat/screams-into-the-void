@@ -15,7 +15,7 @@ static func limit_one(_mat: Matter, amt: int) -> int:
 
 ## Absorb an asteroid with a given kind and size.
 func absorb_asteroid(asteroid: Asteroid) -> void:
-	var absorbed_matter: MatterBag = absorption_limiter(asteroid.matter_collection)
+	var absorbed_matter: MatterBag = absorption_limiter(asteroid.matter_bag)
 
 	State.matter.add_bag(absorbed_matter)
 

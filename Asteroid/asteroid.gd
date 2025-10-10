@@ -25,7 +25,7 @@ var last_asteroid_kind: AsteroidKind
 var dissolve_tween: Tween
 
 ## The matter contained in this asteroid.
-var matter_collection: MatterBag
+var matter_bag: MatterBag
 
 ## For making pretty pictures.
 @onready var polygon_2d: Polygon2D = %Polygon2D
@@ -77,21 +77,19 @@ func rebuild() -> void:
 	last_asteroid_kind = asteroid_kind
 	last_asteroid_size = asteroid_size
 
-	matter_collection = _random_matter()
+	matter_bag = _random_matter()
 
 	assert(radius > 0.0)
-	var calculated_mass: float = 0.0
-	for stuff: Matter in matter_collection.keys():
-		calculated_mass += stuff.mass * matter_collection.get_by_matter(stuff)
-	calculated_mass += 1.0001
-	assert(calculated_mass > 1.0)
-	#set_inertia(1_000_000.0 * radius)
-	#set_mass(1_000.0 * radius)
-	set_inertia(calculated_mass * 10_000_000.0)
-	set_mass(calculated_mass * 1_000.0)
+	# All asteroids start with a mass of 1_000.0 * radius.
+	var calculated_mass: float = 1_000.0 * radius
 
-	PhysicsServer2D.body_reset_mass_properties(get_rid())
-	#var i : float = 1.0 / PhysicsServer2D.body_get_direct_state(get_rid()).inverse_inertia
+	# Add the mass of the matter in the asteroid.
+	for stuff: Matter in matter_bag.keys():
+		calculated_mass += stuff.mass * matter_bag.get_by_matter(stuff)
+
+	set_inertia(0) # Ensure it is set to be automatically calculated.
+	set_mass(calculated_mass)
+
 	if Global.debug_asteroid_launch:
 		print_rich(
 			"%s %s \n  m-r:    %f \n  m-m:    %f \n  i-r:    %f \n  i-m:    %f" % [
@@ -109,6 +107,7 @@ func rebuild() -> void:
 
 	# Set the shapes.
 	polygon_2d.set_polygon(points)
+	polygon_2d.set_uv(points)
 	collision_polygon_2d.set_polygon(points)
 
 	# Texture Shader setup.
