@@ -51,6 +51,10 @@ window/handheld/orientation=6
 
 enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/gdUnit4/plugin.cfg", "res://addons/git_describe/plugin.cfg")
 
+[gdunit4]
+
+ui/toolbar/run_overall=true
+
 [global_group]
 
 asteroid="An asteroid floating in space."
