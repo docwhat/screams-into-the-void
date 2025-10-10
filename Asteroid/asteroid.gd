@@ -79,7 +79,6 @@ func rebuild() -> void:
 
 	matter_bag = _random_matter()
 
-	assert(radius > 0.0)
 	# All asteroids start with a mass of 1_000.0 * radius.
 	var calculated_mass: float = 1_000.0 * radius
 
