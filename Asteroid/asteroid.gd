@@ -249,30 +249,33 @@ func launch(screen_size: Vector2, player_coord: Vector2) -> Node:
 	direction = position.angle_to_point(target_coord)
 
 	# Choose a velocity
-	var speed = Global.rng.randf_range(50.0, 180.0)
-	var velocity = Vector2(speed, 0.0).rotated(direction)
-	var torque: float = (Global.rng.randf() * get_mass() * max(1.0, get_inertia()))
+	var speed = Global.rng.randf_range(10.0, 180.0)
+	var velocity = Vector2(speed * get_mass(), 0.0).rotated(direction)
 
-	# Randomize direction of spin.
-	if Global.rng.randi_range(0, 1) != 0:
-		torque = 0 - torque
+	# Brute-force angular velocity for now. See comment below.
+	angular_velocity = Global.rng.randf_range(0 - TAU/4.0, TAU/4.0)
+	if Global.rng.randf() < 0.25:
+		angular_velocity *= 2.0
 
 	# Restore the physics.
 	set_freeze_enabled(false)
 
-	# Start it spinning...
-	apply_torque_impulse(torque)
+	# Wait a frame to ensure the physics are restored.
+	await Engine.get_main_loop().process_frame
 
-	# ... and send it on its way.
+	# Send it on its way!
 	apply_impulse(velocity)
+	# Note: I've been unable to get apply_impulse to work correctly.
+	# Instead, I'm brute-forcing the velocity while it is frozen.
+	# apply_torque_impulse(torque)
 
 	if Global.debug_asteroid_launch:
 		print_rich(
-			"Launch: %s %s  ->  velocity: %s  torque: %f" % [
+			"Launch: %s %s  ->  linear_velocity: %s  angular_velocity: %f" % [
 				asteroid_kind.name,
 				asteroid_size.name,
-				velocity,
-				torque,
+				linear_velocity,
+				angular_velocity,
 			],
 		)
 
