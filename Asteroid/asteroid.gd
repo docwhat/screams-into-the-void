@@ -89,6 +89,16 @@ func rebuild() -> void:
 	set_inertia(0) # Ensure it is set to be automatically calculated.
 	set_mass(calculated_mass)
 
+	# Set the physics material.
+	var physics: PhysicsMaterial = PhysicsMaterial.new()
+	physics.friction = 0.0
+	physics.bounce = 0.5
+	# TODO: This should be based on the asteroid kind.
+	if Global.flip_coin():
+		physics.absorbent = true
+
+	physics_material_override = physics
+
 	if Global.debug_asteroid_launch:
 		print_rich(
 			"%s %s \n  m-r:    %f \n  m-m:    %f \n  i-r:    %f \n  i-m:    %f" % [
