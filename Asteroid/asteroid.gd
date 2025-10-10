@@ -218,6 +218,7 @@ func is_on_screen() -> bool:
 
 ## Fling an asteroid at someone.
 func launch(screen_size: Vector2, player_coord: Vector2) -> Node:
+	# TODO: Don't launch if there are too many asteroids on screen.
 	var target_coord: Vector2
 	var direction: float
 
