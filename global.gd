@@ -36,11 +36,9 @@ var player_position: Vector2
 @export_range(0, 96, 1, "or_greater") var asteroid_spawn_chances: Array[float] = [
 	16,
 	96,
-	64,
-	32,
-	16,
+	40,
+	20,
 	8,
-	4,
 	2,
 	1,
 ]

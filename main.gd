@@ -35,10 +35,10 @@ func _on_asteroid_timer_timeout() -> void:
 			await get_tree().create_timer(0.15).timeout
 
 		var asteroid = scene.instantiate()
-		asteroid.launch(screen_size, $Player.global_position)
+		add_child(asteroid, true)
 
-		if asteroid.is_valid():
-			add_child(asteroid, true)
+		# Launch the asteroid next frame so that it's fully initialized (ready).
+		asteroid.launch.call_deferred(screen_size, $Player.global_position)
 
 
 func _unhandled_input(event: InputEvent) -> void:
