@@ -12,32 +12,16 @@ func _ready() -> void:
 	Events.unpause.connect(unpause)
 	Events.pause.connect(pause)
 
-	pause()
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause"):
-		toggle_pause()
-		get_viewport().set_input_as_handled()
-
-
-func pause() -> void:
-	get_tree().set_pause(true)
-	%PauseMenu.show()
-
-
-func unpause() -> void:
-	get_tree().set_pause(false)
-	%PauseMenu.hide()
-
-
-func toggle_pause() -> void:
-	if get_tree().is_paused():
-		Events.emit_unpause()
+	# Start unpaused if running in the editor.
+	if Engine.is_embedded_in_editor() or OS.has_feature("editor"):
+		unpause()
 	else:
-		Events.emit_pause()
+		# Start paused if running as a game.
+		pause()
 
 
+## Spawn asteroids periodically.
+# TODO: Move to separate AsteroidLauncher or AsteroidSpawner node.
 func _on_asteroid_timer_timeout() -> void:
 	var scene = preload("res://Asteroid/asteroid.tscn")
 	var screen_size: Vector2 = get_viewport_rect().size
@@ -55,5 +39,31 @@ func _on_asteroid_timer_timeout() -> void:
 
 		if asteroid.is_valid():
 			add_child(asteroid, true)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("pause"):
+		toggle_pause()
+		get_viewport().set_input_as_handled()
+
+
+## Pause the game and show the pause menu.
+func pause() -> void:
+	get_tree().set_pause(true)
+	%PauseMenu.show()
+
+
+## Unpause the game and hide the pause menu.
+func unpause() -> void:
+	get_tree().set_pause(false)
+	%PauseMenu.hide()
+
+
+## Toggle the pause state.
+func toggle_pause() -> void:
+	if get_tree().is_paused():
+		Events.emit_unpause()
+	else:
+		Events.emit_pause()
 
 # EOF
