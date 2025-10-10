@@ -116,6 +116,7 @@ run = "script/bump-version"
 
 [tools]
 hk = "1.16.0"
+oxipng = "9.1.5"
 pkl = "0.29.1"
 semver = "3.4.0"
 
