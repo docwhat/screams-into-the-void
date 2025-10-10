@@ -64,7 +64,7 @@ func update_hud(matter: Matter = null) -> void:
 
 		if amt > 0:
 			name_label.text = mat.preferred_name.capitalize()
-			value_label.text = NumberTools.fnum(amt)
+			value_label.text = Global.format_number(amt)
 			box.visible = true
 			any_visible = true
 

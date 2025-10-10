@@ -9,6 +9,33 @@ class_name NumberTools
 const MAX_INT: int = 9223372036854775807 # 2^63 - 1
 const MIN_INT: int = -9223372036854775808 # -2^63
 
+enum NumberFormat {
+	NONE = 0,
+	#SHORT_SCALE = 1,
+	ENGINEERING = 2,
+	SCIENTIFIC = 3,
+}
+
+
+## Format according to [code]format[/code].
+static func format(number_format: NumberFormat, number: int) -> String:
+	match number_format:
+		NumberFormat.NONE:
+			return comma_notate_int(number)
+		NumberFormat.ENGINEERING:
+			return engineering_notate_int(number)
+		NumberFormat.SCIENTIFIC:
+			return scientific_notate_int(number)
+		_:
+			push_error(
+				"Unknown number format %s when trying to format %d" % [
+					number_format,
+					number,
+				],
+			)
+			return str(number)
+
+
 ## Returns an integer formatted in scientific notation.
 ##
 ## Scientific notation is of the form D.DDeX, where
@@ -96,6 +123,7 @@ static func engineering_notate_int(number: int) -> String:
 		e,
 	]
 
+
 ## Convert the number into a string that has a comma
 ## separating every thousandth.
 ##
@@ -105,7 +133,7 @@ static func engineering_notate_int(number: int) -> String:
 static func comma_notate_int(number: int) -> String:
 	var num: int = absi(number)
 	var num_str: String = str(num)
-	
+
 	if num < 1_000:
 		return str(number)
 
@@ -123,37 +151,3 @@ static func comma_notate_int(number: int) -> String:
 		parts.append(num_str.substr(i, 3))
 
 	return ",".join(parts)
-
-
-## FIXME: Need refactorization so I can understand it better.
-## From https://gist.github.com/t-karcher/053b7097e744bc3ba4e1d20441ab72a7
-func get_scientific_notation(
-		number: float,
-		precision: int = 99,
-		use_engineering_notation: bool = false,
-) -> String:
-	var sign_ = sign(number)
-	number = abs(number)
-	if number < 1:
-		var exp_ = step_decimals(number)
-		if use_engineering_notation:
-			exp_ = snapped(exp_ + 1, 3)
-		var coeff = sign_ * number * pow(10, exp_)
-		return str(snapped(coeff, pow(10, -precision))) + "e" + str(-exp_)
-
-	if number >= 10:
-		var exp_ = str(number).split(".")[0].length() - 1
-		if use_engineering_notation:
-			exp_ = snapped(exp_ - 1, 3)
-		var coeff = sign_ * number / pow(10, exp_)
-		return str(snapped(coeff, pow(10, -precision))) + "e" + str(exp_)
-
-	return str(snapped(sign_ * number, pow(10, -precision))) + "e0"
-
-
-## Format numbers
-func fnum(num: int) -> String:
-	if num >= 10000:
-		return get_scientific_notation(num, 2, false) # TODO: scientific, eng, etc.
-
-	return str(num)

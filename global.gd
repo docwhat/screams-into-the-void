@@ -65,5 +65,9 @@ func quit() -> void:
 ## Returns 0 or 1 50% of the time.
 func flip_coin() -> int:
 	return Global.rng.randi_range(0, 1)
+	
+## Format a string according to preferred formatter.
+func format_number(number: int) -> String:
+	return NumberTools.format(State.use_format, number)
 
 # EOF
