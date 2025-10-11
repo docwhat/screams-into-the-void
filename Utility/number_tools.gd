@@ -6,8 +6,10 @@ class_name NumberTools
 ##
 ## Just like in C, the numbers wrap.
 ## i.e., [code]MAX_INT + 1 == MIN_INT[/code]
-const MAX_INT: int = 9223372036854775807 # 2^63 - 1
-const MIN_INT: int = -9223372036854775808 # -2^63
+const MAX_INT: int = 9223372036854775807 # 2^63 - 1 ~ 9.22e18
+const MIN_INT: int = -9223372036854775808 # -2^63 ~ -9.22e18
+
+# TODO: If 9e18 isn't big enough, I'll have to use peachey2k2/break-nihility
 
 enum NumberFormat {
 	NONE = 0,
@@ -25,6 +27,17 @@ enum NumberGroupSeparator {
 enum NumberDecimalSeparator {
 	PERIOD = 0,
 	COMMA = 1,
+}
+
+## Short scale units
+## https://en.wikipedia.org/wiki/Names_of_large_numbers#Short_scale
+const SHORT_SCALE_UNIT: Dictionary[int, String] = {
+	3: "K",
+	6: "M",
+	9: "B",
+	12: "T",
+	15: "Qa",
+	18: "Qi",
 }
 
 
@@ -52,9 +65,6 @@ static func lookup_decimal_separator(sep: NumberDecimalSeparator) -> String:
 		_:
 			push_error("Unknown decimal separator %s" % sep)
 			return "."
-
-# TODO: Add short scale formatting
-# https://simple.wikipedia.org/wiki/Names_of_large_numbers
 
 
 ## Format according to [code]format[/code].
@@ -212,3 +222,49 @@ static func comma_notate_int(
 		parts.append(num_str.substr(i, 3))
 
 	return gsep.join(parts)
+
+
+## Convert the number into a string using short scale unit suffixes.
+static func short_scale_notate_int(
+		number: int,
+		decimal_separator: NumberDecimalSeparator = NumberDecimalSeparator.PERIOD,
+) -> String:
+	var num: int = absi(number)
+
+	if num < 1_000:
+		return str(number)
+
+	var sign_str: String = "-" if number < 0 else ""
+	var num_str: String = str(num)
+
+	# Grab the leading 1-3 digits before the suffix.
+	var leading_digits_size: int = num_str.length() % 3
+	var leading_digits: String
+	if leading_digits_size == 0:
+		leading_digits_size = 3
+		leading_digits = num_str.substr(0, leading_digits_size)
+	else:
+		var frac: String = num_str.substr(leading_digits_size, 3 - leading_digits_size)
+		if frac == "00":
+			frac = ""
+		elif frac.substr(frac.length() - 1, 1) == "0":
+			frac = frac.substr(0, frac.length() - 1)
+		var dsep: String = lookup_decimal_separator(decimal_separator)
+		leading_digits = "%s%s%s" % [
+			num_str.substr(0, leading_digits_size),
+			dsep if frac else "",
+			frac,
+		]
+
+	# Find the appropriate suffix.
+	var exponent: int = num_str.length() - leading_digits_size
+
+	var suffix: String = SHORT_SCALE_UNIT.get(exponent, "")
+	if suffix == "":
+		push_error("No short scale suffix for exponent %d" % exponent)
+
+	return "%s%s%s" % [
+		sign_str,
+		leading_digits,
+		suffix,
+	]

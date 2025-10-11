@@ -167,3 +167,58 @@ func test_comma_notate_int_dsep_space():
 		NumberTools.NumberGroupSeparator.SPACE,
 	)
 	assert_str(got).append_failure_message("for %d" % number).is_equal(expected)
+
+
+## Test short_scale_notate_int() returns the correct notation.
+func test_short_scale_notate_int():
+	var table: Array = [
+		# Positives
+		[1_234_567, "1.23M"],
+		[123_456, "123K"],
+		[12_345, "12.3K"],
+		[1_234, "1.23K"],
+		[123, "123"],
+		[12, "12"],
+		[1, "1"],
+
+		# Negatives
+		[-1, "-1"],
+		[-123, "-123"],
+		[-9_876, "-9.87K"],
+		[-98_765, "-98.7K"],
+		[-987_654, "-987K"],
+		[-9_876_543, "-9.87M"],
+		[-98_765_432, "-98.7M"],
+
+		# with zeros
+		[0, "0"],
+		[10, "10"],
+		[100, "100"],
+		[1_000, "1K"],
+		[10_000, "10K"],
+		[100_000, "100K"],
+		[1_000_000, "1M"],
+		[1_900, "1.9K"],
+		[19_000, "19K"],
+		[190_000, "190K"],
+
+		# Big numbers
+		[1_000_000_000, "1B"],
+		[1_500_000_000, "1.5B"],
+		[1_222_333_444_555_666_777, "1.22Qi"],
+		[1_000_000_000_000_000_000, "1Qi"],
+	]
+	for parts: Array in table:
+		var number: int = parts[0]
+		var expected: String = parts[1]
+		var got: String = NumberTools.short_scale_notate_int(number)
+
+		assert_str(
+			got,
+		).append_failure_message(
+			"got %s for %d" % [got, number],
+		).is_equal(expected)
+
+		# Fail fast
+		if is_failure():
+			return
