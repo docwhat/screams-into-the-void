@@ -16,16 +16,62 @@ enum NumberFormat {
 	SCIENTIFIC = 3,
 }
 
+enum NumberGroupSeparator {
+	COMMA = 0,
+	PERIOD = 1,
+	SPACE = 2,
+}
+
+enum NumberDecimalSeparator {
+	PERIOD = 0,
+	COMMA = 1,
+}
+
+
+## Given a NumberGroupSeparator, returns the string to use.
+static func lookup_grouping_separator(sep: NumberGroupSeparator) -> String:
+	match sep:
+		NumberGroupSeparator.COMMA:
+			return ","
+		NumberGroupSeparator.PERIOD:
+			return "."
+		NumberGroupSeparator.SPACE:
+			return " "
+		_:
+			push_error("Unknown grouping separator %s" % sep)
+			return ","
+
+
+## Given a NumberDecimalSeparator, returns the string to use.
+static func lookup_decimal_separator(sep: NumberDecimalSeparator) -> String:
+	match sep:
+		NumberDecimalSeparator.PERIOD:
+			return "."
+		NumberDecimalSeparator.COMMA:
+			return ","
+		_:
+			push_error("Unknown decimal separator %s" % sep)
+			return "."
+
+# TODO: Add short scale formatting
+# https://simple.wikipedia.org/wiki/Names_of_large_numbers
+
 
 ## Format according to [code]format[/code].
-static func format(number_format: NumberFormat, number: int) -> String:
+static func format(
+		number: int,
+		number_format: NumberFormat,
+		grouping_separator: NumberGroupSeparator = NumberGroupSeparator.COMMA,
+		decimal_separator: NumberDecimalSeparator = NumberDecimalSeparator.PERIOD,
+) -> String:
+	var formatted: String
 	match number_format:
 		NumberFormat.NONE:
-			return comma_notate_int(number)
+			formatted = comma_notate_int(number, grouping_separator)
 		NumberFormat.ENGINEERING:
-			return engineering_notate_int(number)
+			formatted = engineering_notate_int(number, decimal_separator)
 		NumberFormat.SCIENTIFIC:
-			return scientific_notate_int(number)
+			formatted = scientific_notate_int(number, decimal_separator)
 		_:
 			push_error(
 				"Unknown number format %s when trying to format %d" % [
@@ -33,7 +79,9 @@ static func format(number_format: NumberFormat, number: int) -> String:
 					number,
 				],
 			)
-			return str(number)
+			formatted = str(number)
+
+	return formatted
 
 
 ## Returns an integer formatted in scientific notation.
@@ -45,9 +93,13 @@ static func format(number_format: NumberFormat, number: int) -> String:
 ## Examples:
 ##  1234 -> "1.23e3"
 ##  12345 -> "1
-static func scientific_notate_int(number: int) -> String:
+static func scientific_notate_int(
+		number: int,
+		decimal_separator: NumberDecimalSeparator = NumberDecimalSeparator.PERIOD,
+) -> String:
 	var sign_str: String = "-" if number < 0 else ""
 	var num: int = absi(number)
+	var dsep: String = lookup_decimal_separator(decimal_separator)
 
 	if num < 1_000:
 		return str(number)
@@ -64,7 +116,7 @@ static func scientific_notate_int(number: int) -> String:
 		trailing_digits = trailing_digits.substr(0, 1)
 
 	if trailing_digits:
-		trailing_digits = ".%s" % trailing_digits
+		trailing_digits = "%s%s" % [dsep, trailing_digits]
 
 	return "%s%s%se%d" % [
 		sign_str,
@@ -83,8 +135,12 @@ static func scientific_notate_int(number: int) -> String:
 ##  1234 -> "1.23e3"
 ##  12345 -> "12.3e3"
 ##  123456 -> "123e3"
-static func engineering_notate_int(number: int) -> String:
+static func engineering_notate_int(
+		number: int,
+		decimal_separator: NumberDecimalSeparator = NumberDecimalSeparator.PERIOD,
+) -> String:
 	var num: int = absi(number)
+	var dsep: String = lookup_decimal_separator(decimal_separator)
 
 	# If it's less than 1,000 we don't need to do anything.
 	if num < 1_000:
@@ -107,8 +163,9 @@ static func engineering_notate_int(number: int) -> String:
 			frac = frac.substr(0, frac.length() - 1)
 
 		if frac:
-			mantissa = "%s.%s" % [
+			mantissa = "%s%s%s" % [
 				num_str.substr(0, decimal_size),
+				dsep,
 				frac,
 			]
 		else:
@@ -130,9 +187,13 @@ static func engineering_notate_int(number: int) -> String:
 ## Examples:
 ##  1234 -> "1,234"
 ##  1234567 -> "1,234,567"
-static func comma_notate_int(number: int) -> String:
+static func comma_notate_int(
+		number: int,
+		grouping_separator: NumberGroupSeparator = NumberGroupSeparator.COMMA,
+) -> String:
 	var num: int = absi(number)
 	var num_str: String = str(num)
+	var gsep: String = lookup_grouping_separator(grouping_separator)
 
 	if num < 1_000:
 		return str(number)
@@ -150,4 +211,4 @@ static func comma_notate_int(number: int) -> String:
 	for i: int in range(first_digits_size, num_str.length(), 3):
 		parts.append(num_str.substr(i, 3))
 
-	return ",".join(parts)
+	return gsep.join(parts)

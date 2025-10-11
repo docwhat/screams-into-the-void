@@ -44,6 +44,17 @@ func test_scientific_notate_int():
 			return
 
 
+## Test that scientific_notate_int() handles comma decimal separators.
+func test_scientific_notate_int_dsep_comma():
+	var number: int = 1_234_567
+	var expected: String = "1,23e6"
+	var got: String = NumberTools.scientific_notate_int(
+		number,
+		NumberTools.NumberDecimalSeparator.COMMA,
+	)
+	assert_str(got).append_failure_message("for %d" % number).is_equal(expected)
+
+
 ## Test that engineering_notate_int() returns the correct notation.
 func test_engineering_notate_int():
 	var table: Array = [
@@ -91,6 +102,18 @@ func test_engineering_notate_int():
 		if is_failure():
 			return
 
+
+## Test that engineering_notate_int() handles comma decimal separators.
+func test_engineering_notate_int_dsep_comma():
+	var number: int = 12_345
+	var expected: String = "12,3e3"
+	var got: String = NumberTools.engineering_notate_int(
+		number,
+		NumberTools.NumberDecimalSeparator.COMMA,
+	)
+	assert_str(got).append_failure_message("for %d" % number).is_equal(expected)
+
+
 ## Test that comma_notate_int() returns the correct notation.
 func test_comma_notate_int():
 	var table: Array = [
@@ -116,9 +139,31 @@ func test_comma_notate_int():
 		var number: int = parts[0]
 		var expected: String = parts[1]
 		var got: String = NumberTools.comma_notate_int(number)
-		
+
 		assert_str(got).append_failure_message("for %d" % [number]).is_equal(expected)
 
 		# Fail fast
 		if is_failure():
 			return
+
+
+## Test that comma_notate_int() handles period decimal separators.
+func test_comma_notate_int_dsep_period():
+	var number: int = 1_234_567
+	var expected: String = "1.234.567"
+	var got: String = NumberTools.comma_notate_int(
+		number,
+		NumberTools.NumberGroupSeparator.PERIOD,
+	)
+	assert_str(got).append_failure_message("for %d" % number).is_equal(expected)
+
+
+## Test that comma_notate_int() handles space decimal separators.
+func test_comma_notate_int_dsep_space():
+	var number: int = 1_234_567
+	var expected: String = "1 234 567"
+	var got: String = NumberTools.comma_notate_int(
+		number,
+		NumberTools.NumberGroupSeparator.SPACE,
+	)
+	assert_str(got).append_failure_message("for %d" % number).is_equal(expected)
