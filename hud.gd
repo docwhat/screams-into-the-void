@@ -13,7 +13,7 @@ var value_tweens: Dictionary[Matter, Tween] = { }
 func add_label(matter: Matter):
 	# Add name label.
 	var name_label: Label = Label.new()
-	name_label.name = "name_%s" % matter.name.replace(" ", "_")
+	name_label.name = "name_%s" % matter.symbol
 	name_label.text = matter.preferred_name.capitalize()
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -21,7 +21,7 @@ func add_label(matter: Matter):
 
 	# Add value label.
 	var value_label: Label = Label.new()
-	value_label.name = "value_%s" % matter.name.replace(" ", "_")
+	value_label.name = "value_%s" % matter.symbol
 	value_label.text = "0"
 	value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	value_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL

@@ -25,7 +25,7 @@ func after_test():
 func test_element_init():
 	var e := Element.new("test", "T", 1.23)
 	assert_str(e.name).is_equal("test")
-	assert_str(e.symbol).is_equal("T")
+	assert_str(e.symbol).is_equal("t")
 	assert_float(e.mass).is_equal(1.23)
 
 
@@ -33,7 +33,7 @@ func test_element_init():
 func test_molecule_init():
 	var m := Molecule.new("test_molecule", "TM", 4.56)
 	assert_str(m.name).is_equal("test_molecule")
-	assert_str(m.symbol).is_equal("TM")
+	assert_str(m.symbol).is_equal("tm")
 	assert_float(m.mass).is_equal(4.56)
 
 
@@ -65,4 +65,4 @@ func test_preferred_name():
 	State.use_symbols = false
 	assert_str(Matter.carbon.preferred_name).is_equal("carbon")
 	State.use_symbols = true
-	assert_str(Matter.carbon.preferred_name).is_equal("C")
+	assert_str(Matter.carbon.preferred_name).is_equal("c")

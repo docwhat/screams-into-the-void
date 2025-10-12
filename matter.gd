@@ -9,6 +9,8 @@ var mass: float
 
 ## An array of all registered Matter types.
 static var all_matter: Array[Matter] = []
+static var matter_by_name: Dictionary[StringName, Matter] = { }
+static var matter_by_symbol: Dictionary[StringName, Matter] = { }
 
 ## A lookup dictionary from name to Matter instance.
 static var lookup: Dictionary[StringName, Matter] = { }
@@ -19,27 +21,39 @@ var preferred_name: String:
 		return symbol if State.use_symbols else str(name)
 
 
-func _init(name_: StringName, symbol_: String, mass_: float) -> void:
-	name = name_
-	symbol = symbol_
+func _init(name_: StringName, symbol_: StringName, mass_: float) -> void:
+	name = name_.to_lower()
+	symbol = symbol_.to_lower()
 	mass = mass_
 	all_matter.append(self)
 	lookup[self.name] = self
+
+	# Throw an error if there is a duplicate name or symbol.
+	if name in matter_by_name:
+		push_error("Duplicate Matter name: %s" % name)
+	else:
+		matter_by_name[name] = self
+
+	if symbol in matter_by_symbol:
+		push_error("Duplicate Matter symbol: %s" % symbol)
+	else:
+		matter_by_symbol[symbol] = self
+
 	all_matter.sort_custom(func sort_by_mass(a: Matter, b: Matter) -> bool: return a.mass < b.mass)
 
 # Elements
-static var hydrogen = Element.new(&"hydrogen", "H", 1.01)
-static var helium = Element.new(&"helium", "He", 4.00)
-static var carbon = Element.new(&"carbon", "C", 12.01)
-static var nitrogen = Element.new(&"nitrogen", "N", 14.01)
-static var oxygen = Element.new(&"oxygen", "O", 16.00)
-static var magnesium = Element.new(&"magnesium", "Mg", 24.31)
-static var silicon = Element.new(&"silicon", "Si", 28.09)
-static var sulfer = Element.new(&"sulfer", "S", 32.06)
-static var iron = Element.new(&"iron", "Fe", 55.85)
-static var nickel = Element.new(&"nickel", "Ni", 58.69)
-static var copper = Element.new(&"copper", "Cu", 63.55)
-static var uranium = Element.new(&"uranium", "U", 238.03)
+static var hydrogen = Element.new(&"hydrogen", &"h", 1.01)
+static var helium = Element.new(&"helium", &"he", 4.00)
+static var carbon = Element.new(&"carbon", &"c", 12.01)
+static var nitrogen = Element.new(&"nitrogen", &"n", 14.01)
+static var oxygen = Element.new(&"oxygen", &"o", 16.00)
+static var magnesium = Element.new(&"magnesium", &"mg", 24.31)
+static var silicon = Element.new(&"silicon", &"si", 28.09)
+static var sulfer = Element.new(&"sulfer", &"s", 32.06)
+static var iron = Element.new(&"iron", &"fe", 55.85)
+static var nickel = Element.new(&"nickel", &"ni", 58.69)
+static var copper = Element.new(&"copper", &"cu", 63.55)
+static var uranium = Element.new(&"uranium", &"u", 238.03)
 
 # Molecules
-static var water = Molecule.new(&"water", "H2O", 2 * hydrogen.mass + oxygen.mass)
+static var water = Molecule.new(&"water", &"h2o", 2 * hydrogen.mass + oxygen.mass)
