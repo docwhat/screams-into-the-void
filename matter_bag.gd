@@ -29,7 +29,7 @@ func duplicate_bag() -> MatterBag:
 
 ## Given a Matter's name, returns the amount in the bag.
 func get_by_name(matter_name: StringName, default: int = 0) -> int:
-	var matter: Matter = Matter.lookup.get(matter_name, null)
+	var matter: Matter = Matter.by_name.get(matter_name, null)
 	if matter == null:
 		return default
 	return get_by_matter(matter, default)
@@ -37,7 +37,7 @@ func get_by_name(matter_name: StringName, default: int = 0) -> int:
 
 ## Given a Matter's name, sets the amount in the bag.
 func set_by_name(matter_name: StringName, amt: int) -> void:
-	var matter: Matter = Matter.lookup.get(matter_name, null)
+	var matter: Matter = Matter.by_name.get(matter_name, null)
 	if matter == null:
 		return
 	set_by_matter(matter, amt)

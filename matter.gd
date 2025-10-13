@@ -9,11 +9,12 @@ var mass: float
 
 ## An array of all registered Matter types.
 static var all_matter: Array[Matter] = []
-static var matter_by_name: Dictionary[StringName, Matter] = { }
-static var matter_by_symbol: Dictionary[StringName, Matter] = { }
 
-## A lookup dictionary from name to Matter instance.
-static var lookup: Dictionary[StringName, Matter] = { }
+## A lookup dictionary for Matter by name.
+static var by_name: Dictionary[StringName, Matter] = { }
+
+## A lookup dictionary for Matter by symbol.
+static var by_symbol: Dictionary[StringName, Matter] = { }
 
 ## The name, as set in user preferences.
 var preferred_name: String:
@@ -26,18 +27,17 @@ func _init(name_: StringName, symbol_: StringName, mass_: float) -> void:
 	symbol = symbol_.to_lower()
 	mass = mass_
 	all_matter.append(self)
-	lookup[self.name] = self
 
 	# Throw an error if there is a duplicate name or symbol.
-	if name in matter_by_name:
+	if name in by_name:
 		push_error("Duplicate Matter name: %s" % name)
 	else:
-		matter_by_name[name] = self
+		by_name[name] = self
 
-	if symbol in matter_by_symbol:
+	if symbol in by_symbol:
 		push_error("Duplicate Matter symbol: %s" % symbol)
 	else:
-		matter_by_symbol[symbol] = self
+		by_symbol[symbol] = self
 
 	all_matter.sort_custom(func sort_by_mass(a: Matter, b: Matter) -> bool: return a.mass < b.mass)
 

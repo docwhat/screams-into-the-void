@@ -66,7 +66,7 @@ func test_get_property_list_includes_all_matter_types():
 	var got_names: Array[StringName] = []
 	for prop: Dictionary in matter_props:
 		got_names.append(prop["name"].get_slice("/", 1))
-	var expected_names: Array[StringName] = Matter.lookup.keys()
+	var expected_names: Array[StringName] = Matter.by_name.keys()
 
 	assert_array(got_names).contains_exactly_in_any_order(expected_names)
 
