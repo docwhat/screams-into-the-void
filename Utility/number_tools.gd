@@ -13,7 +13,7 @@ const MIN_INT: int = -9223372036854775808 # -2^63 ~ -9.22e18
 
 enum NumberFormat {
 	NONE = 0,
-	#SHORT_SCALE = 1,
+	SHORT_SCALE = 1,
 	ENGINEERING = 2,
 	SCIENTIFIC = 3,
 }
