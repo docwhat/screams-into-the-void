@@ -5,4 +5,7 @@
 [node name="Global" type="Node"]
 script = ExtResource("1_4mbhf")
 star_speed = 0.01
-asteroid_player_intercept_chance = 0.87
+asteroid_max = 23
+asteroid_max_spawn_timer = 2.5
+asteroid_max_asteroids_to_add = 5
+asteroid_player_intercept_chance = 0.75

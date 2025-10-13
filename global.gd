@@ -7,6 +7,15 @@ var resolution: Vector2 = Vector2(
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
+## The main play field node.
+var play_field: CanvasLayer
+
+## The player node.
+var player_node: Area2D
+
+## The main viewport.
+var viewport: Viewport
+
 ## Debugging flags
 @export_group("Debugging", "debug_")
 @export_subgroup("Asteroid", "debug_asteroid_")
@@ -28,30 +37,41 @@ var player_position: Vector2
 
 @export_group("Asteroids", "asteroid_")
 
+## The number of asteroids currently active on screen (or about to be on screen).
+var asteroid_count: int = 0
+
+## The maximum number of asteroids allowed on screen at once.
+@export_range(1, 256, 1, "or_greater") var asteroid_max: int = 30
+
+# The minimum and maximum wait time between spawns.
+@export var asteroid_min_spawn_timer: float = 0.5
+@export var asteroid_max_spawn_timer: float = 4.0
+
+# Controls the randomness of the spawn timer.
+@export var asteroid_spawn_randomness: float = 0.2
+
+# The minimum and maximum number of asteroids to add per spawn.
+@export var asteroid_min_asteroids_to_add: int = 1
+@export var asteroid_max_asteroids_to_add: int = 3
+
 ## Chance that an asteroid aims directly for the player. 1.0 == 100%
 @export_range(0.0, 1.0, 0.01) var asteroid_player_intercept_chance: float = 0.3
 
-## Change that an asteroid is spawned, weighted. The number of asteroids is
-## the index.
-@export_range(0, 96, 1, "or_greater") var asteroid_spawn_chances: Array[float] = [
-	16,
-	96,
-	40,
-	20,
-	8,
-	2,
-	1,
-]
 @export_group("")
-
-
-## The number of asteroids to spawn based on the spawn chances.
-func number_of_asteroids_to_spawn() -> int:
-	return rng.rand_weighted(asteroid_spawn_chances)
 
 
 func _ready() -> void:
 	rng.randomize()
+
+
+## Decrease the asteroid count by one.
+func decrement_asteroid_count() -> void:
+	asteroid_count = max(0, asteroid_count - 1)
+
+
+## Increase the asteroid count by one.
+func increment_asteroid_count() -> void:
+	asteroid_count += 1
 
 
 ## Use this to quit the game. It'll work reliably on all platforms.

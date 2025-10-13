@@ -1,8 +1,6 @@
 class_name Asteroid
 extends RigidBody2D
 
-static var count: int = 0
-
 ## Has this asteroid been made visible?
 var debuted: bool = false
 
@@ -55,7 +53,7 @@ func _init() -> void:
 
 func _ready() -> void:
 	rebuild()
-	count += 1
+	Global.increment_asteroid_count()
 
 
 func _process(_delta: float) -> void:
@@ -136,7 +134,6 @@ func be_absorbed() -> void:
 	collision_polygon_2d.set_disabled.call_deferred(true)
 	set_freeze_enabled.call_deferred(true)
 	trigger_dissolve.call_deferred()
-	count -= 1
 
 
 ## Animate the dissolution of the asteroid.
@@ -199,9 +196,9 @@ func trigger_dissolve() -> void:
 
 ## Buh-bye.
 func die() -> void:
-	count -= 1
 	get_parent().remove_child(self)
 	queue_free()
+	Global.decrement_asteroid_count()
 
 
 ## check if the position is within the viewport
@@ -217,7 +214,9 @@ func is_on_screen() -> bool:
 
 
 ## Fling an asteroid at someone.
-func launch(screen_size: Vector2, player_coord: Vector2) -> Node:
+func launch() -> Node:
+	var screen_size: Vector2 = Global.play_field.get_viewport().get_visible_rect().size
+	var player_coord: Vector2 = Global.player_node.global_position
 	# TODO: Don't launch if there are too many asteroids on screen.
 	var target_coord: Vector2
 	var direction: float

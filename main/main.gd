@@ -1,15 +1,20 @@
 extends Control
 
-const ASTEROID: PackedScene = preload("uid://dgo8gq5d22uf")
+var asteroid_launcher: AsteroidLauncher
+
+
+func _init_global() -> void:
+	Global.rng.randomize()
+	Global.play_field = %PlayField
+	Global.player_node = %Player
+	Global.viewport = get_viewport()
 
 
 func _ready() -> void:
-	Global.rng.randomize()
-	#resized.connect(_on_resized)
-	var viewport: Viewport = get_viewport()
+	_init_global()
 
 	# We're only using 2D here.
-	viewport.set_disable_3d(true)
+	Global.viewport.set_disable_3d(true)
 
 	# Connect Signals
 	Events.unpause.connect(unpause)
@@ -22,25 +27,10 @@ func _ready() -> void:
 		# Start paused if running as a game.
 		pause()
 
-
-## Spawn asteroids periodically.
-# TODO: Move to separate AsteroidLauncher or AsteroidSpawner node.
-func _on_asteroid_timer_timeout() -> void:
-	var screen_size: Vector2 = get_viewport_rect().size
-
-	# Check if an asteroid should spawn.
-	var count: int = Global.number_of_asteroids_to_spawn()
-
-	for i: int in range(count):
-		# Sleep if this asteroid isn't the only one being spawned in a row.
-		if i > 0:
-			await get_tree().create_timer(0.15).timeout
-
-		var asteroid = ASTEROID.instantiate()
-		%PlayField.add_child(asteroid, true)
-
-		# Launch the asteroid next frame so that it's fully initialized (ready).
-		asteroid.launch.call_deferred(screen_size, %Player.global_position)
+	await get_tree().process_frame
+	asteroid_launcher = AsteroidLauncher.new()
+	add_child(asteroid_launcher)
+	asteroid_launcher.start()
 
 
 func _unhandled_input(event: InputEvent) -> void:
