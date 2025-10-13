@@ -1,5 +1,8 @@
 extends Control
 
+const ASTEROID: PackedScene = preload("uid://dgo8gq5d22uf")
+
+
 func _ready() -> void:
 	Global.rng.randomize()
 	#resized.connect(_on_resized)
@@ -23,7 +26,6 @@ func _ready() -> void:
 ## Spawn asteroids periodically.
 # TODO: Move to separate AsteroidLauncher or AsteroidSpawner node.
 func _on_asteroid_timer_timeout() -> void:
-	var scene = preload("res://Asteroid/asteroid.tscn")
 	var screen_size: Vector2 = get_viewport_rect().size
 
 	# Check if an asteroid should spawn.
@@ -34,16 +36,16 @@ func _on_asteroid_timer_timeout() -> void:
 		if i > 0:
 			await get_tree().create_timer(0.15).timeout
 
-		var asteroid = scene.instantiate()
-		add_child(asteroid, true)
+		var asteroid = ASTEROID.instantiate()
+		%PlayField.add_child(asteroid, true)
 
 		# Launch the asteroid next frame so that it's fully initialized (ready).
-		asteroid.launch.call_deferred(screen_size, $Player.global_position)
+		asteroid.launch.call_deferred(screen_size, %Player.global_position)
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause"):
-		toggle_pause()
+	if event.is_action_pressed(&"pause") and not get_tree().is_paused():
+		pause()
 		get_viewport().set_input_as_handled()
 
 
@@ -57,13 +59,5 @@ func pause() -> void:
 func unpause() -> void:
 	get_tree().set_pause(false)
 	%PauseMenu.hide()
-
-
-## Toggle the pause state.
-func toggle_pause() -> void:
-	if get_tree().is_paused():
-		Events.emit_unpause()
-	else:
-		Events.emit_pause()
 
 # EOF
