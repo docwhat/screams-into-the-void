@@ -253,7 +253,7 @@ func launch(screen_size: Vector2, player_coord: Vector2) -> Node:
 	var velocity = Vector2(speed * get_mass(), 0.0).rotated(direction)
 
 	# Brute-force angular velocity for now. See comment below.
-	angular_velocity = Global.rng.randf_range(0 - TAU/4.0, TAU/4.0)
+	angular_velocity = Global.rng.randf_range(0 - TAU / 4.0, TAU / 4.0)
 	if Global.rng.randf() < 0.25:
 		angular_velocity *= 2.0
 
