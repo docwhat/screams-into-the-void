@@ -91,9 +91,9 @@ func flip_coin() -> int:
 func format_number(number: int) -> String:
 	return NumberTools.format(
 		number,
-		State.use_format,
-		State.number_grouping_separator,
-		State.number_decimal_separator,
+		GameSave.use_format,
+		GameSave.number_grouping_separator,
+		GameSave.number_decimal_separator,
 	)
 
 # EOF

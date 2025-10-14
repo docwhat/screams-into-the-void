@@ -19,7 +19,8 @@ static var by_symbol: Dictionary[StringName, Matter] = { }
 ## The name, as set in user preferences.
 var preferred_name: String:
 	get():
-		return symbol if State.use_symbols else str(name)
+		# TODO: Remove the dependency on GameSave.
+		return symbol if GameSave.use_symbols else str(name)
 
 
 func _init(name_: StringName, symbol_: StringName, mass_: float) -> void:

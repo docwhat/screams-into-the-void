@@ -28,7 +28,7 @@ config/icon="res://icon.svg"
 Global="*res://global.tscn"
 ColorSchemes="*res://color_schemes.gd"
 Events="*res://events.gd"
-State="*res://state.tscn"
+GameSave="*res://game_save.tscn"
 
 [debug]
 

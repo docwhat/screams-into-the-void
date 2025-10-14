@@ -6,6 +6,9 @@ var absorber: Absorber = StarterAbsorber.new()
 
 @export_group("Options")
 
+## Does the player want us to use VSync?
+@export var use_vsync: bool = true
+
 ## Use the short symbols or the full names for matter?
 @export var use_symbols: bool = false
 

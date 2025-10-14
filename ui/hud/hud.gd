@@ -45,7 +45,7 @@ func _ready() -> void:
 	for matter: Matter in Matter.all_matter:
 		add_label(matter)
 
-	State.matter.matter_changed.connect(update_hud)
+	GameSave.matter.matter_changed.connect(update_hud)
 
 	# Wait a frame to ensure all nodes are ready.
 	await Engine.get_main_loop().process_frame
@@ -62,7 +62,7 @@ func update_hud(matter: Matter = null) -> void:
 		to_update = Matter.all_matter.duplicate()
 
 	for mat: Matter in to_update:
-		var amt: int = State.matter.get_by_matter(mat)
+		var amt: int = GameSave.matter.get_by_matter(mat)
 		var name_label: Label = name_labels[mat]
 		var value_label: Label = value_labels[mat]
 

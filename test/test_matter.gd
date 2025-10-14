@@ -80,9 +80,9 @@ func test_by_symbol():
 
 ## Test that preferred_name works.
 func test_preferred_name():
-	State.use_symbols = false
+	GameSave.use_symbols = false
 	assert_str(Matter.carbon.preferred_name).is_equal("carbon")
-	State.use_symbols = true
+	GameSave.use_symbols = true
 	assert_str(Matter.carbon.preferred_name).is_equal("c")
 
 
