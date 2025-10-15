@@ -46,6 +46,8 @@ func _ready() -> void:
 		add_label(matter)
 
 	GameSave.matter.matter_changed.connect(update_hud)
+	GameSave.use_format_changed.connect(update_hud)
+	GameSave.use_symbols_changed.connect(update_hud)
 	Events.update_hud_requested.connect(update_hud)
 
 	# Wait a frame to ensure all nodes are ready.

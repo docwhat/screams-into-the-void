@@ -8,7 +8,7 @@ var absorber: Absorber
 func _ready() -> void:
 	absorber = StarterAbsorber.new()
 
-	get_viewport().connect("size_changed", _on_resized)
+	get_viewport().size_changed.connect(_on_resized)
 	recenter_player.call_deferred()
 
 	Events.asteroid_hit.connect(asteroid_hit)

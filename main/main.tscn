@@ -76,5 +76,3 @@ metadata/_custom_type_script = "uid://cj8s6t717xr4y"
 [node name="OptionsState" type="Node" parent="CurrentWindow"]
 script = ExtResource("12_fwcvl")
 metadata/_custom_type_script = "uid://cj8s6t717xr4y"
-
-[connection signal="visibility_changed" from="PauseScreen/OptionsMenu" to="PauseScreen/OptionsMenu" method="_on_visibility_changed"]
