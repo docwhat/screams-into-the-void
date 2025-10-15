@@ -11,7 +11,7 @@ func start() -> void:
 		var next_spawn_time: float = calculate_spawn_timer()
 
 		# Wait for the calculated time.
-		await get_tree().create_timer(next_spawn_time).timeout
+		await get_tree().create_timer(next_spawn_time, false).timeout
 
 		# Only spawn if there is still room on the screen.
 		if Global.asteroid_count < Global.asteroid_max:
