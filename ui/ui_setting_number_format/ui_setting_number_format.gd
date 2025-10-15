@@ -17,20 +17,6 @@ signal number_format_changed(new_format: NumberTools.NumberFormat)
 		return label.text
 
 
-func _ready() -> void:
-	# Here for ease of reference.
-	var formats = NumberTools.NumberFormat
-
-	# Remove any items hanging around from the UI.
-	option_button.clear()
-
-	if Engine.is_editor_hint():
-		option_button.add_item("none", formats.NONE)
-	option_button.add_item("short", formats.SHORT_SCALE)
-	option_button.add_item("engineer", formats.ENGINEERING)
-	option_button.add_item("science", formats.SCIENTIFIC)
-
-
 ## Forward the requested format to the control.
 func select(format: NumberTools.NumberFormat) -> void:
 	option_button.selected = format as int

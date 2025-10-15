@@ -64,6 +64,7 @@ title = "VSync"
 text = "VSync"
 
 [node name="UseSymbols" parent="Options/MarginContainer/VBoxContainer" instance=ExtResource("3_f75v3")]
+unique_name_in_owner = true
 layout_mode = 2
 title = "use symbols"
 
@@ -87,7 +88,9 @@ size_flags_horizontal = 3
 layout_mode = 2
 text = "close"
 
-[connection signal="toggled" from="Options/MarginContainer/VBoxContainer/UseSymbols" to="." method="_on_use_symbols_toggled"]
+[connection signal="toggled" from="Options/MarginContainer/VBoxContainer/VSync" to="." method="on_v_sync_toggled"]
+[connection signal="toggled" from="Options/MarginContainer/VBoxContainer/UseSymbols" to="." method="on_use_symbols_toggled"]
+[connection signal="number_format_changed" from="Options/MarginContainer/VBoxContainer/NumberFormat" to="." method="on_number_format_changed"]
 [connection signal="pressed" from="Options/MarginContainer/VBoxContainer/HBoxContainer/Close" to="." method="_on_close_pressed"]
 
 [editable path="Options/MarginContainer/VBoxContainer/VSync"]

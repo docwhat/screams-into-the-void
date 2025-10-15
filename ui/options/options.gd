@@ -3,8 +3,9 @@ extends Control
 # Note to self: This node's "processing" is set to run only when paused.
 
 func _ready() -> void:
-	_init_vsync()
-	_init_number_format()
+	%VSync.set_pressed_no_signal(GameSave.use_vsync)
+	%NumberFormat.select(GameSave.use_format)
+	%UseSymbols.set_pressed_no_signal(GameSave.use_symbols)
 
 
 func _on_visibility_changed() -> void:
@@ -12,19 +13,8 @@ func _on_visibility_changed() -> void:
 		%VSync/CheckBox.grab_focus.call_deferred()
 
 
-## Initialize the VSync setting control.
-func _init_vsync() -> void:
-	var is_on: bool = GameSave.use_vsync
-	%VSync.set_pressed_no_signal(is_on)
-
-
-## Initialize the number format setting control.
-func _init_number_format() -> void:
-	%NumberFormat.select(GameSave.use_format)
-	%NumberFormat.number_format_changed.connect(_on_number_format_number_format_changed)
-
-
-func _on_v_sync_toggled(is_on: Variant) -> void:
+## Change the V-Sync when the toggle is changed.
+func on_v_sync_toggled(is_on: Variant) -> void:
 	var new_mode: DisplayServer.VSyncMode
 
 	if is_on:
@@ -34,19 +24,24 @@ func _on_v_sync_toggled(is_on: Variant) -> void:
 
 	DisplayServer.window_set_vsync_mode(new_mode)
 	GameSave.use_vsync = is_on
+
+
+## When the number format is changed.
+func on_number_format_changed(new_format: NumberTools.NumberFormat) -> void:
+	GameSave.use_format = new_format
+	# TODO: This should happen automatically when the GameSave value is changed.
 	Events.request_hud_update()
 
 
-func _on_number_format_number_format_changed(new_format: NumberTools.NumberFormat) -> void:
-	GameSave.use_format = new_format
+## When the symbols button is checked.checked
+func on_use_symbols_toggled(is_on: bool) -> void:
+	GameSave.use_symbols = is_on
+	# TODO: This should happen automatically when the GameSave value is changed.
+	Events.request_hud_update()
 
 
+## When the close button is pressed.
 func _on_close_pressed() -> void:
 	# TODO: I don't like this.
 	# I feel like it should be something like window_thingy.close(me) or something like that.
 	Events.request_window("PauseState")
-
-
-func _on_use_symbols_toggled(is_on: bool) -> void:
-	GameSave.use_symbols = is_on
-	Events.request_hud_update()
