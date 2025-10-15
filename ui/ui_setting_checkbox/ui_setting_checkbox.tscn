@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://bcxkhh5pgx5a5"]
+
+[ext_resource type="Script" uid="uid://dqi1hmmohi2h3" path="res://ui/ui_setting_checkbox/ui_setting_checkbox.gd" id="1_auk1y"]
+
+[node name="UISettingCheckbox" type="HBoxContainer"]
+script = ExtResource("1_auk1y")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "label"
+
+[node name="CheckBox" type="CheckBox" parent="."]
+layout_mode = 2
+
+[connection signal="toggled" from="CheckBox" to="." method="_on_check_box_toggled"]

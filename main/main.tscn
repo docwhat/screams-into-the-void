@@ -1,11 +1,17 @@
-[gd_scene load_steps=8 format=3 uid="uid://drbf8d237goj"]
+[gd_scene load_steps=14 format=3 uid="uid://drbf8d237goj"]
 
 [ext_resource type="Script" uid="uid://3lpx3nh5ceyj" path="res://main/main.gd" id="1_h2yge"]
 [ext_resource type="Shader" uid="uid://bxg7qu236s2yc" path="res://Shaders/stars.gdshader" id="2_h2yge"]
 [ext_resource type="Script" uid="uid://c0mgsc65vwhad" path="res://stars.gd" id="3_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://caukx28w36jxj" path="res://player/player.tscn" id="4_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://bayljo5eg711g" path="res://ui/hud/hud.tscn" id="5_7mycd"]
+[ext_resource type="Script" uid="uid://kn782r7rb2f4" path="res://main/pause_screen.gd" id="6_67ri8"]
+[ext_resource type="PackedScene" uid="uid://b4pbt5vip1byl" path="res://ui/options/options.tscn" id="7_4dugh"]
 [ext_resource type="PackedScene" uid="uid://cxx6npgbsdpw" path="res://ui/pause/pause.tscn" id="7_272bh"]
+[ext_resource type="Script" uid="uid://b7pg4qqruu7th" path="res://main/current_window.gd" id="9_fwcvl"]
+[ext_resource type="Script" uid="uid://d0kx2q0l6adtj" path="res://main/play_field_state.gd" id="10_bsumw"]
+[ext_resource type="Script" uid="uid://c6k13vu8c4twm" path="res://main/pause_state.gd" id="11_fwcvl"]
+[ext_resource type="Script" uid="uid://1nc6ia5ynow4" path="res://main/options_state.gd" id="12_fwcvl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xm2m"]
 shader = ExtResource("2_h2yge")
@@ -43,9 +49,32 @@ position = Vector2(640, 656)
 visible = false
 
 [node name="PauseScreen" type="CanvasLayer" parent="."]
+process_mode = 2
+script = ExtResource("6_67ri8")
 
 [node name="PauseMenu" parent="PauseScreen" instance=ExtResource("7_272bh")]
 unique_name_in_owner = true
-process_mode = 2
+visible = false
 
-[connection signal="timeout" from="AsteroidTimer" to="." method="_on_asteroid_timer_timeout"]
+[node name="OptionsMenu" parent="PauseScreen" instance=ExtResource("7_4dugh")]
+unique_name_in_owner = true
+visible = false
+
+[node name="CurrentWindow" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("9_fwcvl")
+metadata/_custom_type_script = "uid://di13056p5aubc"
+
+[node name="PlayFieldState" type="Node" parent="CurrentWindow"]
+script = ExtResource("10_bsumw")
+metadata/_custom_type_script = "uid://cj8s6t717xr4y"
+
+[node name="PauseState" type="Node" parent="CurrentWindow"]
+script = ExtResource("11_fwcvl")
+metadata/_custom_type_script = "uid://cj8s6t717xr4y"
+
+[node name="OptionsState" type="Node" parent="CurrentWindow"]
+script = ExtResource("12_fwcvl")
+metadata/_custom_type_script = "uid://cj8s6t717xr4y"
+
+[connection signal="visibility_changed" from="PauseScreen/OptionsMenu" to="PauseScreen/OptionsMenu" method="_on_visibility_changed"]

@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://dvsyodigegbpk"]
+
+[ext_resource type="Script" uid="uid://d1o7qxdw1kv2l" path="res://ui/ui_setting_number_format/ui_setting_number_format.gd" id="1_wrhog"]
+
+[node name="UiSettingNumberFormat" type="HBoxContainer"]
+script = ExtResource("1_wrhog")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "label"
+
+[node name="OptionButton" type="OptionButton" parent="."]
+layout_mode = 2
+
+[connection signal="item_selected" from="OptionButton" to="." method="_on_option_button_item_selected"]

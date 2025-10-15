@@ -46,6 +46,7 @@ func _ready() -> void:
 		add_label(matter)
 
 	GameSave.matter.matter_changed.connect(update_hud)
+	Events.update_hud_requested.connect(update_hud)
 
 	# Wait a frame to ensure all nodes are ready.
 	await Engine.get_main_loop().process_frame

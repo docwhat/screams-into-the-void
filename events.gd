@@ -5,21 +5,22 @@ extends Node
 signal asteroid_hit
 
 
+## Signal that an asteroid hit the player.
 func emit_asteroid_hit(asteroid: Asteroid) -> void:
 	asteroid_hit.emit(asteroid)
 
-## Send to unpause the game.
-## Listen if you need to perform an action when the game resumes.
-signal unpause
+## A window has been requested to be shown.
+signal window_requested(state_name: String)
 
 
-func emit_unpause() -> void:
-	unpause.emit()
+## Signal to the game that a specific window is requested.
+func request_window(state_name: String) -> void:
+	window_requested.emit(state_name)
 
-## Send to pause the game.
-## Listen if you need to perform an action when the game is paused.
-signal pause
+## A request has been made to update the HUD (score keeper).
+signal update_hud_requested(matter: Matter)
 
 
-func emit_pause() -> void:
-	pause.emit()
+## Request that the HUD (score keeper) be updated.
+func request_hud_update(matter: Matter = null) -> void:
+	update_hud_requested.emit(matter)

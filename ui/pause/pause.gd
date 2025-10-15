@@ -1,18 +1,16 @@
 extends Control
 
+# Note to self: This node's "processing" is set to run only when paused.
+
 func _ready() -> void:
 	if OS.has_feature("wasm"):
 		%Quit.hide()
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"pause"):
-		unpause()
-		get_viewport().set_input_as_handled()
-
-
+## When we become visible.
 func _on_visibility_changed() -> void:
 	if visible:
+		# Focus us.
 		%Play.grab_focus.call_deferred()
 
 
@@ -21,15 +19,11 @@ func quit() -> void:
 	Global.quit()
 
 
-## Unpause the action.
+## Unpause the menu.
 func unpause() -> void:
-	Events.emit_unpause()
+	Events.request_window("PlayFieldState")
 
 
-## Show the options window.
-func show_options() -> void:
-	Events.request_options_window(true)
-
-
-func hide_options() -> void:
-	Events.request_options_window(true)
+## Open the options.
+func options() -> void:
+	Events.request_window("OptionsState")
