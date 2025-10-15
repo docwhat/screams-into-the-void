@@ -78,13 +78,15 @@ static func format(
 	match number_format:
 		NumberFormat.NONE:
 			formatted = comma_notate_int(number, grouping_separator)
+		NumberFormat.SHORT_SCALE:
+			formatted = short_scale_notate_int(number, decimal_separator)
 		NumberFormat.ENGINEERING:
 			formatted = engineering_notate_int(number, decimal_separator)
 		NumberFormat.SCIENTIFIC:
 			formatted = scientific_notate_int(number, decimal_separator)
 		_:
 			push_error(
-				"Unknown number format %s when trying to format %d" % [
+				"Unknown number format %s when trying to format the number '%d'" % [
 					number_format,
 					number,
 				],
