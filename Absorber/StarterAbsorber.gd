@@ -13,5 +13,5 @@ static func get_description() -> String:
 static func limit_one(_mat: Matter, amt: int) -> int:
 	if amt <= 0:
 		return 0
-	return 900
+	return 900_999
 	#return Global.rng.randi_range(0,1)
