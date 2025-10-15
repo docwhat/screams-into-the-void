@@ -21,6 +21,9 @@ func _ready() -> void:
 	# Here for ease of reference.
 	var formats = NumberTools.NumberFormat
 
+	# Remove any items hanging around from the UI.
+	option_button.clear()
+
 	if Engine.is_editor_hint():
 		option_button.add_item("none", formats.NONE)
 	option_button.add_item("short", formats.SHORT_SCALE)
