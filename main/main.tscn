@@ -18,9 +18,6 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_h2yge")
 
-[node name="AsteroidTimer" type="Timer" parent="."]
-autostart = true
-
 [node name="Background" type="CanvasLayer" parent="."]
 layer = -1
 
