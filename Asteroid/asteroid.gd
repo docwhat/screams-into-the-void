@@ -35,6 +35,103 @@ var matter_bag: MatterBag
 ## The CanvasGroup that is wrapping the whole shebang.
 @onready var dissolver: CanvasGroup = %Dissolver
 
+## Increase the size of pixels in the generated texture.
+@export_range(1, 10, 1, "or_greater") var pixel_size: int = 3:
+	get:
+		return pixel_size
+	set(value):
+		if not polygon_2d:
+			await ready
+		polygon_2d.pixel_size = value
+		line_2d.width = value * 2
+		pixel_size = value
+
+## The border color.
+@export var border_color: Color = Color.BLACK:
+	get:
+		if not line_2d:
+			await ready
+		return line_2d.default_color
+	set(value):
+		if not line_2d:
+			await ready
+		line_2d.default_color = value
+
+## The colors to use for different noise values.
+@export var color_dark: Color = Color("#008800"):
+	set(value):
+		polygon_2d.color_dark = value
+	get:
+		if not polygon_2d:
+			await ready
+		return polygon_2d.color_dark
+@export var color_mid: Color = Color("#00ff00"):
+	set(value):
+		polygon_2d.color_mid = value
+	get:
+		if not polygon_2d:
+			await ready
+		return polygon_2d.color_mid
+@export var color_light: Color = Color("#88ff88"):
+	set(value):
+		polygon_2d.color_light = value
+	get:
+		if not polygon_2d:
+			await ready
+		return polygon_2d.color_light
+
+@export_group("Noise", "noise_")
+
+## The method for combining octaves into a fractal.
+@export var noise_type: FastNoiseLite.NoiseType = FastNoiseLite.TYPE_SIMPLEX:
+	get:
+		return polygon_2d.noise_type
+	set(value):
+		if not polygon_2d:
+			await ready
+		polygon_2d.noise_type = value
+
+## The frequency for all noise types. Low frequency results in smooth noise while
+## high frequency results in rougher, more granular noise.
+@export var noise_frequency: float = 0.024:
+	get:
+		return polygon_2d.noise_frequency
+	set(value):
+		if not polygon_2d:
+			await ready
+		polygon_2d.noise_frequency = value
+
+## The number of noise layers that are sampled to get the final value for fractal noise types.
+@export_range(0, 10, 1) var noise_fractal_octaves: int = 4:
+	get:
+		return polygon_2d.noise_fractal_octaves
+	set(value):
+		if not polygon_2d:
+			await ready
+		polygon_2d.noise_fractal_octaves = value
+
+## Determines the strength of each subsequent layer of noise in fractal noise.
+##
+## A low value places more emphasis on the lower frequency base layers, while
+## a high value puts more emphasis on the higher frequency layers.
+@export var noise_fractal_gain: float = 0.18:
+	get:
+		return polygon_2d.noise_fractal_gain
+	set(value):
+		if not polygon_2d:
+			await ready
+		polygon_2d.noise_fractal_gain = value
+
+## Frequency multiplier between subsequent octaves. Increasing this value results in higher
+## octaves producing noise with finer details and a rougher appearance.
+@export var noise_fractal_lacunarity: float = 25.0:
+	get:
+		return polygon_2d.noise_fractal_lacunarity
+	set(value):
+		if not polygon_2d:
+			await ready
+		polygon_2d.noise_fractal_lacunarity = value
+
 # Deligation
 var radius: float:
 	get:
@@ -42,9 +139,9 @@ var radius: float:
 var matter: Array[Matter]:
 	get:
 		return self.asteroid_kind.matter.keys()
-var noise_size: float:
-	get:
-		return self.asteroid_size.shader_noise_size
+# var noise_size: float:
+# 	get:
+# 		return self.asteroid_size.shader_noise_size
 
 
 func _init() -> void:
@@ -115,15 +212,12 @@ func rebuild() -> void:
 
 	# Set the shapes.
 	polygon_2d.set_polygon(points)
-	line_2d.set_points(points)
-	polygon_2d.set_uv(points)
-	collision_polygon_2d.set_polygon(points)
+	polygon_2d.colors = asteroid_kind.palette()
+	polygon_2d.update_texture()
+	#polygon_2d.set_uv(points)
 
-	# Texture Shader setup.
-	var polymat = polygon_2d.material
-	polymat.set_shader_parameter("seed", Global.rng.randf() * 1000 / 100.0)
-	asteroid_size.configure_shader(polymat)
-	asteroid_kind.configure_shader(polymat)
+	line_2d.set_points(points)
+	collision_polygon_2d.set_polygon(points)
 
 
 func is_valid() -> bool:

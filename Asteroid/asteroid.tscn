@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dgo8gq5d22uf"]
+[gd_scene load_steps=4 format=3 uid="uid://dgo8gq5d22uf"]
 
 [ext_resource type="Script" uid="uid://b2samh810qdpg" path="res://Asteroid/asteroid.gd" id="1_p0ukn"]
-[ext_resource type="Material" uid="uid://bi786ee8tvs3k" path="res://Shaders/asteroid-material.tres" id="2_yafe8"]
-[ext_resource type="Texture2D" uid="uid://bh0mbmredemri" path="res://128x128-transparent.png" id="3_gm5ib"]
+[ext_resource type="Script" uid="uid://cfq2rug5pgrb2" path="res://Asteroid/polygon_2d.gd" id="4_itfhv"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_p0ukn"]
 friction = 0.0
@@ -18,6 +17,7 @@ linear_damp_mode = 1
 angular_damp_mode = 1
 constant_force = Vector2(0, -10)
 script = ExtResource("1_p0ukn")
+border_color = Color(0, 1, 0, 1)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 unique_name_in_owner = true
@@ -37,7 +37,7 @@ default_color = Color(0, 0, 0, 1)
 
 [node name="Polygon2D" type="Polygon2D" parent="Dissolver"]
 unique_name_in_owner = true
-material = ExtResource("2_yafe8")
-texture = ExtResource("3_gm5ib")
+texture_repeat = 1
 polygon = PackedVector2Array(16, 0, 5.19, 15.97, -11.39, 8.27, -13.188, -9.58, 4.8, -14.79)
 uv = PackedVector2Array(16, 0, 5.19, 15.97, -11.39, 8.27, -13.188, -9.58, 4.8, -14.79)
+script = ExtResource("4_itfhv")
