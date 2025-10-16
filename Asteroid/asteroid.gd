@@ -27,6 +27,7 @@ var matter_bag: MatterBag
 
 ## For making pretty pictures.
 @onready var polygon_2d: Polygon2D = %Polygon2D
+@onready var line_2d: Line2D = %Line2D
 
 ## For colliding.
 @onready var collision_polygon_2d: CollisionPolygon2D = %CollisionPolygon2D
@@ -114,6 +115,7 @@ func rebuild() -> void:
 
 	# Set the shapes.
 	polygon_2d.set_polygon(points)
+	line_2d.set_points(points)
 	polygon_2d.set_uv(points)
 	collision_polygon_2d.set_polygon(points)
 

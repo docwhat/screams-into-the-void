@@ -29,6 +29,12 @@ unique_name_in_owner = true
 fit_margin = 0.0
 clear_margin = 1.0
 
+[node name="Line2D" type="Line2D" parent="Dissolver"]
+unique_name_in_owner = true
+closed = true
+width = 6.0
+default_color = Color(0, 0, 0, 1)
+
 [node name="Polygon2D" type="Polygon2D" parent="Dissolver"]
 unique_name_in_owner = true
 material = ExtResource("2_yafe8")
