@@ -28,13 +28,7 @@ hooks {
     }
     // instead of pre-commit, you can instead define pre-push hooks
     ["pre-push"] {
-        steps = new Mapping<String, Step> {
-            ...linters
-            ["bump-version"] {
-                check = "script/bump-version"
-                exclusive = true
-            }
-        }
+        steps = linters
     }
     // "fix" and "check" are special steps for `hk fix` and `hk check` commands
     ["fix"] {
