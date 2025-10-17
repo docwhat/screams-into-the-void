@@ -60,6 +60,14 @@ mkdir export/windows
 godot --headless --export-release "Windows Desktop" export/windows/void.exe
 """
 
+[tasks.fix]
+description = "Run hk fix"
+run = "hk fix"
+
+[tasks.check]
+description = "Run hk check"
+run = "hk check"
+
 [tasks.game]
 description = "Run the game"
 run = "godot --path . --print-fps"
