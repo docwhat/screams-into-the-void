@@ -3,7 +3,7 @@ extends Control
 # Note to self: This node's "processing" is set to run only when paused.
 
 func _ready() -> void:
-	_set_values()
+	_set_values.call_deferred()
 
 
 func _set_values() -> void:
