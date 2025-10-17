@@ -32,11 +32,15 @@ func _init(name_: StringName, symbol_: StringName, mass_: float) -> void:
 	# Throw an error if there is a duplicate name or symbol.
 	if name in by_name:
 		push_error("Duplicate Matter name: %s" % name)
+		if Engine.is_editor_hint():
+			print_stack()
 	else:
 		by_name[name] = self
 
 	if symbol in by_symbol:
 		push_error("Duplicate Matter symbol: %s" % symbol)
+		if Engine.is_editor_hint():
+			print_stack()
 	else:
 		by_symbol[symbol] = self
 

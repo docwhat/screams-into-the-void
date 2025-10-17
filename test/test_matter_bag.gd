@@ -119,6 +119,58 @@ func test_duplicate_bag():
 			return
 
 
+## Replace the contents of a bag with another bag.
+func test_replace_bag():
+	var bag2: MatterBag = MatterBag.new()
+	bag2.set_by_matter(Matter.carbon, 100)
+	bag2.set_by_matter(Matter.water, 200)
+
+	bag.replace_bag(bag2)
+
+	assert_int(bag.get_by_matter(Matter.carbon)).is_equal(100)
+	assert_int(bag.get_by_matter(Matter.water)).is_equal(200)
+
+
+## When replacing a bag, pre-existing elements should be removed.
+func test_replace_bag_removes_old_elements():
+	bag.set_by_matter(Matter.hydrogen, 50)
+	var bag2: MatterBag = MatterBag.new()
+	bag2.set_by_matter(Matter.carbon, 100)
+	bag.replace_bag(bag2)
+	assert_int(bag.get_by_matter(Matter.hydrogen)).is_equal(0)
+
+
+## Replacing a bag with an empty bag should clear all contents.
+func test_replace_bag_with_empty_bag():
+	bag.set_by_matter(Matter.hydrogen, 50)
+	var bag2: MatterBag = MatterBag.new()
+	bag.replace_bag(bag2)
+	assert_int(bag.get_by_matter(Matter.hydrogen)).is_equal(0)
+
+
+## Signals should be emitted for each changed matter when replacing a bag.
+## Including matters that are removed.
+func test_replace_bag_emits_signals():
+	var bag2: MatterBag = MatterBag.new()
+	bag2.set_by_matter(Matter.carbon, 100)
+	bag2.set_by_matter(Matter.water, 200)
+	bag.set_by_matter(Matter.hydrogen, 50)
+	var changed_matters: Array[Matter] = []
+	bag.matter_changed.connect(
+		func(m: Matter) -> void:
+			changed_matters.append(m)
+	)
+	bag.replace_bag(bag2)
+
+	assert_array(changed_matters).contains_same_exactly_in_any_order(
+		[
+			Matter.hydrogen,
+			Matter.carbon,
+			Matter.water,
+		],
+	)
+
+
 ## Using set_by_name() with a matter StringName should set the matching amount.
 func test_set_by_name():
 	for mat: Matter in Matter.all_matter:
