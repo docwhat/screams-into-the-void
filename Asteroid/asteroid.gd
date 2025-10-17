@@ -147,6 +147,7 @@ var matter: Array[Matter]:
 func _init() -> void:
 	asteroid_size = AsteroidSize.random_size()
 	asteroid_kind = AsteroidKind.random_kind()
+	matter_bag = MatterBag.new()
 
 
 func _ready() -> void:
@@ -173,7 +174,8 @@ func rebuild() -> void:
 	last_asteroid_kind = asteroid_kind
 	last_asteroid_size = asteroid_size
 
-	matter_bag = _random_matter()
+	# Replace the contents of the bag without disrupting signals.
+	matter_bag.replace_bag(_random_matter())
 
 	# All asteroids start with a mass of 1_000.0 * radius.
 	var calculated_mass: float = 1_000.0 * radius
