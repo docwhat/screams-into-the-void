@@ -1,3 +1,4 @@
+@tool
 extends Polygon2D
 
 var pixel_size: int = 3:
@@ -7,14 +8,6 @@ var pixel_size: int = 3:
 		if value != pixel_size:
 			pixel_size = value
 			update_texture()
-
-var colors: PackedColorArray:
-	set(value):
-		color_dark = value[0]
-		color_mid = value[1]
-		color_light = value[2]
-	get:
-		return PackedColorArray([color_dark, color_mid, color_light])
 
 var color_dark = Color("#008800"):
 	get:
@@ -124,46 +117,8 @@ func update_texture():
 	self.texture = ImageTexture.create_from_image(image)
 	self.texture_offset = Vector2(square / 2.0, square / 2.0)
 
-	## Set up UV mapping for the Polygon2D
-	#setup_uv_mapping()
 
-	### Map all point coordinates to a scale between 0.0, and 1.0.
-	#func setup_uv_mapping():
-	## Get the bounding rectangle of the polygon
-	#var rect: Vector2 = get_rectangular_size()
-	#print("NARF: %s" % [rect])
-	#
-	## Create a new UV array
-	#var uvs: PackedVector2Array = []
-	#
-	#for vertex: Vector2 in polygon:
-	#var new_uv: Vector2 = Vector2(
-	#(vertex.x + rect.x / 2.0) / rect.x,
-	#(vertex.y + rect.y / 2.0) / rect.y,
-	#)
-	## (vertex + Vector2(rect) / 2.0) / Vector2(rect)
-	##var uv_x = vertex.x / rect.x + 1.0
-	##var uv_y = vertex.y / rect.y + 1.0
-	##uvs.append(Vector2(uv_x, uv_y))
-	#uvs.append(new_uv)
-	#var problem: bool = new_uv.x > 1.0 or new_uv.x < 0.0 or new_uv.y > 1.0 or new_uv.y < 0.0
-	#print("      %s / %s + 1 = %s   %s" % [vertex, rect, new_uv, problem])
-	#
-	#self.uv = uvs
-
-	### Calculates the height and width of a box that would contain the Polygon2D
-	###
-	### This does not guarantee the box is minimal, though.
-	#func get_rectangular_size1() -> Vector2:
-	#var rect: Vector2 = Vector2(0,0)
-	#
-	#for point: Vector2 in polygon:
-	#rect.x = maxf(rect.x, absf(point.x) * 2)
-	#rect.y = maxf(rect.y, absf(point.y) * 2)
-	#
-	#return rect
-
-
+## Returns a Rect2 describing a box that bounds the Polygon2D
 func get_rect() -> Rect2:
 	var rect = Rect2()
 	for point: Vector2 in polygon:

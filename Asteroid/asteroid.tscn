@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dgo8gq5d22uf"]
 
 [ext_resource type="Script" uid="uid://b2samh810qdpg" path="res://Asteroid/asteroid.gd" id="1_p0ukn"]
-[ext_resource type="Script" uid="uid://cfq2rug5pgrb2" path="res://Asteroid/polygon_2d.gd" id="4_itfhv"]
+[ext_resource type="Script" uid="uid://cfq2rug5pgrb2" path="res://Asteroid/shape.gd" id="4_itfhv"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_p0ukn"]
 friction = 0.0
@@ -17,27 +17,23 @@ linear_damp_mode = 1
 angular_damp_mode = 1
 constant_force = Vector2(0, -10)
 script = ExtResource("1_p0ukn")
-border_color = Color(0, 1, 0, 1)
+border_color = Color(0, 0, 0, 1)
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+[node name="CollisionShape" type="CollisionPolygon2D" parent="."]
 unique_name_in_owner = true
-visible = false
 polygon = PackedVector2Array(16, 0, 5.19, 15.97, -11.39, 8.27, -13.188, -9.58, 4.8, -14.79)
 
-[node name="Dissolver" type="CanvasGroup" parent="."]
+[node name="Group" type="CanvasGroup" parent="."]
 unique_name_in_owner = true
 fit_margin = 0.0
 clear_margin = 1.0
 
-[node name="Line2D" type="Line2D" parent="Dissolver"]
-unique_name_in_owner = true
-closed = true
-width = 6.0
-default_color = Color(0, 0, 0, 1)
-
-[node name="Polygon2D" type="Polygon2D" parent="Dissolver"]
+[node name="Shape" type="Polygon2D" parent="Group"]
 unique_name_in_owner = true
 texture_repeat = 1
 polygon = PackedVector2Array(16, 0, 5.19, 15.97, -11.39, 8.27, -13.188, -9.58, 4.8, -14.79)
 uv = PackedVector2Array(16, 0, 5.19, 15.97, -11.39, 8.27, -13.188, -9.58, 4.8, -14.79)
 script = ExtResource("4_itfhv")
+
+[node name="Outline" type="Line2D" parent="Group"]
+unique_name_in_owner = true

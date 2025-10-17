@@ -40,9 +40,6 @@ position = Vector2(1030, 552)
 asteroid_size = ExtResource("2_ocfal")
 asteroid_kind = ExtResource("3_ocfal")
 
-[node name="Polygon2D" parent="Asteroids/Gargantuan Icy/Asteroid/Dissolver" index="1"]
-noise_fractal_octaves = 8
-
 [node name="Label" type="Label" parent="Asteroids/Gargantuan Icy"]
 anchors_preset = 13
 anchor_left = 0.5
@@ -185,5 +182,3 @@ horizontal_alignment = 1
 [node name="Timer" type="Timer" parent="."]
 
 [connection signal="timeout" from="Timer" to="." method="rebuild_any_changes"]
-
-[editable path="Asteroids/Gargantuan Icy/Asteroid"]

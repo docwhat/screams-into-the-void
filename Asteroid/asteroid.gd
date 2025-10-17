@@ -25,112 +25,88 @@ var dissolve_tween: Tween
 ## The matter contained in this asteroid.
 var matter_bag: MatterBag
 
-## For making pretty pictures.
-@onready var polygon_2d: Polygon2D = %Polygon2D
-@onready var line_2d: Line2D = %Line2D
-
-## For colliding.
-@onready var collision_polygon_2d: CollisionPolygon2D = %CollisionPolygon2D
-
-## The CanvasGroup that is wrapping the whole shebang.
-@onready var dissolver: CanvasGroup = %Dissolver
+@onready var shape: Polygon2D = %Shape
+@onready var outline: Line2D = %Outline
+@onready var collision_shape: CollisionPolygon2D = %CollisionShape
 
 ## Increase the size of pixels in the generated texture.
 @export_range(1, 10, 1, "or_greater") var pixel_size: int = 3:
 	get:
 		return pixel_size
 	set(value):
-		if not polygon_2d:
+		if not shape:
 			await ready
-		polygon_2d.pixel_size = value
-		line_2d.width = value * 2
+		shape.pixel_size = value
+		outline.width = value
 		pixel_size = value
 
 ## The border color.
-@export var border_color: Color = Color.BLACK:
+@export var border_color: Color = Color.LAWN_GREEN:
 	get:
-		if not line_2d:
-			await ready
-		return line_2d.default_color
+		return await _outline_get(&"default_color")
 	set(value):
-		if not line_2d:
-			await ready
-		line_2d.default_color = value
+		_outline_set(&"default_color", value)
 
-## The colors to use for different noise values.
+## The dark shade used in the noise/dithering.
 @export var color_dark: Color = Color("#008800"):
-	set(value):
-		polygon_2d.color_dark = value
 	get:
-		if not polygon_2d:
-			await ready
-		return polygon_2d.color_dark
+		return await _shape_get(&"color_dark")
+	set(value):
+		_shape_set(&"color_dark", value)
+
 @export var color_mid: Color = Color("#00ff00"):
-	set(value):
-		polygon_2d.color_mid = value
 	get:
-		if not polygon_2d:
-			await ready
-		return polygon_2d.color_mid
+		return await _shape_get(&"color_mid")
+	set(value):
+		_shape_set(&"color_mid", value)
+
 @export var color_light: Color = Color("#88ff88"):
-	set(value):
-		polygon_2d.color_light = value
 	get:
-		if not polygon_2d:
-			await ready
-		return polygon_2d.color_light
+		return await _shape_get(&"color_light")
+	set(value):
+		_shape_set(&"color_light", value)
 
 @export_group("Noise", "noise_")
 
 ## The method for combining octaves into a fractal.
 @export var noise_type: FastNoiseLite.NoiseType = FastNoiseLite.TYPE_SIMPLEX:
 	get:
-		return polygon_2d.noise_type
+		return await _shape_get(&"noise_type")
 	set(value):
-		if not polygon_2d:
-			await ready
-		polygon_2d.noise_type = value
+		_shape_set(&"noise_type", value)
 
 ## The frequency for all noise types. Low frequency results in smooth noise while
 ## high frequency results in rougher, more granular noise.
-@export var noise_frequency: float = 0.024:
+@export var noise_frequency: float = 0.03:
 	get:
-		return polygon_2d.noise_frequency
+		return await _shape_get(&"noise_frequency")
 	set(value):
-		if not polygon_2d:
-			await ready
-		polygon_2d.noise_frequency = value
+		_shape_set(&"noise_frequency", value)
 
 ## The number of noise layers that are sampled to get the final value for fractal noise types.
 @export_range(0, 10, 1) var noise_fractal_octaves: int = 4:
 	get:
-		return polygon_2d.noise_fractal_octaves
+		return await _shape_get(&"noise_fractal_octaves")
 	set(value):
-		if not polygon_2d:
-			await ready
-		polygon_2d.noise_fractal_octaves = value
+		_shape_set(&"noise_fractal_octaves", value)
 
 ## Determines the strength of each subsequent layer of noise in fractal noise.
 ##
 ## A low value places more emphasis on the lower frequency base layers, while
 ## a high value puts more emphasis on the higher frequency layers.
-@export var noise_fractal_gain: float = 0.18:
+@export var noise_fractal_gain: float = 0.35:
 	get:
-		return polygon_2d.noise_fractal_gain
+		return await _shape_get(&"noise_fractal_gain")
 	set(value):
-		if not polygon_2d:
-			await ready
-		polygon_2d.noise_fractal_gain = value
+		_shape_set(&"noise_fractal_gain", value)
 
 ## Frequency multiplier between subsequent octaves. Increasing this value results in higher
 ## octaves producing noise with finer details and a rougher appearance.
 @export var noise_fractal_lacunarity: float = 25.0:
 	get:
-		return polygon_2d.noise_fractal_lacunarity
+		return await _shape_get("noise_fractal_lacunarity")
 	set(value):
-		if not polygon_2d:
-			await ready
-		polygon_2d.noise_fractal_lacunarity = value
+		_shape_set(&"noise_fractal_lacunarity", value)
 
 # Deligation
 var radius: float:
@@ -151,17 +127,60 @@ func _init() -> void:
 
 
 func _ready() -> void:
-	rebuild()
+	rebuild.call_deferred()
 	Global.increment_asteroid_count()
 
+	# The setters on @export'd variables aren't called when there is
+	# a default and the scene doesn't change it. See godotengine/godot#86494
+	# This bit of code forces all the setters to be called on exported (hint'd)
+	# variables.
+	var usage: int = (
+		PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE
+	)
+	for prop: Dictionary in get_property_list():
+		if prop.usage & usage and (
+			prop.type == TYPE_INT or
+			prop.type == TYPE_FLOAT or
+			prop.type == TYPE_COLOR
+		):
+			set(prop.name, get(prop.name))
 
-func _process(_delta: float) -> void:
+
+func _physics_process(_delta: float) -> void:
 	if is_on_screen():
 		if not debuted:
 			debuted = true
 	elif debuted:
 		die()
 		return
+
+
+## Used by setters to set properties on shape.
+func _shape_set(prop: StringName, value: Variant) -> void:
+	if not shape or not shape.is_inside_tree():
+		await ready
+	shape.set_deferred(prop, value)
+
+
+## Used by getters to get properties from shape.
+func _shape_get(prop: StringName) -> Variant:
+	if not shape or not shape.is_inside_tree():
+		await ready
+	return shape.get(prop)
+
+
+## Used by setters to set properties on outline.
+func _outline_set(prop: StringName, value: Variant) -> void:
+	if not outline or not outline.is_inside_tree():
+		await ready
+	outline.set_deferred(prop, value)
+
+
+## Used by getters to get properties from outline.
+func _outline_get(prop: StringName) -> Variant:
+	if not outline or not outline.is_inside_tree():
+		await ready
+	return outline.get(prop)
 
 
 ## Sets up the shape, size, color, etc.
@@ -213,13 +232,16 @@ func rebuild() -> void:
 	var points = asteroid_size.generate_polygon()
 
 	# Set the shapes.
-	polygon_2d.set_polygon(points)
-	polygon_2d.colors = asteroid_kind.palette()
-	polygon_2d.update_texture()
-	#polygon_2d.set_uv(points)
+	shape.set_polygon(points)
+	var colors: PackedColorArray = asteroid_kind.palette()
+	color_dark = colors[0]
+	color_mid = colors[1]
+	color_light = colors[2]
 
-	line_2d.set_points(points)
-	collision_polygon_2d.set_polygon(points)
+	outline.closed = true
+	outline.set_points(points)
+
+	collision_shape.set_polygon(points)
 
 
 func is_valid() -> bool:
@@ -229,7 +251,7 @@ func is_valid() -> bool:
 ## Contract method for Absorbers.
 func be_absorbed() -> void:
 	Events.emit_asteroid_hit(self)
-	collision_polygon_2d.set_disabled.call_deferred(true)
+	collision_shape.set_disabled.call_deferred(true)
 	set_freeze_enabled.call_deferred(true)
 	trigger_dissolve.call_deferred()
 
@@ -239,11 +261,8 @@ func trigger_dissolve() -> void:
 	if dissolve_tween:
 		return
 
-	var dissolver_material: ShaderMaterial = \
-	load("res://Shaders/dissolver-material.tres").duplicate()
-	dissolver.set_material(dissolver_material)
-
-	dissolver_material.set_shader_parameter("progress", 0.0)
+	var dissolver_material: ShaderMaterial = load("uid://bbe0mwwx7i71l").duplicate()
+	%Group.set_material(dissolver_material)
 
 	# Calculate the angle to the player.
 	var player_angle: float = global_position.angle_to_point(Global.player_position)
@@ -256,7 +275,7 @@ func trigger_dissolve() -> void:
 
 	dissolver_material.set_shader_parameter("rotation", angle)
 
-	# var size: Vector2 = calculate_polygon_bounds(polygon_2d.polygon)
+	# var size: Vector2 = calculate_polygon_bounds(shape.polygon)
 
 	# Scaling is a number from 0.0 to 1.0 based on the radius of the asteroid.
 	var scaling: float = (radius - 8) / (64.0 - 8.0)
@@ -315,7 +334,6 @@ func is_on_screen() -> bool:
 func launch() -> Node:
 	var screen_size: Vector2 = Global.play_field.get_viewport().get_visible_rect().size
 	var player_coord: Vector2 = Global.player_node.global_position
-	# TODO: Don't launch if there are too many asteroids on screen.
 	var target_coord: Vector2
 	var direction: float
 
