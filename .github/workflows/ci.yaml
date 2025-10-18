@@ -34,10 +34,6 @@ jobs:
         
       - name: Run format check
         run: hk check
-        
-      - name: Run lint fix (dry run)
-        run: hk fix --dry-run
-        continue-on-error: true
 
   test:
     name: Test Game
