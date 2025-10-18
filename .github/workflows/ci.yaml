@@ -19,18 +19,24 @@ jobs:
   lint-and-format:
     name: Lint and Format GDScript
     runs-on: ubuntu-24.04
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Setup mise
+      - name: Update PATH
         run: |
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
           echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
-          curl https://mise.run | sh
+
+      - name: Setup mise
+        run: |
+          wget -qO- https://mise.run | sh
           mise install
-        
+          mise doctor || :
+
       - name: Run format check
         run: hk check
 
@@ -39,6 +45,8 @@ jobs:
     runs-on: ubuntu-24.04
     container:
       image: "barichello/godot-ci:4.5.1"
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -72,6 +80,8 @@ jobs:
     needs: [lint-and-format, test]
     container:
       image: "barichello/godot-ci:4.5.1"
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -112,6 +122,8 @@ jobs:
     needs: [lint-and-format, test]
     container:
       image: "barichello/godot-ci:4.5.1"
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -150,6 +162,8 @@ jobs:
     needs: [lint-and-format, test]
     container:
       image: "barichello/godot-ci:4.5.1"
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     permissions:
       contents: write
       pages: write
@@ -199,6 +213,8 @@ jobs:
     needs: [lint-and-format, test]
     container:
       image: "barichello/godot-ci:4.5.1"
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
