@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Set up mise
-        uses: jdx/mise-action@v2
+        uses: jdx/mise-action@v3
         
       - name: Run format check
         run: hk check
@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup mise
-        uses: jdx/mise-action@v2
+        uses: jdx/mise-action@v3
 
       - name: Run tests
         run: mise run test
