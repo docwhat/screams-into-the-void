@@ -21,6 +21,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
@@ -28,11 +29,13 @@ jobs:
           mv /root/.config/godot ~/.config/godot
           mv '/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable' \
           "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+
       - name: Windows Build
         run: |
           mkdir -v -p build/windows
           EXPORT_DIR="$(readlink -f build)"
           godot --headless --verbose --export-release "Windows Desktop" "${EXPORT_DIR}/windows/${EXPORT_NAME}.exe"
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -47,16 +50,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv '/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable' \
           "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+
       - name: Linux Build
         run: |
           mkdir -v -p build/linux
           EXPORT_DIR="$(readlink -f build)"
-          godot --headless --verbose --export-release "Linux/X11" "${EXPORT_DIR}/linux/${EXPORT_NAME}.x86_64"
+          godot --headless --verbose --export-release "Linux" "${EXPORT_DIR}/linux/${EXPORT_NAME}.x86_64"
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -69,30 +75,37 @@ jobs:
     container:
       image: "barichello/godot-ci:${{env.GODOT_VERSION}}"
     permissions:
-      contents: write
+      contents: read
+      pages: write
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv '/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable' \
           "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+
       - name: Web Build
         run: |
           mkdir -v -p build/web
           EXPORT_DIR="$(readlink -f build)"
           godot --headless --verbose --export-release "Web" "${EXPORT_DIR}/web/index.html"
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: web
           path: build/web
+
       # - name: Install rsync 📚
       #   run: |
       #     apt-get update && apt-get install -y rsync
+
       - name: Deploy to GitHub Pages 🚀
-        uses: JamesIves/github-pages-deploy-action@releases/v4
+        uses: JamesIves/github-pages-deploy-action@v4.6.8
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: build/web # The folder the action should deploy from.
@@ -106,16 +119,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv '/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable' \
           "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+
       - name: Mac Build
         run: |
           mkdir -v -p build/mac
           EXPORT_DIR="$(readlink -f build)"
           godot --headless --verbose --export-release "macOS" "${EXPORT_DIR}/mac/${EXPORT_NAME}.zip"
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:

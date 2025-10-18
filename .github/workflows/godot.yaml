@@ -1,0 +1,55 @@
+name: Lint, Format, and Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  GODOT_VERSION: "4.5.1"
+
+jobs:
+  lint-and-format:
+    name: Lint and Format GDScript
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up mise
+        uses: jdx/mise-action@v2
+        
+      - name: Run format check
+        run: hk check
+        
+      - name: Run lint fix (dry run)
+        run: hk fix --dry-run
+        continue-on-error: true
+
+  test:
+    name: Test Game
+    runs-on: ubuntu-24.04
+    container:
+      image: "barichello/godot-ci:${{env.GODOT_VERSION}}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup mise
+        run: |
+          wget -O- https://mise.run | sh
+          echo "$HOME/.local/share/mise/bin" >> "${GITHUB_PATH}"
+          echo "$HOME/.local/share/mise/shims" >> "${GITHUB_PATH}"
+
+      - name: Run tests
+        run: mise run test
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: reports/
+
+# EOF
