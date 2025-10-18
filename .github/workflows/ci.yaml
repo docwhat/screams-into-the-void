@@ -43,35 +43,16 @@ jobs:
   test:
     name: Test Game
     runs-on: ubuntu-24.04
-    container:
-      image: "barichello/godot-ci:4.5.1"
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Update PATH
-        run: |
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-          echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
-          echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
-
-      - name: Setup mise
-        run: |
-          wget -qO- https://mise.run | sh
-          mise install
-          mise doctor || :
-
-      - name: Run tests
-        run: mise run test
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        if: always()
+      - uses: MikeSchulze/gdunit4-action@v1
         with:
-          name: test-results
-          path: reports/
+          godot-version: ${{env.GODOT_VERSION}}
+          paths: 'res://test'
+          warnings-as-errors: true
+          arguments: '--verbose'
 
   export-windows:
     name: Windows Export
