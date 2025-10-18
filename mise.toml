@@ -83,6 +83,7 @@ run = """
 
 godot --path . \
 --no-header \
+--headless \
 --debug \
 --script res://addons/gdUnit4/bin/GdUnitCmdTool.gd \
 --ignoreHeadlessMode \
