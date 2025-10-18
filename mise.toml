@@ -127,6 +127,8 @@ hk = "1.16.0"
 oxipng = "9.1.5"
 pkl = "0.29.1"
 semver = "3.4.0"
+uv = "0.9.3"
+yamllint = "1.37.1"
 
 [tools."ubi:GDQuest/GDScript-formatter"]
 version = "0.12.0"

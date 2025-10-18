@@ -13,6 +13,7 @@ exclude = List(
 local linters = new Mapping<String, Step> {
     ["markdown"] = Builtins.markdown_lint
     ["pickle"] = Builtins.pkl
+    ["yamllint"] = Builtins.yamllint
     ["gdscript-formatter"] {
         glob = List("**/*.gd")
         check = "gdscript-formatter lint {{files}}"
