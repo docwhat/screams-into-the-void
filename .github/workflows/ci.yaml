@@ -43,13 +43,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup mise
+      - name: Update PATH
         run: |
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
           echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
+
+      - name: Setup mise
+        run: |
           wget -qO- https://mise.run | sh
-          echo "PATH: $PATH"
           mise doctor
           mise install
 
@@ -74,12 +76,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup mise
+      - name: Update PATH
         run: |
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
           echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
+
+      - name: Setup mise
+        run: |
           wget -qO- https://mise.run | sh
+          mise doctor
           mise install
 
       - name: Setup
@@ -110,12 +116,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup mise
+      - name: Update PATH
         run: |
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
           echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
+
+      - name: Setup mise
+        run: |
           wget -qO- https://mise.run | sh
+          mise doctor
           mise install
 
       - name: Setup
@@ -148,12 +158,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup mise
+      - name: Update PATH
         run: |
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
           echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
+
+      - name: Setup mise
+        run: |
           wget -qO- https://mise.run | sh
+          mise doctor
           mise install
 
       - name: Setup
@@ -189,12 +203,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup mise
+      - name: Update PATH
         run: |
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
           echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
+
+      - name: Setup mise
+        run: |
           wget -qO- https://mise.run | sh
+          mise doctor
           mise install
 
       - name: Setup
