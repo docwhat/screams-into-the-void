@@ -2,62 +2,62 @@
 
 [tasks.clean]
 description = "Clean all exported builds and other cruft"
-run = "rm -rf export"
+run = "rm -rf build"
 
 [tasks.deploy-web]
 description = "Deploy the web version to void.docwhat.org"
-run = "rsync -av --delete-after --progress export/web/ gerf:/srv/website/srv/void/"
+run = "rsync -av --delete-after --progress build/web/ gerf:/srv/website/srv/void/"
 
 [tasks.export-all]
 depends = ["export-web", "export-macos", "export-windows", "export-linux"]
-description = "Export all platforms to export/"
+description = "Export all platforms to build/"
 
 [tasks.export-linux]
-description = "Export the Linux version to export/linux/"
+description = "Export the Linux version to build/linux/"
 run = """
 #!/usr/bin/env bash
 set -ex
 
-rm -rf export/linux
-mkdir -p export
-mkdir export/linux
-godot --headless --export-release "Linux" export/linux/void
+rm -rf build/linux
+mkdir -p build
+mkdir build/linux
+godot --headless --export-release "Linux" build/linux/void
 """
 
 [tasks.export-macos]
-description = "Export the macOS version to export/macos/"
+description = "Export the macOS version to build/macos/"
 run = """
 #!/usr/bin/env bash
 set -ex
 
-rm -rf export/macos
-mkdir -p export
-mkdir export/macos
-godot --headless --export-release "macOS" export/macos/Void.app
+rm -rf build/macos
+mkdir -p build
+mkdir build/macos
+godot --headless --export-release "macOS" build/macos/Void.app
 """
 
 [tasks.export-web]
-description = "Export the web version to export/web/"
+description = "Export the web version to build/web/"
 run = """
 #!/usr/bin/env bash
 set -ex
 
-rm -rf export/web
-mkdir -p export
-mkdir export/web
-godot --headless --export-release "Web" export/web/index.html
+rm -rf build/web
+mkdir -p build
+mkdir build/web
+godot --headless --export-release "Web" build/web/index.html
 """
 
 [tasks.export-windows]
-description = "Export the Windows version to export/windows/"
+description = "Export the Windows version to build/windows/"
 run = """
 #!/usr/bin/env bash
 set -ex
 
-rm -rf export/windows
-mkdir -p export
-mkdir export/windows
-godot --headless --export-release "Windows Desktop" export/windows/void.exe
+rm -rf build/windows
+mkdir -p build
+mkdir build/windows
+godot --headless --export-release "Windows Desktop" build/windows/void.exe
 """
 
 [tasks.check]
