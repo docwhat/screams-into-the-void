@@ -1,17 +1,25 @@
-name: GDScript Lint
+name: Lint and Format
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  format-lint:
+  lint-and-format:
+    name: Lint and Format GDScript
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        
       - name: Set up mise
         uses: jdx/mise-action@v2
-      - name: Run check
+        
+      - name: Run format check
         run: hk check
+        
+      - name: Run lint fix (dry run)
+        run: hk fix --dry-run
+        continue-on-error: true

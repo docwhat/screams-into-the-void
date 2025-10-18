@@ -14,6 +14,7 @@ local linters = new Mapping<String, Step> {
     ["markdown"] = Builtins.markdown_lint
     ["pickle"] = Builtins.pkl
     ["yamllint"] = Builtins.yamllint
+    ["yq"] = Builtins.yq
     ["gdscript-formatter"] {
         glob = List("**/*.gd")
         check = "gdscript-formatter lint {{files}}"
