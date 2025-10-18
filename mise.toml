@@ -60,13 +60,13 @@ mkdir export/windows
 godot --headless --export-release "Windows Desktop" export/windows/void.exe
 """
 
-[tasks.fix]
-description = "Run hk fix"
-run = "hk fix"
-
 [tasks.check]
 description = "Run hk check"
 run = "hk check"
+
+[tasks.fix]
+description = "Run hk fix"
+run = "hk fix"
 
 [tasks.game]
 description = "Run the game"
@@ -127,15 +127,16 @@ hk = "1.16.0"
 oxipng = "9.1.5"
 pkl = "0.29.1"
 semver = "3.4.0"
+taplo = "0.10.0"
 uv = "0.9.3"
 yamllint = "1.37.1"
 yq = "4.48.1"
 
 [tools."ubi:GDQuest/GDScript-formatter"]
-version = "0.12.0"
-matching_regex = "gdscript-formatter-macos-aarch64\\.zip"
 exe = "gdscript-formatter-macos-aarch64"
+matching_regex = "gdscript-formatter-macos-aarch64\\.zip"
 rename_exe = "gdscript-formatter"
+version = "0.14.0"
 
 # This doesn't work. See https://github.com/jdx/mise/discussions/6532
 # [tools."github:GDQuest/GDScript-formatter"]

@@ -13,6 +13,7 @@ exclude = List(
 local linters = new Mapping<String, Step> {
     ["markdown"] = Builtins.markdown_lint
     ["pickle"] = Builtins.pkl
+    ["taplo"] = Builtins.taplo
     ["yamllint"] = Builtins.yamllint
     ["yq"] = Builtins.yq
     ["gdscript-formatter"] {

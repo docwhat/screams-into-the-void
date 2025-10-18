@@ -1,0 +1,4 @@
+#:schema taplo://taplo.toml
+
+[formatting]
+reorder_keys = true
