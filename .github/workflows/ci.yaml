@@ -21,6 +21,7 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      MISE_VERSION: 2025.10.11
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -65,6 +66,7 @@ jobs:
       image: "barichello/godot-ci:4.5.1"
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      MISE_VERSION: 2025.10.11
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -107,6 +109,7 @@ jobs:
       image: "barichello/godot-ci:4.5.1"
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      MISE_VERSION: 2025.10.11
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -147,6 +150,7 @@ jobs:
       image: "barichello/godot-ci:4.5.1"
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      MISE_VERSION: 2025.10.11
     permissions:
       contents: write
       pages: write
@@ -198,6 +202,7 @@ jobs:
       image: "barichello/godot-ci:4.5.1"
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      MISE_VERSION: 2025.10.11
     steps:
       - name: Checkout
         uses: actions/checkout@v5
