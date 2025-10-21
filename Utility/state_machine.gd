@@ -1,23 +1,45 @@
-## StateMachine is a Node/Class for containing and managing States.
+## StateMachine is a Node/Class for containing and managing states.
 ##
 ## Based on https://www.gdquest.com/tutorial/godot/design-patterns/finite-state-machine/
 class_name StateMachine
 extends Node
 
 ## The initial state of the state machine. If not set, the first child node is used.
-@export var initial_state: State = null
+@export var initial_state: State = null:
+	get():
+		if initial_state != null:
+			return initial_state
+		if states.size() > 0:
+			return states[0]
+		return null
+	set(value):
+		initial_state = value
 
 ## The current state of the state machine.
-@onready var state: State = (func get_initial_state() -> State:
-		return initial_state if initial_state != null else get_child(0)
-).call()
+@onready var state: State = null:
+	get():
+		return state if state != null else initial_state
+	set(value):
+		state = value
+
+## A list of all the child {State} nodes in the tree.
+var states: Array[State]:
+	get():
+		if not is_node_ready():
+			await ready
+		var children: Array[State] = []
+		for child: State in find_children("*", "State"):
+			children.append(child as State)
+		return children
 
 
 func _ready() -> void:
-	for state_node: State in find_children("*", "State"):
+	print("NARF: %s" % var_to_str(states))
+	for state_node: State in states:
 		state_node.finished.connect(_transition_by_name)
 
-	await owner.ready
+	if owner:
+		await owner.ready
 	state.enter("")
 
 
