@@ -71,14 +71,14 @@ var noise_fractal_lacunarity: float = 25.0:
 			noise_fractal_lacunarity = value
 			update_texture()
 
-var noise: FastNoiseLite = FastNoiseLite.new()
-
-
-func _ready():
-	noise.seed = Global.rng.randi()
+## The source of noise for the texture.
+var noise: FastNoiseLite
 
 
 func update_texture():
+	noise = FastNoiseLite.new()
+	noise.seed = Global.rng.randi()
+
 	noise.fractal_octaves = noise_fractal_octaves
 	noise.fractal_lacunarity = noise_fractal_lacunarity
 	noise.noise_type = noise_type
