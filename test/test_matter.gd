@@ -41,6 +41,25 @@ func test_molecule_init():
 	assert_float(m.mass).is_equal(4.56)
 
 
+## Test that create factory method creates Element for 1 or 2 character symbols.
+func test_create_element():
+	var e := Matter.create("unique_element", "Ue", 12.34)
+	assert_object(e).is_not_null().is_instanceof(Element)
+
+	var e2 := Matter.create("another_element", "A", 23.45)
+	assert_object(e2).is_not_null().is_instanceof(Element)
+
+
+## Test that create factory method creates Molecule for symbols longer than
+## 2 characters or with numbers.
+func tests_create_molecule():
+	var m := Matter.create("Oxygen Molecule", "O2", 34.56)
+	assert_object(m).is_not_null().is_instanceof(Molecule)
+
+	var m2 := Matter.create("DifferentWater", "HOH", 45.67)
+	assert_object(m2).is_not_null().is_instanceof(Molecule)
+
+
 ## Test that all_matter are populated correctly.
 func test_all_matter():
 	# There should be at least be a few elements and a water molecule.
@@ -86,25 +105,48 @@ func test_preferred_name():
 	assert_str(Matter.carbon.preferred_name).is_equal("c")
 
 
+## Test that you can't change an element's name.
+func test_cant_change_element_name():
+	var e: Matter = Element.new()
+
+	e.name = &"hydrogen"
+	assert_str(e.name).is_equal("hydrogen")
+
+	e.name = &"not-hydrogen"
+	assert_str(e.name).is_not_equal("not-hydrogen")
+
+
+## Test that you can't change an element's symbol.
+func test_cant_change_element_symbol():
+	var e: Matter = Element.new()
+
+	e.symbol = &"h"
+	assert_str(e.symbol).is_equal("h")
+
+	e.symbol = &"not-h"
+	assert_str(e.symbol).is_not_equal("not-h")
+
+
 ## Verify that you can't create two elements with the same name.
 func test_element_name_is_unique():
-	var e1 := Element.new(&"uniqueium", &"ue", 10.0)
+	var e1 := Matter.create(&"uniqueium", &"ue", 10.0)
+	var e2 := Matter.create(&"uniqueium", &"ue2", 20.0)
 
-	await assert_error(
-		func(): Element.new(&"uniqueium", &"ue2", 20.0)
-	).is_push_error('Duplicate Matter name: uniqueium')
+	assert_object(e1).is_not_null()
+	assert_object(e2).is_null()
 
 	# Lookup should return the original element.
-	assert_object(Matter.by_name[&"uniqueium"]).is_equal(e1)
+	assert_object(Matter.by_name.get(&"uniqueium")).is_equal(e1)
 
 
 ## Verify that you can't create two elements with the same symbol.
 func test_element_symbol_is_unique():
-	var e1 := Element.new(&"anotherium", &"an", 10.0)
+	var e1 := Matter.create(&"anotherium", &"an", 10.0)
+	var e2 := Matter.create(&"notanotherium", &"an", 20.0)
 
-	await assert_error(
-		func(): Element.new(&"anotherium2", &"an", 20.0)
-	).is_push_error('Duplicate Matter symbol: an')
+	assert_object(e1).is_not_null()
+	assert_object(Matter.by_symbol.get(&"an", null)).is_equal(e1)
+	assert_object(e2).is_null()
 
 	# Lookup should return the original element.
-	assert_object(Matter.by_symbol[&"an"]).is_equal(e1)
+	assert_object(Matter.by_symbol.get(&"an", null)).is_equal(e1)

@@ -3,8 +3,22 @@
 class_name Matter
 extends Resource
 
-var name: StringName
-var symbol: String
+## The name of the Matter.
+var name: StringName:
+	get():
+		return name
+	set(value):
+		if not name:
+			name = value.to_lower()
+
+## The chemical symbol(s) of the Matter.
+var symbol: StringName:
+	get():
+		return symbol
+	set(value):
+		if not symbol:
+			symbol = value.to_lower()
+
 var mass: float
 
 ## An array of all registered Matter types.
@@ -19,46 +33,60 @@ static var by_symbol: Dictionary[StringName, Matter] = { }
 ## The name, as set in user preferences.
 var preferred_name: String:
 	get():
-		# TODO: Remove the dependency on GameSave.
-		return symbol if GameSave.use_symbols else str(name)
+		return str(symbol if GameSave.use_symbols else name)
 
 
-func _init(name_: StringName, symbol_: StringName, mass_: float) -> void:
-	name = name_.to_lower()
-	symbol = symbol_.to_lower()
-	mass = mass_
-	all_matter.append(self)
+## A factory method to create Matter instances.
+## It returns the new Matter object or null if a duplicate name or symbol is detected.
+static func create(name_: StringName, symbol_: StringName, mass_: float) -> Matter:
+	var new_matter: Matter
 
-	# Throw an error if there is a duplicate name or symbol.
-	if name in by_name:
-		push_error("Duplicate Matter name: %s" % name)
-		if Engine.is_editor_hint():
-			print_stack()
+	# GDScript doesn't have a way to get to the class the static method is being called on,
+	# so we have to infer it from the symbol.
+	# If the symbol is longer than 2 characters or has a number, then it is a Molecule.
+	# else, it is an Element.
+	if symbol_.length() > 2 or symbol_.findn("[0-9]") != -1:
+		new_matter = Molecule.new()
 	else:
-		by_name[name] = self
+		new_matter = Element.new()
 
-	if symbol in by_symbol:
-		push_error("Duplicate Matter symbol: %s" % symbol)
-		if Engine.is_editor_hint():
-			print_stack()
-	else:
-		by_symbol[symbol] = self
+	if name_ in by_name:
+		return null
+	if symbol_ in by_symbol:
+		return null
 
-	all_matter.sort_custom(func sort_by_mass(a: Matter, b: Matter) -> bool: return a.mass < b.mass)
+	new_matter.name = name_
+	new_matter.symbol = symbol_
+	new_matter.mass = mass_
+
+	all_matter.append(new_matter)
+	by_name[new_matter.name] = new_matter
+	by_symbol[new_matter.symbol] = new_matter
+
+	return new_matter
+
+
+func _init(name_: StringName = "", symbol_: StringName = "", mass_: float = 0.0) -> void:
+	if name_ != "":
+		name = name_
+	if symbol_ != "":
+		symbol = symbol_
+	if mass_ != 0.0:
+		mass = mass_
 
 # Elements
-static var hydrogen = Element.new(&"hydrogen", &"h", 1.01)
-static var helium = Element.new(&"helium", &"he", 4.00)
-static var carbon = Element.new(&"carbon", &"c", 12.01)
-static var nitrogen = Element.new(&"nitrogen", &"n", 14.01)
-static var oxygen = Element.new(&"oxygen", &"o", 16.00)
-static var magnesium = Element.new(&"magnesium", &"mg", 24.31)
-static var silicon = Element.new(&"silicon", &"si", 28.09)
-static var sulfer = Element.new(&"sulfer", &"s", 32.06)
-static var iron = Element.new(&"iron", &"fe", 55.85)
-static var nickel = Element.new(&"nickel", &"ni", 58.69)
-static var copper = Element.new(&"copper", &"cu", 63.55)
-static var uranium = Element.new(&"uranium", &"u", 238.03)
+static var hydrogen = Element.create(&"hydrogen", &"h", 1.01)
+static var helium = Element.create(&"helium", &"he", 4.00)
+static var carbon = Element.create(&"carbon", &"c", 12.01)
+static var nitrogen = Element.create(&"nitrogen", &"n", 14.01)
+static var oxygen = Element.create(&"oxygen", &"o", 16.00)
+static var magnesium = Element.create(&"magnesium", &"mg", 24.31)
+static var silicon = Element.create(&"silicon", &"si", 28.09)
+static var sulfer = Element.create(&"sulfer", &"s", 32.06)
+static var iron = Element.create(&"iron", &"fe", 55.85)
+static var nickel = Element.create(&"nickel", &"ni", 58.69)
+static var copper = Element.create(&"copper", &"cu", 63.55)
+static var uranium = Element.create(&"uranium", &"u", 238.03)
 
 # Molecules
-static var water = Molecule.new(&"water", &"h2o", 2 * hydrogen.mass + oxygen.mass)
+static var water = Molecule.create(&"water", &"h2o", 2 * hydrogen.mass + oxygen.mass)
