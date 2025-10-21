@@ -86,7 +86,7 @@ jobs:
           mkdir -v -p ~/.local/share/godot/export_templates/
           mkdir -v -p ~/.config/
           mv /root/.config/godot ~/.config/godot
-          mv '/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable' \
+          mv "/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable" \
           "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
 
       - name: Windows Build
@@ -126,7 +126,7 @@ jobs:
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
-          mv '/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable' \
+          mv "/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable" \
           "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
 
       - name: Linux Build
@@ -170,7 +170,7 @@ jobs:
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
-          mv '/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable' \
+          mv "/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable" \
           "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
 
       - name: Web Build
@@ -217,7 +217,7 @@ jobs:
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
-          mv '/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable' \
+          mv "/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable" \
           "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
 
       - name: Mac Build
