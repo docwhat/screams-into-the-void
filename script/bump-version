@@ -5,14 +5,16 @@ die() {
 	exit 1
 }
 
-ver="$(git describe --tags --abbrev=0)" || die "Failed to get latest tag"
+ver="$(git describe --tags --abbrev=0)" || die "Failed to get latest tag."
 
 if git diff --quiet "$ver"..HEAD; then
-	echo "No new commits since last tag ($ver), skipping version bump"
+	echo "No new commits since last tag ($ver), skipping version bump."
 	exit 0
 fi
 
-new_ver="$(semver bump patch "$ver")" || die "Failed to bump version"
+new_ver="v$(semver bump patch "$ver")" || die "Failed to bump version."
+
+semver validate "$new_ver" || die "New version '$new_ver' is not valid."
 
 git tag "$new_ver"
 
