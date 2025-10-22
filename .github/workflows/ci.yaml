@@ -189,7 +189,7 @@ jobs:
           branch: gh-pages
           folder: build/web
 
-  export-mac:
+  export-macos:
     name: Mac Export
     runs-on: ubuntu-24.04
     if: startsWith(github.ref, 'refs/tags/v')
@@ -221,13 +221,13 @@ jobs:
           "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
 
       - name: Mac Build
-        run: "mise run export-mac"
+        run: "mise run export-macos"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mac
-          path: build/mac
+          name: macOS
+          path: build/macos
 
 
 # EOF
