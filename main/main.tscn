@@ -36,6 +36,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 2
 script = ExtResource("3_1bvp3")
 
 [node name="PlayField" type="CanvasLayer" parent="."]
