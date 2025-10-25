@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://ld7nxmusxkiv"]
-
-[ext_resource type="Script" uid="uid://denmxfffamuw3" path="res://game_save.gd" id="1_bhw2v"]
-
-[node name="GameSave" type="Node2D"]
-script = ExtResource("1_bhw2v")
-use_format = 2
