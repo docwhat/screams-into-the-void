@@ -15,6 +15,9 @@ static func limit_one(_mat: Matter, amt: int) -> int:
 
 ## Absorb an asteroid with a given kind and size.
 func absorb_asteroid(asteroid: Asteroid) -> void:
+	if not asteroid.is_marked_for_absorbtion:
+		return
+
 	var absorbed_matter: MatterBag = absorption_limiter(asteroid.matter_bag)
 
 	GameSave.matter.add_bag(absorbed_matter)

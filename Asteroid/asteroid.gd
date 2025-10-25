@@ -25,6 +25,9 @@ var dissolve_tween: Tween
 ## The matter contained in this asteroid.
 var matter_bag: MatterBag
 
+## Has the asteroid been marked for absorbtion?
+var is_marked_for_absorbtion
+
 @onready var shape: Polygon2D = %Shape
 @onready var outline: Line2D = %Outline
 @onready var collision_shape: CollisionPolygon2D = %CollisionShape
@@ -145,6 +148,16 @@ func _ready() -> void:
 		):
 			set(prop.name, get(prop.name))
 
+	Events.asteroid_clicked.connect(_on_asteroid_clicked)
+
+
+func _on_asteroid_clicked(asteroid: Asteroid) -> void:
+	if is_marked_for_absorbtion:
+		return
+
+	if asteroid == self:
+		is_marked_for_absorbtion = true
+
 
 func _physics_process(_delta: float) -> void:
 	if is_on_screen():
@@ -263,6 +276,11 @@ func trigger_dissolve() -> void:
 
 	var dissolver_material: ShaderMaterial = load("uid://bbe0mwwx7i71l").duplicate()
 	%Group.set_material(dissolver_material)
+
+	# Set the color we're using.
+	var color: Color = Global.color_nanobots if is_marked_for_absorbtion else Color.BLACK
+
+	dissolver_material.set_shader_parameter("color", color)
 
 	# Calculate the angle to the player.
 	var player_angle: float = global_position.angle_to_point(Global.player_position)

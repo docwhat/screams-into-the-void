@@ -19,17 +19,39 @@ func _on_asteroid_input_event(viewport: Node, event: InputEvent, _shape_idx: int
 	if not mouse_event.button_index == MOUSE_BUTTON_LEFT:
 		return
 
-	var highlight_color: Color = Color.LIME
+	# We've been clicked, tell the world.
+	Events.click_asteroid(get_parent())
+
 	if tween:
 		tween.kill()
 	tween = create_tween()
 	tween.set_trans(Tween.TRANS_SPRING)
-	tween.tween_property(%Outline, "default_color", Color(2, 2, 2), 0.1)
-	tween.tween_property(%Outline, "default_color", highlight_color, 0.2)
+	tween.tween_property(
+		%Outline,
+		"default_color",
+		Color(2, 2, 2),
+		0.1,
+	)
+	tween.tween_property(
+		%Outline,
+		"default_color",
+		Global.color_nanobots,
+		0.2,
+	)
 	tween.set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
-	tween.tween_property(%Outline, "default_color", highlight_color.darkened(0.8), 1.2)
+	tween.tween_property(
+		%Outline,
+		"default_color",
+		Global.color_nanobots.clamp().darkened(0.8),
+		1.2,
+	)
 	tween.set_trans(Tween.TRANS_LINEAR)
-	tween.parallel().tween_property(%Shape, "self_modulate", Color(2, 2, 1), 1.0)
+	tween.parallel().tween_property(
+		%Shape,
+		"self_modulate",
+		Color(2, 2, 2),
+		1.0,
+	)
 
 	viewport.set_input_as_handled()
 # Debugging which also shows an alternative way to check if the click is within the

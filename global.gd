@@ -57,6 +57,12 @@ var asteroid_count: int = 0
 ## Chance that an asteroid aims directly for the player. 1.0 == 100%
 @export_range(0.0, 1.0, 0.01) var asteroid_player_intercept_chance: float = 0.3
 
+@export_group("Colors", "color_")
+
+## Color of the nanobots. This is set higher than 1.0 to make it glow or highlight things.
+@export var color_nanobots: Color = Color(0, 2, 0, 0.9)
+
+## Done with groups
 @export_group("")
 
 
