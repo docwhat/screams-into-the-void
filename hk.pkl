@@ -27,7 +27,12 @@ hooks {
     ["pre-commit"] {
         fix = true    // automatically modify files with available linter fixes
         stash = false // stashes unstaged changes while running fix steps
-        steps = linters
+        steps {
+            ["no-n-a-r-f"] {
+                check = "mise run no-n-a-r-f"
+            }
+            ...linters
+        }
     }
     // instead of pre-commit, you can instead define pre-push hooks
     ["pre-push"] {

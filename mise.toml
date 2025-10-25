@@ -116,8 +116,21 @@ else
 fi
 """
 
-[tasks.pre-commit]
-run = "hk run pre-commit"
+[tasks.no-n-a-r-f]
+description = "Check for the word N-A-R-F in the source code"
+quiet = true
+run = """
+#!/usr/bin/env bash
+forbidden='na'"rf"
+if git --no-pager grep --ignore-case --perl-regexp \
+  '\\'b"$forbidden"'\\'b
+then
+  printf '%s%s%s%s found in source code!\\n' "N" "A" "R" "F"
+  exit 1
+else
+  : do nothing
+fi
+"""
 
 [tasks.post-push]
 run = "script/bump-version"

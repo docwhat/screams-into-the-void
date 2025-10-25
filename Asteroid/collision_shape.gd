@@ -56,7 +56,7 @@ func _on_asteroid_input_event(viewport: Node, event: InputEvent, _shape_idx: int
 	viewport.set_input_as_handled()
 # Debugging which also shows an alternative way to check if the click is within the
 # shape or not.
-#print("NARF_on_asteroid_input_event: %s -- %s -- %s" % [
+#print("DEBUGGING _on_asteroid_input_event: %s -- %s -- %s" % [
 #"",
 #self.to_local(mouse_event.position),
 #Geometry2D.is_point_in_polygon(self.to_local(mouse_event.position), self.polygon),

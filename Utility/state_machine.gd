@@ -34,7 +34,6 @@ var states: Array[State]:
 
 
 func _ready() -> void:
-	print("NARF: %s" % var_to_str(states))
 	for state_node: State in states:
 		state_node.finished.connect(_transition_by_name)
 
