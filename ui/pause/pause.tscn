@@ -87,6 +87,22 @@ setting_name = "addons/git_describe/describe_setting_path"
 default_value = "application/config/git_describe"
 metadata/_custom_type_script = "uid://cwjb3x45e2r4k"
 
+[node name="MessageMarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 80
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MessageMarginContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[color=green]This game is a [b]prototype[/b][/color] that is demostrating techniques that might become part of the final game."
+fit_content = true
+horizontal_alignment = 1
+
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Play" to="." method="unpause"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Options" to="." method="options"]
