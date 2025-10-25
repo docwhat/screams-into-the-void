@@ -45,6 +45,7 @@ unique_name_in_owner = true
 [node name="Player" parent="PlayField" instance=ExtResource("4_1bvp3")]
 unique_name_in_owner = true
 position = Vector2(640, 656)
+input_pickable = false
 
 [node name="HUD" parent="." instance=ExtResource("5_7mycd")]
 layer = 10
