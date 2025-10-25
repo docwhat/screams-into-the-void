@@ -25,7 +25,7 @@ anchors_preset = 0
 script = ExtResource("1_h2yge")
 
 [node name="Background" type="CanvasLayer" parent="."]
-layer = -1
+layer = -10
 
 [node name="Stars" type="ColorRect" parent="Background"]
 material = SubResource("ShaderMaterial_0xm2m")
@@ -46,10 +46,12 @@ unique_name_in_owner = true
 position = Vector2(640, 656)
 
 [node name="HUD" parent="." instance=ExtResource("5_7mycd")]
+layer = 10
 visible = false
 
 [node name="PauseScreen" type="CanvasLayer" parent="."]
 process_mode = 2
+layer = 30
 script = ExtResource("6_67ri8")
 
 [node name="PauseMenu" parent="PauseScreen" instance=ExtResource("7_272bh")]
