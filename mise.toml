@@ -76,6 +76,18 @@ run = "godot --path . --print-fps"
 description = "Run the Godot editor"
 run = "(godot --path . --editor >& /dev/null &)"
 
+[tasks.oxipng]
+description = "Optimize PNG images"
+run = "git ls-files --no-ignored -z '*.png' ':!:addons/' | xargs -0 oxipng --opt max --strip safe"
+
+[tasks.pre-commit]
+run = "hk run pre-commit"
+
+[tasks.prelint]
+
+[tasks.postlint]
+
+
 [tasks.test]
 description = "Run the tests"
 run = """
@@ -116,27 +128,11 @@ else
 fi
 """
 
-[tasks.no-n-a-r-f]
-description = "Check for the word N-A-R-F in the source code"
-quiet = true
-run = """
-#!/usr/bin/env bash
-forbidden='na'"rf"
-if git --no-pager grep --ignore-case --perl-regexp \
-  '\\'b"$forbidden"'\\'b
-then
-  printf '%s%s%s%s found in source code!\\n' "N" "A" "R" "F"
-  exit 1
-else
-  : do nothing
-fi
-"""
-
 [tasks.post-push]
 run = "script/bump-version"
 
 [tools]
-hk = "1.16.0"
+hk = "1.19.0"
 oxipng = "9.1.5"
 pkl = "0.29.1"
 semver = "3.4.0"

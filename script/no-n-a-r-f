@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+forbidden='na'"rf"
+recursive=0
+quiet=0
+typeset -a files=()
+
+fatal() {
+  if ! ((quiet)); then
+    printf "FATAL: %s\n" "$1"
+  fi
+  exit 1
+}
+
+is_forbidden() {
+  local args='-iEH'
+
+  if ((recursive)); then
+    args+='r'
+  fi
+
+  grep "${args}" "\\b${forbidden}\\b" -- "$@"
+}
+
+show_help() {
+  cat <<-EOF
+Usage: $(basename "$0") [OPTIONS] [--] FILES...
+
+Check for the forbidden word '${forbidden}' in the given FILES.
+
+Options:
+  -h, --help      Show this help message and exit
+  -r, --recursive Recursively check all files in the given directories
+  -q, --quiet     Suppress output; only return exit status
+EOF
+}
+
+while (($# > 0)); do
+  case "$1" in
+  --)
+    shift
+    files+=("$@")
+    break
+    ;;
+  --help | -h)
+    show_help
+    exit 0
+    ;;
+  --recursive | -r)
+    recursive=1
+    ;;
+  --quiet | -q)
+    quiet=1
+    ;;
+  -*) fatal "Unknown option: $1" ;;
+  *)
+    files+=("$1")
+    shift
+    ;;
+  esac
+  shift
+done
+
+if ! ((${#files[@]})); then
+  fatal "Specify one or more files."
+fi
+
+if is_forbidden "${files[@]}"; then
+  fatal "'${forbidden}' found in source code!"
+elif ! ((quiet)); then
+  printf 'Files are good!\n'
+fi
+
+# EOF

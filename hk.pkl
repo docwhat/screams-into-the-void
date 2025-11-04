@@ -1,13 +1,12 @@
-amends "package://github.com/jdx/hk/releases/download/v1.16.0/hk@1.16.0#/Config.pkl"
-import "package://github.com/jdx/hk/releases/download/v1.16.0/hk@1.16.0#/Builtins.pkl"
+amends "package://github.com/jdx/hk/releases/download/v1.18.0/hk@1.18.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v1.18.0/hk@1.18.0#/Builtins.pkl"
 
-min_hk_version = "1.16.0"
+min_hk_version = "1.18.0"
 env {
     ["HK_MISE"] = "1"
 }
 exclude = List(
-    "addons/**",
-    "Planets/**"
+    "addons/**"
 )
 
 local linters = new Mapping<String, Step> {
@@ -16,8 +15,20 @@ local linters = new Mapping<String, Step> {
     ["taplo"] = Builtins.taplo
     ["yamllint"] = Builtins.yamllint
     ["yq"] = Builtins.yq
+
+    ["mise"] {
+        glob = "mise.toml"
+        check = "mise fmt --check"
+        fix = "mise fmt"
+    }
+
+    ["no-n-a-r-f"] {
+        glob = "*"
+        check = "script/no-n-a-r-f -- {{files}}"
+    }
+
     ["gdscript-formatter"] {
-        glob = List("**/*.gd")
+        glob = "*.gd"
         check = "gdscript-formatter lint {{files}}"
         fix = "gdscript-formatter --safe {{files}}"
     }
@@ -27,12 +38,7 @@ hooks {
     ["pre-commit"] {
         fix = true    // automatically modify files with available linter fixes
         stash = false // stashes unstaged changes while running fix steps
-        steps {
-            ["no-n-a-r-f"] {
-                check = "mise run no-n-a-r-f"
-            }
-            ...linters
-        }
+        steps = linters
     }
     // instead of pre-commit, you can instead define pre-push hooks
     ["pre-push"] {
