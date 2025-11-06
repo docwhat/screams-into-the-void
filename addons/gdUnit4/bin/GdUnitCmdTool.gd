@@ -6,7 +6,7 @@ var _cli_runner: GdUnitTestCIRunner
 
 
 func _initialize() -> void:
-	# DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MINIMIZED)
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MINIMIZED)
 	_cli_runner = GdUnitTestCIRunner.new()
 	root.add_child(_cli_runner)
 

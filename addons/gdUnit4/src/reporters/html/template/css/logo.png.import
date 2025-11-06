@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://hdihbju0d0bb"
-path="res://.godot/imported/horizontal-line2.png-92618e6ee5cc9002847547a8c9deadbc.ctex"
+uid="uid://d4dckmyc5oxv0"
+path="res://.godot/imported/logo.png-d555ca92b260de08658ae2e1d4572e8c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/gdUnit4/src/update/assets/horizontal-line2.png"
-dest_files=["res://.godot/imported/horizontal-line2.png-92618e6ee5cc9002847547a8c9deadbc.ctex"]
+source_file="res://addons/gdUnit4/src/reporters/html/template/css/logo.png"
+dest_files=["res://.godot/imported/logo.png-d555ca92b260de08658ae2e1d4572e8c.ctex"]
 
 [params]
 
