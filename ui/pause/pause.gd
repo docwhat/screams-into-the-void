@@ -5,6 +5,7 @@ extends Control
 func _ready() -> void:
 	if OS.has_feature("wasm"):
 		%Quit.hide()
+	%Version.text = Global.VERSION
 
 
 ## When we become visible.

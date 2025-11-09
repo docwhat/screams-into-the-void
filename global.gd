@@ -1,5 +1,7 @@
 extends Node
 
+const VERSION:String = "v0.5.8"
+
 var resolution: Vector2 = Vector2(
 	ProjectSettings.get_setting("display/window/size/viewport_width"),
 	ProjectSettings.get_setting("display/window/size/viewport_height"),
