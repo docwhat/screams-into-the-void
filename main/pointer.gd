@@ -1,0 +1,16 @@
+extends Area2D
+
+@export var cursor_2d:GUIDEAction
+@export var click:GUIDEAction
+
+
+func _ready():
+	click.triggered.connect(_click)
+
+func _process(_delta):
+	global_position = cursor_2d.value_axis_2d
+
+func _click():
+	for clickable: Node2D in get_overlapping_bodies():
+		if clickable.has_method("click"):
+			clickable.click()

@@ -7,8 +7,6 @@ func enter(_previous_state_path: String, _data: Dictionary = { }) -> void:
 func exit() -> void:
 	%OptionsMenu.hide()
 
-
-func handle_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
-		get_parent().pause()
-		get_viewport().set_input_as_handled()
+func pause_or_back() -> void:
+	get_parent().pause()
+	get_viewport().set_input_as_handled()

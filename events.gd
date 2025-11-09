@@ -24,11 +24,3 @@ signal update_hud_requested(matter: Matter)
 ## Request that the HUD (score keeper) be updated.
 func request_hud_update(matter: Matter = null) -> void:
 	update_hud_requested.emit(matter)
-
-
-signal asteroid_clicked(asteroid: Asteroid)
-
-
-## Signal that an asteroid was clicked (via mouse, keyboard, whatever).
-func click_asteroid(asteroid: Asteroid) -> void:
-	asteroid_clicked.emit(asteroid)

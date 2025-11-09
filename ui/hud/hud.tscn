@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bayljo5eg711g"]
+[gd_scene load_steps=4 format=3 uid="uid://bayljo5eg711g"]
 
 [ext_resource type="Script" uid="uid://5dbh8sao520s" path="res://ui/hud/hud.gd" id="1_2gk58"]
 [ext_resource type="Texture2D" uid="uid://doxs2idmx3bm3" path="res://ui/ui-box.png" id="2_318vg"]
+[ext_resource type="PackedScene" uid="uid://dkr80d2pi0d41" path="res://addons/guide/debugger/guide_debugger.tscn" id="3_e0nub"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_2gk58")
@@ -14,6 +15,7 @@ offset_right = 176.0
 offset_bottom = 46.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+mouse_behavior_recursive = 1
 
 [node name="NinePatchRect" type="NinePatchRect" parent="Panel"]
 custom_minimum_size = Vector2(10, 10)
@@ -56,3 +58,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "125"
 horizontal_alignment = 2
+
+[node name="DebugLayer" type="CanvasLayer" parent="."]
+layer = 99
+
+[node name="GuideDebugger" parent="DebugLayer" instance=ExtResource("3_e0nub")]
+modulate = Color(0.7258333, 1, 0.53, 0.49411765)
+metadata/_edit_lock_ = true

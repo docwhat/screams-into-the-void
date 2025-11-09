@@ -1,0 +1,99 @@
+[gd_resource type="Resource" script_class="GUIDEMappingContext" load_steps=31 format=3 uid="uid://bx6pl1tnvdatl"]
+
+[ext_resource type="Script" uid="uid://cpplm41b5bt6m" path="res://addons/guide/guide_action_mapping.gd" id="1_ymisx"]
+[ext_resource type="Resource" uid="uid://byi55pcof6apn" path="res://input/global/pause_or_back.tres" id="2_01ggc"]
+[ext_resource type="Script" uid="uid://dsa1dnifd6w32" path="res://addons/guide/guide_mapping_context.gd" id="2_g1q2w"]
+[ext_resource type="Script" uid="uid://mtx1unc2aqn7" path="res://addons/guide/guide_input_mapping.gd" id="3_r4nd6"]
+[ext_resource type="Script" uid="uid://cw71o87tvdx3q" path="res://addons/guide/inputs/guide_input_key.gd" id="4_m5qo3"]
+[ext_resource type="Script" uid="uid://bl8rjl4oaldje" path="res://addons/guide/modifiers/guide_modifier.gd" id="5_5cru5"]
+[ext_resource type="Script" uid="uid://x74mnwgr08a7" path="res://addons/guide/triggers/guide_trigger.gd" id="6_57nyh"]
+[ext_resource type="Script" uid="uid://b52rqq28tuqpg" path="res://addons/guide/triggers/guide_trigger_pressed.gd" id="7_r4nd6"]
+[ext_resource type="Resource" uid="uid://brrqkk241gnyr" path="res://input/global/switch_to_controller.tres" id="8_5cru5"]
+[ext_resource type="Script" uid="uid://w3fbpe7r01n8" path="res://addons/guide/inputs/guide_input_any.gd" id="9_57nyh"]
+[ext_resource type="Script" uid="uid://doauobik3xyea" path="res://addons/guide/inputs/guide_input_joy_axis_2d.gd" id="10_57nyh"]
+[ext_resource type="Resource" uid="uid://dxmsyyoowm2s3" path="res://input/global/switch_to_touch.tres" id="11_82hs2"]
+
+[sub_resource type="Resource" id="Resource_82hs2"]
+script = ExtResource("4_m5qo3")
+key = 4194305
+
+[sub_resource type="Resource" id="Resource_m5qo3"]
+script = ExtResource("7_r4nd6")
+
+[sub_resource type="Resource" id="Resource_om4s3"]
+script = ExtResource("3_r4nd6")
+input = SubResource("Resource_82hs2")
+triggers = Array[ExtResource("6_57nyh")]([SubResource("Resource_m5qo3")])
+
+[sub_resource type="Resource" id="Resource_0po1m"]
+script = ExtResource("1_ymisx")
+action = ExtResource("2_01ggc")
+input_mappings = Array[ExtResource("3_r4nd6")]([SubResource("Resource_om4s3")])
+
+[sub_resource type="Resource" id="Resource_txl4f"]
+script = ExtResource("9_57nyh")
+joy_buttons = true
+joy_axes = true
+mouse = false
+joy = true
+
+[sub_resource type="Resource" id="Resource_5cru5"]
+script = ExtResource("7_r4nd6")
+
+[sub_resource type="Resource" id="Resource_niljs"]
+script = ExtResource("3_r4nd6")
+input = SubResource("Resource_txl4f")
+triggers = Array[ExtResource("6_57nyh")]([SubResource("Resource_5cru5")])
+
+[sub_resource type="Resource" id="Resource_soy7c"]
+script = ExtResource("10_57nyh")
+
+[sub_resource type="Resource" id="Resource_nhhob"]
+script = ExtResource("7_r4nd6")
+
+[sub_resource type="Resource" id="Resource_b53s1"]
+script = ExtResource("3_r4nd6")
+input = SubResource("Resource_soy7c")
+triggers = Array[ExtResource("6_57nyh")]([SubResource("Resource_nhhob")])
+
+[sub_resource type="Resource" id="Resource_8xaxa"]
+script = ExtResource("10_57nyh")
+x = 2
+y = 3
+
+[sub_resource type="Resource" id="Resource_gu86g"]
+script = ExtResource("7_r4nd6")
+
+[sub_resource type="Resource" id="Resource_3p1q8"]
+script = ExtResource("3_r4nd6")
+input = SubResource("Resource_8xaxa")
+triggers = Array[ExtResource("6_57nyh")]([SubResource("Resource_gu86g")])
+
+[sub_resource type="Resource" id="Resource_26fqx"]
+script = ExtResource("1_ymisx")
+action = ExtResource("8_5cru5")
+input_mappings = Array[ExtResource("3_r4nd6")]([SubResource("Resource_niljs"), SubResource("Resource_b53s1"), SubResource("Resource_3p1q8")])
+
+[sub_resource type="Resource" id="Resource_j4f0b"]
+script = ExtResource("9_57nyh")
+touch = true
+mouse = false
+joy = false
+
+[sub_resource type="Resource" id="Resource_0r2kv"]
+script = ExtResource("7_r4nd6")
+
+[sub_resource type="Resource" id="Resource_bieqe"]
+script = ExtResource("3_r4nd6")
+input = SubResource("Resource_j4f0b")
+triggers = Array[ExtResource("6_57nyh")]([SubResource("Resource_0r2kv")])
+
+[sub_resource type="Resource" id="Resource_4cnpi"]
+script = ExtResource("1_ymisx")
+action = ExtResource("11_82hs2")
+input_mappings = Array[ExtResource("3_r4nd6")]([SubResource("Resource_bieqe")])
+
+[resource]
+script = ExtResource("2_g1q2w")
+mappings = Array[ExtResource("1_ymisx")]([SubResource("Resource_0po1m"), SubResource("Resource_26fqx"), SubResource("Resource_4cnpi")])
+metadata/_custom_type_script = "uid://dsa1dnifd6w32"

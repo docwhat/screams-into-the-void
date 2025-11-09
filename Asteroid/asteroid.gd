@@ -118,10 +118,9 @@ var radius: float:
 var matter: Array[Matter]:
 	get:
 		return self.asteroid_kind.matter.keys()
-# var noise_size: float:
-# 	get:
-# 		return self.asteroid_size.shader_noise_size
 
+## Used for the click animation.
+var click_tween: Tween
 
 func _init() -> void:
 	asteroid_size = AsteroidSize.random_size()
@@ -147,17 +146,7 @@ func _ready() -> void:
 			prop.type == TYPE_COLOR
 		):
 			set(prop.name, get(prop.name))
-
-	Events.asteroid_clicked.connect(_on_asteroid_clicked)
-
-
-func _on_asteroid_clicked(asteroid: Asteroid) -> void:
-	if is_marked_for_absorbtion:
-		return
-
-	if asteroid == self:
-		is_marked_for_absorbtion = true
-
+			
 
 func _physics_process(_delta: float) -> void:
 	if is_on_screen():
@@ -260,6 +249,42 @@ func rebuild() -> void:
 func is_valid() -> bool:
 	return asteroid_size && asteroid_kind
 
+
+## Called when clicked on.
+func click() -> void:
+	if is_marked_for_absorbtion:
+		return
+		
+	is_marked_for_absorbtion = true
+		
+	click_tween = create_tween()
+	click_tween.set_trans(Tween.TRANS_SPRING)
+	click_tween.tween_property(
+		%Outline,
+		"default_color",
+		Color(2, 2, 2),
+		0.1,
+	)
+	click_tween.tween_property(
+		%Outline,
+		"default_color",
+		Global.color_nanobots,
+		0.2,
+	)
+	click_tween.set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	click_tween.tween_property(
+		%Outline,
+		"default_color",
+		Global.color_nanobots.clamp().darkened(0.8),
+		1.2,
+	)
+	click_tween.set_trans(Tween.TRANS_LINEAR)
+	click_tween.parallel().tween_property(
+		%Shape,
+		"self_modulate",
+		Color(2, 2, 2),
+		1.0,
+	)
 
 ## Contract method for Absorbers.
 func be_absorbed() -> void:
