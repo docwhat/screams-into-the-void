@@ -55,18 +55,21 @@ func _ready():
 
 ## Switch to using the controller.
 func _to_controller() -> void:
+	%Pointer.show()
 	GUIDE.enable_mapping_context(c_global, true)
 	if current_window.is_play_field():
 		GUIDE.enable_mapping_context(c_play_field)
 
 ## Switch to use the keyboard and mouse.
 func _to_keyboard_and_mouse() -> void:
+	%Pointer.show()
 	GUIDE.enable_mapping_context(km_global, true)
 	if current_window.is_play_field():
 		GUIDE.enable_mapping_context(km_play_field)
 	
 ## Switch to use touch screen.
 func _to_touch() -> void:
+	%Pointer.hide()
 	GUIDE.enable_mapping_context(t_global, true)
 	if current_window.is_play_field():
 		GUIDE.enable_mapping_context(t_play_field)
