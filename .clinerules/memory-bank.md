@@ -19,6 +19,7 @@ AC --> P[progress.md]
 ```
 
 ### Core Files (Required)
+
 1. `projectbrief.md`
    - Foundation document that shapes all other files
    - Created at project start if it doesn't exist
@@ -61,7 +62,9 @@ AC --> P[progress.md]
    - Evolution of project decisions
 
 ### Additional Context
+
 Create additional files/folders within memory-bank/ when they help organize:
+
 - Complex feature documentation
 - Integration specifications
 - API documentation
@@ -71,6 +74,7 @@ Create additional files/folders within memory-bank/ when they help organize:
 ## Core Workflows
 
 ### Plan Mode
+
 ```flowchart TD
 Start[Start] --> ReadFiles[Read Memory Bank]
 ReadFiles --> CheckFiles{Files Complete?}
@@ -84,6 +88,7 @@ Strategy --> Present[Present Approach]
 ```
 
 ### Act Mode
+
 ```flowchart TD
 Start[Start] --> Context[Check Memory Bank]
 Context --> Update[Update Documentation]
@@ -94,6 +99,7 @@ Execute --> Document[Document Changes]
 ## Documentation Updates
 
 Memory Bank updates occur when:
+
 1. Discovering new project patterns
 2. After implementing significant changes
 3. When user requests with **update memory bank** (MUST review ALL files)
