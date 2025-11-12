@@ -92,9 +92,6 @@ to be, hints at larger universe.
 
 - Engine: Godot using GDScript.
 - Scenes: modular nodes for MC, resources, upgrades, UI.
-- Use composition over inheritance for flexibility. This approach allows for greater
-modularity and reusability of components, making it easier to combine different
-functionalities without complex inheritance hierarchies.
 - Save system:
   - Must be flexible enough to handle changes in code gracefully.
   - Use versioned save data with migration paths.
@@ -180,5 +177,5 @@ localization ready text processing.
 - Memory fragments provide meta-goals and emotional hooks.
 - Positive feedback.
 
----  
+---
 Contact: @docwhat for iteration notes and demo builds.
