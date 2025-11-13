@@ -7,10 +7,10 @@ var name_tweens: Dictionary[Matter, Tween] = { }
 var value_tweens: Dictionary[Matter, Tween] = { }
 
 @onready var grid_container: GridContainer = %GridContainer
-
+@onready var guide_debugger: MarginContainer = $DebugLayer/GuideDebugger
 
 ## Adds the name and value label for a specific matter to the grid.
-func add_label(matter: Matter):
+func add_label(matter: Matter) -> void:
 	# Add name label.
 	var name_label: Label = Label.new()
 	name_label.name = "name_%s" % matter.symbol
