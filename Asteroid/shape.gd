@@ -9,21 +9,21 @@ var pixel_size: int = 3:
 			pixel_size = value
 			update_texture()
 
-var color_dark = Color("#008800"):
+var color_dark: Color = Color("#008800"):
 	get:
 		return color_dark
 	set(value):
 		if value != color_dark:
 			color_dark = value
 			update_texture()
-var color_mid = Color("#00ff00"):
+var color_mid: Color = Color("#00ff00"):
 	get:
 		return color_mid
 	set(value):
 		if value != color_mid:
 			color_mid = value
 			update_texture()
-var color_light = Color("#88ff88"):
+var color_light: Color = Color("#88ff88"):
 	get:
 		return color_light
 	set(value):
@@ -75,7 +75,7 @@ var noise_fractal_lacunarity: float = 25.0:
 var noise: FastNoiseLite
 
 
-func update_texture():
+func update_texture() -> void:
 	noise = FastNoiseLite.new()
 	noise.seed = Global.rng.randi()
 
@@ -89,7 +89,7 @@ func update_texture():
 	var square: int = ceil(maxf(rect.size.x, rect.size.y))
 
 	# Create a new Image to draw on
-	var image = Image.create(square, square, false, Image.FORMAT_RGBA8)
+	var image: Image = Image.create(square, square, false, Image.FORMAT_RGBA8)
 
 	# Iterate over each pixel to set its color based on noise
 	for x: int in range(square):
@@ -98,7 +98,7 @@ func update_texture():
 			var x_pos: int = int((float(x) / pixel_size)) * pixel_size
 			var y_pos: int = int((float(y) / pixel_size)) * pixel_size
 
-			var noise_value = noise.get_noise_2d(x_pos, y_pos)
+			var noise_value: float = noise.get_noise_2d(x_pos, y_pos)
 
 			var the_color: Color
 			if noise_value < -0.3:
@@ -120,7 +120,7 @@ func update_texture():
 
 ## Returns a Rect2 describing a box that bounds the Polygon2D
 func get_rect() -> Rect2:
-	var rect = Rect2()
+	var rect: Rect2 = Rect2()
 	for point: Vector2 in polygon:
 		rect = rect.expand(point)
 	return rect.abs()

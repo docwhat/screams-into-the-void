@@ -3,7 +3,7 @@ class_name MatterBag
 extends Resource
 
 ## A signal that is emitted whenever the contents of the bag change.
-signal matter_changed(Matter)
+signal matter_changed(Matter: Matter)
 
 ## Private dictionary holding the matter amounts.
 var _bag: Dictionary[Matter, int]

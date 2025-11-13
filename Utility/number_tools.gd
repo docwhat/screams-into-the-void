@@ -163,7 +163,7 @@ static func engineering_notate_int(
 	# Engineering numbers have a mantissa of
 	# 1, 2, or 3 digits.
 	var mantissa: String
-	var decimal_size = num_str.length() % 3
+	var decimal_size: int = num_str.length() % 3
 	if decimal_size == 0:
 		mantissa = num_str.substr(0, 3)
 		decimal_size = 3

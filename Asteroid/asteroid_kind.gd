@@ -48,7 +48,7 @@ static func random_kind() -> AsteroidKind:
 	for kind: AsteroidKind in kinds:
 		kind_weights.push_back(kind.probability)
 
-	var random_index = Global.rng.rand_weighted(kind_weights)
+	var random_index: int = Global.rng.rand_weighted(kind_weights)
 	return kinds[random_index]
 
 

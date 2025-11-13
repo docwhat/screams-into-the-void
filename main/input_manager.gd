@@ -42,7 +42,7 @@ extends Node
 
 
 ## Run once the node is attached to the tree and it's children are ready.
-func _ready():
+func _ready() -> void:
 	action_pause_or_back.triggered.connect(current_window.pause_or_back)
 	
 	action_switch_to_joystick.triggered.connect(_to_controller)

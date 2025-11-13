@@ -63,6 +63,6 @@ func spawn_one_asteroid() -> void:
 	if Global.asteroid_count >= Global.asteroid_max:
 		return
 
-	var new_asteroid = ASTEROID.instantiate()
+	var new_asteroid: Asteroid = ASTEROID.instantiate()
 	Global.play_field.add_child(new_asteroid, true)
 	new_asteroid.launch.call_deferred()

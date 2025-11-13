@@ -15,9 +15,9 @@ func phase_shift(a: Color, b: Color, c: Color, d: Color, t: float) -> Color:
 
 
 func to_ok_hsl(c: Color) -> String:
-	var h = c.ok_hsl_h
-	var s = c.ok_hsl_s
-	var l = c.ok_hsl_l
+	var h: float = c.ok_hsl_h
+	var s: float = c.ok_hsl_s
+	var l: float = c.ok_hsl_l
 	return "(%.2f %.0f%% %.0f%%)" % [h, s * 100.0, l * 100.0]
 
 
@@ -31,9 +31,9 @@ func recolor(clr: Color) -> Color:
 func threecolor() -> PackedColorArray:
 	var colors: PackedColorArray
 
-	var a = Color(Global.rng.randf(), Global.rng.randf(), Global.rng.randf())
-	var b = Color(a)
-	var c = Color(a)
+	var a: Color = Color(Global.rng.randf(), Global.rng.randf(), Global.rng.randf())
+	var b: Color = Color(a)
+	var c: Color = Color(a)
 
 	b.ok_hsl_h = b.ok_hsl_h + 150.0 / 360.0
 	c.ok_hsl_h = c.ok_hsl_h + 210.0 / 360.0
@@ -63,15 +63,15 @@ func generate_colorscheme(
 		saturation: float = 0.5,
 ) -> PackedColorArray:
 	# var a = Color(randf_range(0.0, 0.5), randf_range(0.0, 0.5), randf_range(0.0, 0.5))
-	var a = Color(0.5, 0.5, 0.5)
+	var a: Color = Color(0.5, 0.5, 0.5)
 	# var b = Color(randf_range(0.1, 0.6), randf_range(0.1, 0.6), randf_range(0.1, 0.6))
-	var b = Color(0.5, 0.5, 0.5) * saturation
-	var c = Color(
+	var b: Color = Color(0.5, 0.5, 0.5) * saturation
+	var c: Color = Color(
 		Global.rng.randf_range(0.5, 1.5),
 		Global.rng.randf_range(0.5, 1.5),
 		Global.rng.randf_range(0.5, 1.5),
 	) * hue_diff
-	var d = Color(
+	var d: Color = Color(
 		Global.rng.randf_range(0.0, 1.0),
 		Global.rng.randf_range(0.0, 1.0),
 		Global.rng.randf_range(0.0, 1.0),
@@ -81,7 +81,7 @@ func generate_colorscheme(
 	var n: float = max(1.0, float(n_colors - 1.0))
 	for i: int in range(0, n_colors, 1):
 		var t: float = float(i) / n
-		var color = Color(
+		var color: Color = Color(
 			palette_float(a.r, b.r, c.r, d.r, t),
 			palette_float(a.g, b.g, c.g, d.g, t),
 			palette_float(a.b, b.b, c.b, d.b, t),

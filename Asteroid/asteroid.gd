@@ -26,7 +26,7 @@ var dissolve_tween: Tween
 var matter_bag: MatterBag
 
 ## Has the asteroid been marked for absorbtion?
-var is_marked_for_absorbtion
+var is_marked_for_absorbtion: bool
 
 @onready var shape: Polygon2D = %Shape
 @onready var outline: Line2D = %Outline
@@ -231,7 +231,7 @@ func rebuild() -> void:
 		)
 
 	# Image shape.
-	var points = asteroid_size.generate_polygon()
+	var points: PackedVector2Array = asteroid_size.generate_polygon()
 
 	# Set the shapes.
 	shape.set_polygon(points)
@@ -381,7 +381,7 @@ func launch() -> Node:
 	var direction: float
 
 	# Determine if this asteroid should intercept the player
-	var should_intercept = Global.rng.randf() < Global.asteroid_player_intercept_chance
+	var should_intercept: bool = Global.rng.randf() < Global.asteroid_player_intercept_chance
 
 	if not is_valid():
 		push_error(
@@ -407,8 +407,8 @@ func launch() -> Node:
 	direction = position.angle_to_point(target_coord)
 
 	# Choose a velocity
-	var speed = Global.rng.randf_range(10.0, 180.0)
-	var velocity = Vector2(speed * get_mass(), 0.0).rotated(direction)
+	var speed: float = Global.rng.randf_range(10.0, 180.0)
+	var velocity: Vector2 = Vector2(speed * get_mass(), 0.0).rotated(direction)
 
 	# Brute-force angular velocity for now. See comment below.
 	angular_velocity = Global.rng.randf_range(0 - TAU / 4.0, TAU / 4.0)
@@ -455,10 +455,10 @@ func calculate_asteroid_starting_position(screen_size: Vector2) -> Vector2:
 	var spawn_margin: int = 100
 
 	# Where the asteroid should spawn.
-	var sides = [Side.TOP, Side.LEFT, Side.RIGHT, Side.BOTTOM]
+	var sides: Array[Asteroid.Side] = [Side.TOP, Side.LEFT, Side.RIGHT, Side.BOTTOM]
 	var side_weights: PackedFloat32Array = [5, 1.5, 1.5, 0.2]
 
-	var side_index = Global.rng.rand_weighted(side_weights)
+	var side_index: int = Global.rng.rand_weighted(side_weights)
 	match sides[side_index]:
 		Side.LEFT:
 			return Vector2(
