@@ -104,4 +104,42 @@ func format_number(number: int) -> String:
 		GameSave.number_decimal_separator,
 	)
 
+
+enum Boolish {
+	FALSE = 0,
+	TRUE = 1,
+	NULL = -1,
+}
+const FALSE: Boolish = Boolish.FALSE
+const NO: Boolish = Boolish.FALSE
+
+const TRUE: Boolish = Boolish.TRUE
+const YES: Boolish = Boolish.TRUE
+
+const NULL: Boolish = Boolish.NULL
+const NONE: Boolish = Boolish.NULL
+
+
+## Converts a string to a bool.
+##
+## Suitable for use with Console commands.
+func string_to_bool(s: String, allow_empty: bool = false, preferred: bool = true) -> Boolish:
+	if not s or s == "":
+		if allow_empty:
+			return Boolish.NULL
+		else:
+			if preferred:
+				return TRUE
+			return FALSE
+
+	var c: String = s.to_lower().left(1)
+	if preferred:
+		if c == "t" or c == "y" or c == "1":
+			return TRUE
+		return FALSE
+	else:
+		if c == "f" or c == "n" or c == "0":
+			return FALSE
+		return TRUE
+
 # EOF

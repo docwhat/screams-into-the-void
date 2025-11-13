@@ -63,5 +63,6 @@ horizontal_alignment = 2
 layer = 99
 
 [node name="GuideDebugger" parent="DebugLayer" instance=ExtResource("3_e0nub")]
+visible = false
 modulate = Color(0.7258333, 1, 0.53, 0.49411765)
 metadata/_edit_lock_ = true

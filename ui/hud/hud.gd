@@ -9,6 +9,7 @@ var value_tweens: Dictionary[Matter, Tween] = { }
 @onready var grid_container: GridContainer = %GridContainer
 @onready var guide_debugger: MarginContainer = $DebugLayer/GuideDebugger
 
+
 ## Adds the name and value label for a specific matter to the grid.
 func add_label(matter: Matter) -> void:
 	# Add name label.
@@ -34,6 +35,13 @@ func add_label(matter: Matter) -> void:
 
 func _ready() -> void:
 	visible = false
+	Console.add_command(
+		"input_debug",
+		_console_input_debug,
+		["bool"],
+		0,
+		"Turn the G.U.I.D.E. debugging on/off. With no arguments, it toggles.",
+	)
 
 	# Clear out any existing labels used for
 	# for the 2d view in the editor.
@@ -97,3 +105,17 @@ func update_hud(matter: Matter = null) -> void:
 
 	# Show ourself if any label is visible.
 	visible = any_label_visible
+
+
+## Console command to enable to disable the GUIDE debugger.
+func _console_input_debug(value: String) -> void:
+	match Global.string_to_bool(value, true):
+		Global.YES:
+			guide_debugger.show()
+		Global.NO:
+			guide_debugger.hide()
+		_:
+			if guide_debugger.visible:
+				guide_debugger.hide()
+			else:
+				guide_debugger.show()

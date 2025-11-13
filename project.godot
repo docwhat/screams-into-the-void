@@ -30,6 +30,7 @@ ColorSchemes="*res://color_schemes.gd"
 Events="*res://events.gd"
 GameSave="*res://game_save.tscn"
 GUIDE="*res://addons/guide/guide.gd"
+Console="*res://addons/console/console.gd"
 
 [debug]
 
@@ -55,7 +56,7 @@ project/assembly_name="Screams into the Void"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/gdUnit4/plugin.cfg", "res://addons/guide/plugin.cfg")
+enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/console/plugin.cfg", "res://addons/gdUnit4/plugin.cfg", "res://addons/guide/plugin.cfg")
 
 [gdunit4]
 
