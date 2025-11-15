@@ -2,62 +2,133 @@
 
 This file gives focused, actionable guidance for an AI code assistant to be productive in this repository.
 
-High-level facts
+## High-level facts
 
-- Engine: Godot (GDScript). Project targets Godot 4.5+ (see `README.md`).
-- Task runner: `mise` is required. Run `mise install` once to install tools, then use `mise` for common tasks (see `README.md`).
-- Git Hook manager: `hk` is required. It is also used for linting and formatting. It is configured via `hk.pkl`. See: <https://github.com/jdx/hk>
-- Tests: uses `addons/gdUnit4` for unit tests. Run tests via `mise test`.
+- **Engine**: Godot 4.5+ using GDScript.
+- **Task runner**: `mise` is required (used in CI and all major workflows).
+- **Linting/formatting**: `hk` (hook manager) handles all linting and code style. It is configured via `hk.pkl` and excludes `addons/**`.
+- **Testing**: `addons/gdUnit4` provides unit tests; run via `mise test`.
+- **License**: CC-by-nc-nd 4.0 (restrictive — read LICENSE before proposing major changes).
 
-Quick start (what to run locally)
+## Quick start (what to run locally)
 
 - Install prerequisites: `mise install` (from repo root).
-- Open editor: `mise godot` (or `mise game` to run the game task). Use the Godot editor for scene wiring and quick playtests.
-- Run tests: `mise test` (invokes gdUnit4 test harness configured in the repo).
-- Export builds: `mise export-all` / `mise export-web` (see `README.md` tasks list).
-- Lint code: `hk check`
-- Fix code style and formatting: `hk fix`
+- Open editor: `mise godot` to launch Godot editor (or `mise game` to run the game task).
+- Run tests: `mise test` — invokes gdUnit4 test harness.
+- Lint code: `hk check` — validates all files (gdscript, markdown, toml, pkl, yaml).
+- Fix code style: `hk fix` — auto-fixes linting/formatting issues (runs on pre-commit by default).
+- Export builds: `mise export-all` or `mise export-web` (see `README.md` for platform-specific tasks).
 
-Big-picture architecture (what to read first)
+## Big-picture architecture (what to read first)
 
-- `main/` — application entry points and input mapping. See `main/main.gd` (initialises `Global`, spawns `AsteroidLauncher`), and `main/input_manager.gd` (centralised input mapping via GUIDE contexts).
-- `global.gd` and `global.tscn` — project global state (singletons). Many systems read/write via `Global.*`.
-- `game_save.gd` & `game_save.tscn` — save / settings surface (exported properties, signals such as `use_symbols_changed`, and versioned save intent described in the project brief).
-- Domain folders (examples): `Asteroid/`, `Absorber/`, `player/` — scenes and GDScript per gameplay entity.
-- `addons/gdUnit4/` — tests; use this to add small, fast unit tests for logic (e.g., MatterBag, Molecule composition).
+### Core systems
 
-Common patterns and repository conventions
+- **`main/main.gd`** — Entry point. Initializes `Global` singleton, disables 3D rendering, spawns `AsteroidLauncher` on first process frame.
+- **`global.gd` & `global.tscn`** — Project global state. Contains `play_field`, `player_node`, `viewport`, `rng`, and gameplay configuration (asteroid spawn rates, colors, debug flags). Access via `Global.*`.
+- **`game_save.gd`** — Persistent settings and save data (not loaded at startup, but holds exportable properties like `use_symbols`, number formatting). Emits signals on changes (e.g., `use_symbols_changed`).
+- **Domain folders** (`Asteroid/`, `Absorber/`, `player/`) — Gameplay entities; each has scene + GDScript files. Example: `Asteroid/asteroid.gd` has dissolve logic, matter bags, and noise-based visuals.
 
-- Scene-first, small-node scripts: each entity typically lives in its own folder (scene + script). Prefer editing scenes in Godot to wire nodes.
-- Global singleton pattern: `global.gd` is used for shared state (e.g., `Global.play_field`, `Global.player_node`, `Global.rng`). Modify carefully — prefer clear getters/setters where possible.
-- Input system: custom mapping via `GUIDE` types shown in `main/input_manager.gd` (`GUIDEMappingContext`, `GUIDEAction`). Use mapping contexts rather than raw Input.is_action_pressed in gameplay code.
-- Exported properties & signals: many options use `@export` and emit signals on change (see `game_save.gd`). When changing an exported API, update any inspector-expected names and tests.
-- Save system: the project aims for versioned, multi-file saves (see `memory-bank/projectbrief.md`); changes to save structures should include migration strategies and tests.
-- RNG: randomization is initialised centrally (`Global.rng.randomize()` in `main/main.gd`). Use `Global.rng` for deterministic behavior in tests where helpful.
+### Data layer
 
-Integration points & external tools
+- **`MatterBag`** — Resource class managing Matter composition (a typed dictionary `Dictionary[Matter, int]`). Emits `matter_changed` signal on updates. Used for resource inventory and asteroid composition.
+- **`Matter`** — Enum-like class defining element types (Carbon, Water, etc.) with `by_name` lookup and `all_matter` list for iteration.
+- **`Molecule`** — Represents compound matter (combinations of elements, not yet heavily used in core loop).
 
-- mise — primary developer task runner & installer (listed in `README.md`). All CI tasks use it.
-- Godot — edit scenes and run the project. Use the editor to inspect exported properties and node paths before changing code that expects a certain scene layout.
-- gdUnit4 — unit test framework located in `addons/gdUnit4`.
+## Common patterns and repository conventions
 
-Example reference snippets to follow (do not change without local testing)
+### Naming conventions
 
-- Starting behaviour: `main/main.gd` creates `AsteroidLauncher` and calls `start()` after process frame. Prefer this pattern for systems that must attach at runtime.
-- Input wiring: `main/input_manager.gd` connects `action_pause_or_back.triggered` to `current_window.pause_or_back`. Use `triggered.connect(...)` rather than ad-hoc polling for those actions.
-- Settings pattern: `game_save.gd` exposes `@export var use_symbols: bool` and emits `use_symbols_changed` in the setter — mirror this approach when creating new settings.
+- **Directories**: Use lowercase `snake_case` for new directories (e.g., `asteroid_kinds/`, `game_states/`). Note: existing directories use PascalCase (`Asteroid/`, `Absorber/`) but this will be migrated over time.
+- **Files**: Use lowercase with underscores for GDScript files (e.g., `asteroid_launcher.gd`, `game_save.gd`).
+- **Classes**: Use PascalCase (e.g., `AsteroidLauncher`, `MatterBag`).
+- **Functions/Variables**: Use snake_case (e.g., `decrement_asteroid_count()`, `player_node`).
 
-What an AI agent should do when proposing edits
+### Scene-first, small-node scripts
+
+Each entity lives in its own folder with a `.tscn` (scene) and `.gd` (script). **Prefer editing scenes in Godot** to wire nodes — use `@onready %NodeName` to reference uniquely-named nodes.
+
+**Example**: `Asteroid/asteroid.tscn` contains `Polygon2D` (shape), `Line2D` (outline), `CollisionPolygon2D`; `Asteroid/asteroid.gd` accesses them via `@onready var shape: Polygon2D = %Shape`.
+
+### Global singleton pattern
+
+`global.gd` holds shared state (gameplay config, RNG seed, node references). **Modify carefully**:
+
+- Prefer getters/setters over direct assignment.
+- Reference via `Global.*` (e.g., `Global.player_node`, `Global.asteroid_max`).
+- Debug flags in `@export_group` are inspectable in Godot editor.
+
+**Example**: `Global.rng` is initialized and seeded in `main/main.gd`; use `Global.rng.randi_range()` for deterministic randomness in tests.
+
+### Input system (GUIDE addon)
+
+Centralized input via `main/input_manager.gd` using `GUIDEMappingContext` and `GUIDEAction` (from `addons/guide/`). **Do not use raw `Input.is_action_pressed`** in gameplay code.
+
+**Example**: `action_pause_or_back.triggered.connect(current_window.pause_or_back)` connects signals rather than polling.
+
+### Exported properties & signals
+
+Settings use `@export` with setters that emit signals for reactivity.
+
+**Example** (from `game_save.gd`):
+
+```gdscript
+signal use_symbols_changed
+@export var use_symbols: bool = false:
+ set(value):
+  use_symbols = value
+  use_symbols_changed.emit()
+```
+
+Mirror this pattern when adding new settings. Tests should verify signal emission.
+
+### Save system
+
+Project aims for versioned, multi-file saves (see `memory-bank/projectbrief.md`). **Changes to save structures require**:
+
+1. Migration routine (old → new format).
+2. Unit tests covering both formats.
+3. Documentation in the PR description.
+
+## Integration points & external tools
+
+- **mise** — primary developer task runner & installer (listed in `README.md`). All CI tasks use it. Tasks are defined in `mise.toml`.
+- **hk** — hook manager for linting/formatting, configured in `hk.pkl`. Excludes `addons/**` automatically. Runs on pre-commit (with `fix = true`).
+- **Godot** — edit scenes and run the project. Use the editor to inspect exported properties and node paths before changing code that expects a certain scene layout.
+- **gdUnit4** — unit test framework located in `addons/gdUnit4`. Tests extend `GdUnitTestSuite`; use `before_test()` / `after_test()` for setup/teardown.
+
+## Example reference snippets to follow (do not change without local testing)
+
+- **Starting behaviour**: `main/main.gd` creates `AsteroidLauncher` and calls `start()` after process frame. Prefer this pattern for systems that must attach at runtime.
+- **Input wiring**: `main/input_manager.gd` connects `action_pause_or_back.triggered` to `current_window.pause_or_back`. Use `triggered.connect(...)` rather than ad-hoc polling for those actions.
+- **Settings pattern**: `game_save.gd` exposes `@export var use_symbols: bool` and emits `use_symbols_changed` in the setter — mirror this approach when creating new settings.
+- **Resource signals**: `MatterBag.matter_changed` signal is emitted whenever contents change. Connect to this signal for reactive updates instead of polling.
+- **Testing pattern** (from `test/test_matter_bag.gd`):
+
+  ```gdscript
+  extends GdUnitTestSuite
+  var bag: MatterBag
+  func before_test():
+      bag = MatterBag.new()
+  func after_test():
+      auto_free(bag)
+  func test_constructor_with_dictionary():
+      var dict = { Matter.carbon: 2, Matter.water: 3 }
+      bag = MatterBag.new(dict)
+      assert_int(bag.get_by_matter(Matter.carbon)).is_equal(2)
+  ```
+
+## What an AI agent should do when proposing edits
 
 - Small, focused changes only. If editing scene files (.tscn) or exported property names, also update tests and mention needed scene wiring in the PR description.
 - Run `mise test` and prefer changes that keep tests green. If a proposed change requires a Godot editor update (scene wiring), include precise steps and which scene node(s) must be changed.
 - When changing save formats: include a migration routine and unit tests demonstrating both old and new format handling.
 
-Where to look for more context
+## Where to look for more context
 
-- Game design & rationale: `memory-bank/projectbrief.md` (core loop, prestige design, save philosophy).
-- Tasks & automation: `README.md` (mise tasks list).
-- Entry points & global state: `main/main.gd`, `global.gd`, `game_save.gd`.
+- **Game design & rationale**: `memory-bank/projectbrief.md` (core loop, prestige design, save philosophy, narrative tone).
+- **Tasks & automation**: `README.md` and `mise.toml` (mise tasks list and definitions).
+- **Entry points & global state**: `main/main.gd`, `global.gd`, `game_save.gd`.
+- **Data structures**: `matter.gd`, `matter_bag.gd`, `molecule.gd` for resource composition logic.
 
 If something is unclear
 
