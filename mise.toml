@@ -68,7 +68,7 @@ taplo = "0.10.0"
 uv = "0.9.3"
 yamllint = "1.37.1"
 yq = "4.48.1"
-usage = "2.5.1"
+usage = "2.8.0"
 
 [tools."ubi:gdquest/gdscript-formatter"]
 rename_exe = "gdscript-formatter"

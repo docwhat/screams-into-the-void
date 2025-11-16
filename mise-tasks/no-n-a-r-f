@@ -3,7 +3,6 @@
 forbidden='na'"rf"
 
 #MISE description="Check for the forbidden four letter word 'na/rf'."
-#MISE tools={usage="latest"}
 #USAGE about "Check for the forbidden four letter word 'na/rf' in the given FILES."
 #USAGE flag "-r --recursive" help="Recursively check all files in the given directories"
 #USAGE flag "-q --quiet" help="Suppress output; only return exit status"
@@ -26,8 +25,11 @@ is_forbidden() {
     grep "${args}" "\\b${forbidden}\\b" -- "$@"
 }
 
-# shellcheck disable=SC2154,SC2086
-if is_forbidden $usage_file; then
+# shellcheck disable=SC2154
+eval "files=( ${usage_file} )"
+
+# shellcheck disable=SC2154
+if is_forbidden "${files[@]}"; then
     fatal "'${forbidden}' found in source code!"
 elif [[ ${usage_quiet:-} != true ]]; then
     printf 'Files are good!\n'

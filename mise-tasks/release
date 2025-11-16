@@ -1,8 +1,6 @@
 #!/usr/bin/env -S usage bash
 
 #MISE description="Build (export in Godot parlance) a release"
-#MISE alias="release"
-#MISE tools={usage="latest"}
 #USAGE about "Builds a release version of the game for the specified platform using Godot's export system."
 #USAGE arg "platform" help="The platform to build for" {
 #USAGE   choices "web" "windows" "linux" "macos"
