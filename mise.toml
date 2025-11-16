@@ -12,57 +12,9 @@ run = "rsync -av --delete-after --progress build/web/ gerf:/srv/website/srv/void
 depends = ["export-web", "export-macos", "export-windows", "export-linux"]
 description = "Export all platforms to build/"
 
-[tasks.export-linux]
-description = "Export the Linux version to build/linux/"
-run = """
-#!/usr/bin/env bash
-set -ex
-
-rm -rf build/linux
-mkdir -p build
-mkdir build/linux
-godot --headless --export-release "Linux" build/linux/void
-"""
-
-[tasks.export-macos]
-description = "Export the macOS version to build/macos/"
-run = """
-#!/usr/bin/env bash
-set -ex
-
-rm -rf build/macos
-mkdir -p build
-mkdir build/macos
-godot --headless --export-release "macOS" build/macos/Void.app
-"""
-
-[tasks.export-web]
-description = "Export the web version to build/web/"
-run = """
-#!/usr/bin/env bash
-set -ex
-
-rm -rf build/web
-mkdir -p build
-mkdir build/web
-godot --verbose --headless --export-release "Web" build/web/index.html
-"""
-
 [tasks.serve-web]
 description = "Runs a web server to serve the built web export"
-run = 'python3 script/serve.py --no-browser --root "${PWD}/build/web"'
-
-[tasks.export-windows]
-description = "Export the Windows version to build/windows/"
-run = """
-#!/usr/bin/env bash
-set -ex
-
-rm -rf build/windows
-mkdir -p build
-mkdir build/windows
-godot --headless --export-release "Windows Desktop" build/windows/void.exe
-"""
+run = 'mise run ::: serve --root "${PWD}/build/web"'
 
 [tasks.check]
 description = "Run hk check"
@@ -91,46 +43,18 @@ run = "hk run pre-commit"
 
 [tasks.postlint]
 
-
-[tasks.test]
-description = "Run the tests"
-run = """
-#!/usr/bin/env bash
-
-godot --path . \
---no-header \
---headless \
---script res://addons/gdUnit4/bin/GdUnitCmdTool.gd \
---ignoreHeadlessMode \
---add test
-exit_code=$?
-echo "Test run ends with exit code $exit_code"
-
-# Run the copy log command
-godot --path . \
---no-header \
---headless \
---quiet \
---script res://addons/gdUnit4/bin/GdUnitCopyLog.gd \
---add test > /dev/null
-
-exit $exit_code
-"""
-
 [tasks.report]
 description = "Show the latest report"
-run = """
-#!/usr/bin/env bash
-
+run = '''
 n=$(printf "%s\n" -- reports/report_* | sed 's!.*_!!' | sort -n | tail -n1)
 
 if [[ -f "reports/report_$n/index.html" ]]; then
-  xdg-open "reports/report_$n/index.html" || open "reports/report_$n/index.html"
+    xdg-open "reports/report_$n/index.html" || open "reports/report_$n/index.html"
 else
-  echo "No report found"
-  exit 1
+    echo "No report found"
+    exit 1
 fi
-"""
+'''
 
 [tasks.post-push]
 run = "script/bump-version"
@@ -144,6 +68,7 @@ taplo = "0.10.0"
 uv = "0.9.3"
 yamllint = "1.37.1"
 yq = "4.48.1"
+usage = "2.5.1"
 
 [tools."ubi:gdquest/gdscript-formatter"]
 rename_exe = "gdscript-formatter"

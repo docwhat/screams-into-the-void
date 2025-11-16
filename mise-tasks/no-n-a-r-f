@@ -1,0 +1,36 @@
+#!/usr/bin/env -S usage bash
+
+forbidden='na'"rf"
+
+#MISE description="Check for the forbidden four letter word 'na/rf'."
+#MISE tools={usage="latest"}
+#USAGE about "Check for the forbidden four letter word 'na/rf' in the given FILES."
+#USAGE flag "-r --recursive" help="Recursively check all files in the given directories"
+#USAGE flag "-q --quiet" help="Suppress output; only return exit status"
+#USAGE arg "<file>" var=#true var_min=1 help="One or more files to check"
+
+fatal() {
+    if [[ ${usage_quiet:-} != true ]]; then
+        printf "FATAL: %s\n" "$1"
+    fi
+    exit 1
+}
+
+is_forbidden() {
+    local args='-iEH'
+
+    if [[ ${usage_recursive:-} == true ]]; then
+        args+='r'
+    fi
+
+    grep "${args}" "\\b${forbidden}\\b" -- "$@"
+}
+
+# shellcheck disable=SC2154,SC2086
+if is_forbidden $usage_file; then
+    fatal "'${forbidden}' found in source code!"
+elif [[ ${usage_quiet:-} != true ]]; then
+    printf 'Files are good!\n'
+fi
+
+# vim: ft=bash

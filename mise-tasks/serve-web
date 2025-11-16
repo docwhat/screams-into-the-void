@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# MISE description="Runs a web server to serve a directory"
+
 import argparse
 import contextlib
 import os
@@ -44,7 +46,9 @@ def serve(root, port, run_browser):
     url = f"http://127.0.0.1:{port}"
     if run_browser:
         # Open the served page in the user's default browser.
-        print(f"Opening the served URL in the default browser (use `--no-browser` or `-n` to disable this): {url}")
+        print(
+            f"Opening the served URL in the default browser (use `--no-browser` or `-n` to disable this): {url}"
+        )
         shell_open(url)
     else:
         print(f"Serving at: {url}")
@@ -60,13 +64,23 @@ def serve(root, port, run_browser):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-p", "--port", help="port to listen on", default=8060, type=int)
     parser.add_argument(
-        "-r", "--root", help="path to serve as root (relative to `platform/web/`)", default="../../bin", type=Path
+        "-p", "--port", help="port to listen on", default=8060, type=int
+    )
+    parser.add_argument(
+        "-r",
+        "--root",
+        help="path to serve as root (relative to `platform/web/`)",
+        default="../../bin",
+        type=Path,
     )
     browser_parser = parser.add_mutually_exclusive_group(required=False)
     browser_parser.add_argument(
-        "-n", "--no-browser", help="don't open default web browser automatically", dest="browser", action="store_false"
+        "-n",
+        "--no-browser",
+        help="don't open default web browser automatically",
+        dest="browser",
+        action="store_false",
     )
     parser.set_defaults(browser=True)
     args = parser.parse_args()

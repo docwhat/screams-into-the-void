@@ -20,5 +20,11 @@ indent_style = space
 [*.pkl]
 indent_style = space
 
+[*.toml]
+indent_style = space
+
+[mise-tasks/*]
+indent_style = space
+
 [*.{yml,yaml}]
 indentstyle = space

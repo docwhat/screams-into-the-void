@@ -1,0 +1,68 @@
+#!/usr/bin/env -S usage bash
+
+#MISE description="Build (export in Godot parlance) a release"
+#MISE alias="release"
+#MISE tools={usage="latest"}
+#USAGE about "Builds a release version of the game for the specified platform using Godot's export system."
+#USAGE arg "platform" help="The platform to build for" {
+#USAGE   choices "web" "windows" "linux" "macos"
+#USAGE }
+#USAGE flag "-v --verbose" help="Display verbose Godot output"
+#USAGE flag "-q --quiet" help="Display only essential Godot output"
+
+die() {
+    printf "%s\n" "$1" >&2
+    exit 1
+}
+
+# Change to the root directory of the project.
+cd "$(git rev-parse --show-toplevel)" ||
+    die "Failed to change to project root directory"
+
+# Base flags for all exports.
+flags=(
+    --headless
+)
+
+# Parse usage flags.
+if [[ ${usage_verbose:-} == "true" ]]; then
+    flags+=(--verbose)
+elif [[ ${usage_quiet:-} == "true" ]]; then
+    flags+=(--quiet)
+fi
+
+# Directory where the exported files will go.
+outdir="build/${usage_platform?}"
+
+# Add platform-specific export flags.
+case "${usage_platform?}" in
+"web")
+    flags+=(--export-release "Web" "${outdir?}/index.html")
+    ;;
+"windows")
+    flags+=(--export-release "Windows Desktop" "${outdir?}/Void.exe")
+    ;;
+"linux")
+    flags+=(--export-release "Linux" "${outdir?}/Void.x86_64")
+    ;;
+"macos")
+    flags+=(--export-release "macOS" "${outdir?}/Void.app")
+    ;;
+*)
+    die "Error: Unknown platform '${usage_platform?}'"
+    ;;
+esac
+
+# Clean out previous build.
+rm -rf "${outdir?}"
+
+# Create output directory.
+mkdir -p "${outdir?}"
+
+# Make sure Godot ignores this directory.
+touch "build/.gdignore"
+
+# Run the export.
+godot "${flags[@]}" || die "Godot export failed"
+
+# vim: ft=bash

@@ -1,0 +1,45 @@
+#!/usr/bin/env -S usage bash
+
+#MISE description = "Run the tests"
+#USAGE flag "--verbose" help="Show detailed output from Godot during tests"
+#USAGE flag "--quiet" help="Show detailed output from Godot during tests"
+
+die() {
+    printf "%s\n" "$1" >&2
+    exit 1
+}
+
+flags=(
+    --path .
+    --no-header
+)
+
+if [[ ${usage_verbose:-} == "true" ]]; then
+    flags+=(--verbose)
+elif [[ ${usage_quiet:-} == "true" ]]; then
+    flags+=(--quiet)
+fi
+
+godot "${flags[@]}" \
+    --headless \
+    --script res://addons/gdUnit4/bin/GdUnitCmdTool.gd \
+    --ignoreHeadlessMode \
+    --add test
+exit_code=$?
+
+# Run the copy log command
+godot --path . \
+    --no-header \
+    --headless \
+    --quiet \
+    --script res://addons/gdUnit4/bin/GdUnitCopyLog.gd \
+    --add test >/dev/null
+
+# Ensure Godot ignores the report directory.
+touch "reports/.gdignore"
+
+if ((exit_code != 0)); then
+    die "Tests failed with exit code ${exit_code?}"
+fi
+
+# vim: ft=bash
