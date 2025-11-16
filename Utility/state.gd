@@ -10,8 +10,9 @@ extends Node
 @warning_ignore("unused_signal")
 signal finished(next_state_path: String, data: Dictionary)
 
+
 ## Called by the state machine when receiving unhandled input events.
-func handle_action(_action:GUIDEAction) -> void:
+func handle_action(_action: GUIDEAction) -> void:
 	pass
 
 

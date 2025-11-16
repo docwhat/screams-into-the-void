@@ -122,6 +122,7 @@ var matter: Array[Matter]:
 ## Used for the click animation.
 var click_tween: Tween
 
+
 func _init() -> void:
 	asteroid_size = AsteroidSize.random_size()
 	asteroid_kind = AsteroidKind.random_kind()
@@ -146,7 +147,7 @@ func _ready() -> void:
 			prop.type == TYPE_COLOR
 		):
 			set(prop.name, get(prop.name))
-			
+
 
 func _physics_process(_delta: float) -> void:
 	if is_on_screen():
@@ -254,9 +255,9 @@ func is_valid() -> bool:
 func click() -> void:
 	if is_marked_for_absorbtion:
 		return
-		
+
 	is_marked_for_absorbtion = true
-		
+
 	click_tween = create_tween()
 	click_tween.set_trans(Tween.TRANS_SPRING)
 	click_tween.tween_property(
@@ -285,6 +286,7 @@ func click() -> void:
 		Color(2, 2, 2),
 		1.0,
 	)
+
 
 ## Contract method for Absorbers.
 func be_absorbed() -> void:
