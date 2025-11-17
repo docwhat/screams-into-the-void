@@ -1,29 +1,29 @@
 version: 2
 updates:
-  # Enable version updates for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "saturday"
-      time: "09:00"
-    open-pull-requests-limit: 10
-    reviewers:
-      - "docwhat"
-    commit-message:
-      prefix: "ci"
-      include: "scope"
+    # Enable version updates for GitHub Actions
+    - package-ecosystem: "github-actions"
+      directory: "/"
+      schedule:
+          interval: "weekly"
+          day: "saturday"
+          time: "09:00"
+      open-pull-requests-limit: 10
+      reviewers:
+          - "docwhat"
+      commit-message:
+          prefix: "ci"
+          include: "scope"
 
-  # Check for updates to Godot in docker containers
-  - package-ecosystem: "docker"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "saturday"
-      time: "09:00"
-    open-pull-requests-limit: 3
-    reviewers:
-      - "docwhat"
-    commit-message:
-      prefix: "ci"
-      include: "scope"
+    # Check for updates to Godot in docker containers
+    - package-ecosystem: "docker"
+      directory: "/"
+      schedule:
+          interval: "weekly"
+          day: "saturday"
+          time: "09:00"
+      open-pull-requests-limit: 3
+      reviewers:
+          - "docwhat"
+      commit-message:
+          prefix: "ci"
+          include: "scope"

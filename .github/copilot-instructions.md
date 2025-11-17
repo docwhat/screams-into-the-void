@@ -6,7 +6,7 @@ This file gives focused, actionable guidance for an AI code assistant to be prod
 
 - **Engine**: Godot 4.5+ using GDScript.
 - **Task runner**: `mise` is required (used in CI and all major workflows).
-- **Linting/formatting**: `hk` (hook manager) handles all linting and code style. It is configured via `hk.pkl` and excludes `addons/**`.
+- **Linting/formatting**: `trunk` (git hook manager, linter, and formatter) handles all linting and code style. It is configured via `.trunk/trunk.yaml` and excludes `addons/**`.
 - **Testing**: `addons/gdUnit4` provides unit tests; run via `mise test`.
 - **License**: CC-by-nc-nd 4.0 (restrictive — read LICENSE before proposing major changes).
 
@@ -15,8 +15,8 @@ This file gives focused, actionable guidance for an AI code assistant to be prod
 - Install prerequisites: `mise install` (from repo root).
 - Open editor: `mise godot` to launch Godot editor (or `mise game` to run the game task).
 - Run tests: `mise test` — invokes gdUnit4 test harness.
-- Lint code: `hk check` — validates all files (gdscript, markdown, toml, pkl, yaml).
-- Fix code style: `hk fix` — auto-fixes linting/formatting issues (runs on pre-commit by default).
+- Lint code: `trunk check` — validates all files (gdscript, markdown, toml, pkl, yaml) and offers to fix some problems automatically.
+- Fix code style: `trunk fmt` — auto-fixes linting/formatting issues (runs on pre-commit by default).
 - Export builds: `mise export-all` or `mise export-web` (see `README.md` for platform-specific tasks).
 
 ## Big-picture architecture (what to read first)
@@ -92,7 +92,7 @@ Project aims for versioned, multi-file saves (see `memory-bank/projectbrief.md`)
 ## Integration points & external tools
 
 - **mise** — primary developer task runner & installer (listed in `README.md`). All CI tasks use it. Tasks are defined in `mise.toml`.
-- **hk** — hook manager for linting/formatting, configured in `hk.pkl`. Excludes `addons/**` automatically. Runs on pre-commit (with `fix = true`).
+- **trunk** — hook manager for linting/formatting, configured in `.trunk/trunk.yaml`. Excludes `addons/**` automatically. Runs on pre-commit (with `fix = true`).
 - **Godot** — edit scenes and run the project. Use the editor to inspect exported properties and node paths before changing code that expects a certain scene layout.
 - **gdUnit4** — unit test framework located in `addons/gdUnit4`. Tests extend `GdUnitTestSuite`; use `before_test()` / `after_test()` for setup/teardown.
 
@@ -104,18 +104,18 @@ Project aims for versioned, multi-file saves (see `memory-bank/projectbrief.md`)
 - **Resource signals**: `MatterBag.matter_changed` signal is emitted whenever contents change. Connect to this signal for reactive updates instead of polling.
 - **Testing pattern** (from `test/test_matter_bag.gd`):
 
-  ```gdscript
-  extends GdUnitTestSuite
-  var bag: MatterBag
-  func before_test():
-      bag = MatterBag.new()
-  func after_test():
-      auto_free(bag)
-  func test_constructor_with_dictionary():
-      var dict = { Matter.carbon: 2, Matter.water: 3 }
-      bag = MatterBag.new(dict)
-      assert_int(bag.get_by_matter(Matter.carbon)).is_equal(2)
-  ```
+    ```gdscript
+    extends GdUnitTestSuite
+    var bag: MatterBag
+    func before_test():
+        bag = MatterBag.new()
+    func after_test():
+        auto_free(bag)
+    func test_constructor_with_dictionary():
+        var dict = { Matter.carbon: 2, Matter.water: 3 }
+        bag = MatterBag.new(dict)
+        assert_int(bag.get_by_matter(Matter.carbon)).is_equal(2)
+    ```
 
 ## What an AI agent should do when proposing edits
 
@@ -140,4 +140,5 @@ Request feedback
 - If any section is unclear or you want specific examples added (e.g., a short test showing MatterBag behavior), tell me which area to expand and I'll iterate.
 
 ---
+
 Generated from quick repo scan on behalf of the maintainer (see `README.md` and `memory-bank/projectbrief.md`).

@@ -5,29 +5,29 @@
 - The project brief is well-defined with clear goals and success criteria.
 - The Memory Bank structure is properly established with all core files.
 - The product context, system patterns, tech context, and active context are all complete and well-documented.
-- The development environment is set up with proper tooling (mise, hk, etc.).
+- The development environment is set up with proper tooling (mise, trunk, etc.).
 - The codebase has a clear modular structure with separation of concerns.
 
 ## What's left to build
 
 - Core gameplay systems:
-  - Resource gathering and collection
-  - Upgrade tree and automation
-  - Prestige system with memory nodes
-  - Save/load system with version migration
-  - Narrative integration through memory fragments
+    - Resource gathering and collection
+    - Upgrade tree and automation
+    - Prestige system with memory nodes
+    - Save/load system with version migration
+    - Narrative integration through memory fragments
 
 - UI components:
-  - Resource display and feedback
-  - Upgrade interface
-  - Prestige confirmation and memory fragment display
-  - Settings and options menu
+    - Resource display and feedback
+    - Upgrade interface
+    - Prestige confirmation and memory fragment display
+    - Settings and options menu
 
 - Technical implementation:
-  - Complete unit tests for core systems
-  - Optimize performance for mobile devices
-  - Implement proper error handling and edge cases
-  - Finalize the build process and export configurations
+    - Complete unit tests for core systems
+    - Optimize performance for mobile devices
+    - Implement proper error handling and edge cases
+    - Finalize the build process and export configurations
 
 ## Current status
 

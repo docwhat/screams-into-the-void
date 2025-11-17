@@ -11,19 +11,19 @@
 ## Development setup
 
 - Project structure follows Godot best practices with clear separation of concerns:
-  - `main/` - Main game logic and state management
-  - `player/` - Player character and control systems
-  - `Asteroid/` - Asteroid Resource generation and management
-  - `ui/` - User interface components
-  - `Shaders/` - Custom visual effects
-  - `test/` - Unit tests
-  - `addons/` - Third-party tools and plugins
+    - `main/` - Main game logic and state management
+    - `player/` - Player character and control systems
+    - `Asteroid/` - Asteroid Resource generation and management
+    - `ui/` - User interface components
+    - `Shaders/` - Custom visual effects
+    - `test/` - Unit tests
+    - `addons/` - Third-party tools and plugins
 
 - Configuration files:
-  - `.editorconfig` - Code style consistency
-  - `mise.toml` - Project-specific tool versions
-  - `taplo.toml` - TOML file formatting
-  - `project.godot` - Godot project settings
+    - `.editorconfig` - Code style consistency
+    - `mise.toml` - Project-specific tool versions
+    - `taplo.toml` - TOML file formatting
+    - `project.godot` - Godot project settings
 
 ## Technical constraints
 
@@ -34,12 +34,11 @@
 
 ## Tool usage patterns
 
-- Use `hk check` to run linting and static analysis.
-- Use `hk fix` to auto-correct linting and formatting issues.
+- Use `trunk check` to run linting and static analysis.
+- Use `trunk fmt` to auto-correct linting and formatting issues.
 - Use `mise test` to run unit tests outside of Godot with GdUnit4.
-- Use `script/serve.py` for running the wasm export of the game, locally.
-- Use `script/bump-version` to increment version numbers.
-- Use `script/no-n-a-r-f` to check for forbidden patterns in code.
+- Use `mise bump` to increment version numbers.
+- Use `mise no-n-a-r-f` to check for forbidden patterns in code.
 - Use `godot` command to open projects in Godot Engine.
 - Use `code` command to open project in VSCode.
 - Use `git` commands for version control and collaboration.

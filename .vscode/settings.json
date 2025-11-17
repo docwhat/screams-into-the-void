@@ -1,5 +1,5 @@
 {
-  "debug.javascript.defaultRuntimeExecutable": {
-    "pwa-node": "/Users/docwhat/.local/share/mise/shims/node"
-  }
+    "debug.javascript.defaultRuntimeExecutable": {
+        "pwa-node": "/Users/docwhat/.local/share/mise/shims/node"
+    }
 }

@@ -17,12 +17,13 @@ description = "Runs a web server to serve the built web export"
 run = 'mise run ::: serve --root "${PWD}/build/web"'
 
 [tasks.check]
-description = "Run hk check"
-run = "hk check"
+description = "Check code for lint or static analysis issues"
+run = "trunk check"
 
 [tasks.fix]
-description = "Run hk fix"
-run = "hk fix"
+alias = "fmt"
+description = "Fix code style issues"
+run = "trunk fix"
 
 [tasks.game]
 description = "Run the game"
@@ -60,7 +61,6 @@ fi
 run = "script/bump-version"
 
 [tools]
-hk = "1.19.0"
 oxipng = "9.1.5"
 pkl = "0.29.1"
 semver = "3.4.0"
@@ -70,11 +70,6 @@ uv = "0.9.3"
 yamllint = "1.37.1"
 yq = "4.48.1"
 
-[tools."ubi:gdquest/gdscript-formatter"]
-rename_exe = "gdscript-formatter"
-version = "0.17.0"
-
-# This doesn't work. See https://github.com/jdx/mise/discussions/6532
-# [tools."github:GDQuest/GDScript-formatter"]
-# bin = "gdscript-formatter"
-# version = "0.12.0"
+[tools."http:trunk"]
+url = "https://trunk.io/releases/trunk"
+version = "latest"

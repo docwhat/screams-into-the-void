@@ -20,9 +20,9 @@ cd "$root_dir" || die "Failed to change to root directory."
 
 is_new_version=0 do_tag=-1
 
-if [[ ${usage_no_tag:-} == "true" ]]; then
+if [[ ${usage_no_tag-} == "true" ]]; then
     do_tag=0
-elif [[ ${usage_yes:-} == "true" ]]; then
+elif [[ ${usage_yes-} == "true" ]]; then
     do_tag=1
 else
     do_tag=-1
@@ -68,7 +68,7 @@ if ((is_new_version)); then
     if ((do_tag < 0)); then
         # Ask if it is okay to do the tag.
         read -r -p "Run 'git tag' to change $ver to $new_ver? [y/N] " response
-        if [[ "$response" =~ ^[Yy] ]]; then
+        if [[ $response =~ ^[Yy] ]]; then
             do_tag=1
         else
             do_tag=0
