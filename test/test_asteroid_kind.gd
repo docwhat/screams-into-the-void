@@ -3,6 +3,10 @@ extends GdUnitTestSuite
 ## The object under test.
 var asteroid_kind: AsteroidKind
 
+@warning_ignore_start("inferred_declaration")
+@warning_ignore_start("redundant_await")
+@warning_ignore_start("untyped_declaration")
+
 
 func before_test():
 	# Create a test AsteroidKind instance with known parameters
@@ -20,7 +24,7 @@ func test_all_have_required_values():
 		assert_str(kind.name).has_length(3, Comparator.GREATER_EQUAL)
 
 
-## Test that _set() works with a valid matter StringName.
+## Test that _set() works with a valid matter String.
 func test_set_matter_by_name():
 	asteroid_kind.set("matter/carbon", 23)
 
@@ -29,7 +33,7 @@ func test_set_matter_by_name():
 	assert_int(got).is_equal(expected)
 
 
-## Test that _set() returns false with an invalid matter StringName.
+## Test that _set() returns false with an invalid matter String.
 func test_set_matter_by_invalid_name():
 	asteroid_kind.set("matter_invalid_matter_name", 23)
 
@@ -40,7 +44,7 @@ func test_set_matter_by_invalid_name():
 	.is_equal(expected)
 
 
-## Test that _get() works with a valid matter StringName.
+## Test that _get() works with a valid matter String.
 func test_get_matter_by_name():
 	asteroid_kind.matter.set_by_name("carbon", 42)
 	var got: int = asteroid_kind.get("matter/carbon")
@@ -48,7 +52,7 @@ func test_get_matter_by_name():
 	assert_int(got).is_equal(expected)
 
 
-## Test that _get() returns null with an invalid matter StringName.
+## Test that _get() returns null with an invalid matter String.
 func test_get_matter_by_invalid_name():
 	var got: Variant = asteroid_kind.get("matter_invalid_matter_name")
 	assert_object(got).is_null()
@@ -63,10 +67,10 @@ func test_get_property_list_includes_all_matter_types():
 			matter_props.append(prop)
 
 	# Check names of each matter property.
-	var got_names: Array[StringName] = []
+	var got_names: Array[String] = []
 	for prop: Dictionary in matter_props:
 		got_names.append(prop["name"].get_slice("/", 1))
-	var expected_names: Array[StringName] = Matter.by_name.keys()
+	var expected_names: Array[String] = Global.matter.by_name.keys()
 
 	assert_array(got_names).contains_exactly_in_any_order(expected_names)
 

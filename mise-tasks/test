@@ -3,6 +3,7 @@
 #MISE description = "Run the tests"
 #USAGE flag "--verbose" help="Show detailed output from Godot during tests"
 #USAGE flag "--quiet" help="Show detailed output from Godot during tests"
+#USAGE arg "<testfile>" var=#true help="Test files to run" default=test
 
 die() {
     printf "%s\n" "$1" >&2
@@ -14,17 +15,28 @@ flags=(
     --no-header
 )
 
+gdflags=()
+
 if [[ ${usage_verbose:-} == "true" ]]; then
     flags+=(--verbose)
 elif [[ ${usage_quiet:-} == "true" ]]; then
     flags+=(--quiet)
 fi
 
+testfiles=()
+
+# shellcheck disable=SC2154
+eval "testfiles=( ${usage_testfile} )"
+
+for testfile in "${testfiles[@]}"; do
+    gdflags+=(--add "${testfile}")
+done
+
 godot "${flags[@]}" \
     --headless \
     --script res://addons/gdUnit4/bin/GdUnitCmdTool.gd \
     --ignoreHeadlessMode \
-    --add test
+    "${gdflags[@]}"
 exit_code=$?
 
 # Run the copy log command
@@ -33,7 +45,7 @@ godot --path . \
     --headless \
     --quiet \
     --script res://addons/gdUnit4/bin/GdUnitCopyLog.gd \
-    --add test >/dev/null
+    "${gdflags[@]}" >/dev/null
 
 # Ensure Godot ignores the report directory.
 touch "reports/.gdignore"

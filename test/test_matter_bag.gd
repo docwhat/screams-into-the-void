@@ -6,6 +6,8 @@ var bag: MatterBag
 ## This is set to true if the matter_changed signal is emitted for bag.
 var changed: bool = false
 
+@warning_ignore_start("untyped_declaration")
+
 
 func before_test():
 	bag = MatterBag.new()
@@ -23,7 +25,7 @@ func after_test():
 func test_constructor_with_empty_dictionary():
 	var dict = { }
 	bag = MatterBag.new(dict)
-	for matter: Matter in Matter.all_matter:
+	for matter: Matter in Global.matter.all:
 		var got: int = bag.get_by_matter(matter)
 		var expected: int = 0
 		assert_int(got).is_equal(expected)
@@ -32,11 +34,11 @@ func test_constructor_with_empty_dictionary():
 ## Test that the constructor handles a populated, untyped dictionary correctly.
 func test_constructor_with_dictionary():
 	var dict = {
-		Matter.carbon: 2,
-		Matter.water: 3,
+		Global.carbon: 2,
+		Global.water: 3,
 	}
 	bag = MatterBag.new(dict)
-	for matter: Matter in Matter.all_matter:
+	for matter: Matter in Global.matter.all:
 		var got: int = bag.get_by_matter(matter)
 		var expected: int = dict.get(matter, 0)
 		assert_int(got).is_equal(expected)
@@ -47,11 +49,11 @@ func test_constructor_with_dictionary():
 ## Test that the constructor handles a populated, typed dictionary correctly.
 func test_constructor_with_typed_dictionary():
 	var dict: Dictionary[Matter, int] = {
-		Matter.carbon: 2,
-		Matter.water: 3,
+		Global.carbon: 2,
+		Global.water: 3,
 	}
 	bag = MatterBag.new(dict)
-	for matter: Matter in Matter.all_matter:
+	for matter: Matter in Global.matter.all:
 		var got: int = bag.get_by_matter(matter)
 		var expected: int = dict.get(matter, 0)
 		assert_int(got).is_equal(expected)
@@ -61,57 +63,57 @@ func test_constructor_with_typed_dictionary():
 
 ## Test that set_matter() works.
 func test_can_set_matter():
-	bag.set_by_matter(Matter.carbon, 23)
-	var got: int = bag.get_by_matter(Matter.carbon)
+	bag.set_by_matter(Global.carbon, 23)
+	var got: int = bag.get_by_matter(Global.carbon)
 	var expected: int = 23
 	assert_int(got).is_equal(expected)
 
 
 ## Test that set_matter() accepts zero.
 func test_can_set_matter_to_zero():
-	assert_int(bag.get_by_matter(Matter.helium)).is_equal(0)
-	bag.set_by_matter(Matter.helium, 23)
-	assert_int(bag.get_by_matter(Matter.helium)).is_equal(23)
+	assert_int(bag.get_by_matter(Global.helium)).is_equal(0)
+	bag.set_by_matter(Global.helium, 23)
+	assert_int(bag.get_by_matter(Global.helium)).is_equal(23)
 
 
 ## Setting matter to the same value should not emit the changed signal.
 func test_set_matter_no_op():
-	bag.set_by_matter(Matter.oxygen, 5)
+	bag.set_by_matter(Global.oxygen, 5)
 	changed = false
-	bag.set_by_matter(Matter.oxygen, 5)
+	bag.set_by_matter(Global.oxygen, 5)
 	assert_bool(changed).is_false()
 
 
 ## Setting matter to a different value should emit the changed signal.
 func test_set_matter_emit_signal():
-	bag.set_by_matter(Matter.oxygen, 5)
+	bag.set_by_matter(Global.oxygen, 5)
 	changed = false
-	bag.set_by_matter(Matter.oxygen, 6)
+	bag.set_by_matter(Global.oxygen, 6)
 	assert_bool(changed).is_true()
 
 
 ## Adding zero matter should not emit the changed signal.
 func test_add_matter_should_not_emit_signal():
-	bag.set_by_matter(Matter.hydrogen, 10)
+	bag.set_by_matter(Global.hydrogen, 10)
 	changed = false
-	bag.add_by_matter(Matter.hydrogen, 0)
+	bag.add_by_matter(Global.hydrogen, 0)
 	assert_bool(changed).is_false()
 
 
 ## Adding non-zero matter should emit the changed signal.
 func test_add_matter_emit_signal():
-	bag.add_by_matter(Matter.hydrogen, 200)
+	bag.add_by_matter(Global.hydrogen, 200)
 	assert_bool(changed).is_true()
 
 
 ## Check that .duplicate_bag() copies the contents.
 func test_duplicate_bag():
-	bag.set_by_matter(Matter.carbon, 2)
-	bag.set_by_matter(Matter.water, 3)
+	bag.set_by_matter(Global.carbon, 2)
+	bag.set_by_matter(Global.water, 3)
 
 	var bag2: MatterBag = bag.duplicate_bag()
 
-	for matter: Matter in Matter.all_matter:
+	for matter: Matter in Global.matter.all:
 		var got: int = bag2.get_by_matter(matter)
 		var expected: int = bag.get_by_matter(matter)
 		assert_int(got).append_failure_message("for %s" % matter.name).is_equal(expected)
@@ -122,39 +124,44 @@ func test_duplicate_bag():
 ## Replace the contents of a bag with another bag.
 func test_replace_bag():
 	var bag2: MatterBag = MatterBag.new()
-	bag2.set_by_matter(Matter.carbon, 100)
-	bag2.set_by_matter(Matter.water, 200)
+	bag2.set_by_matter(Global.carbon, 100)
+	bag2.set_by_matter(Global.water, 200)
 
 	bag.replace_bag(bag2)
 
-	assert_int(bag.get_by_matter(Matter.carbon)).is_equal(100)
-	assert_int(bag.get_by_matter(Matter.water)).is_equal(200)
+	assert_int(bag.get_by_matter(Global.carbon)).is_equal(100)
+	assert_int(bag.get_by_matter(Global.water)).is_equal(200)
 
 
 ## When replacing a bag, pre-existing elements should be removed.
 func test_replace_bag_removes_old_elements():
-	bag.set_by_matter(Matter.hydrogen, 50)
+	bag.set_by_matter(Global.hydrogen, 50)
 	var bag2: MatterBag = MatterBag.new()
-	bag2.set_by_matter(Matter.carbon, 100)
+	bag2.set_by_matter(Global.carbon, 100)
 	bag.replace_bag(bag2)
-	assert_int(bag.get_by_matter(Matter.hydrogen)).is_equal(0)
+	assert_int(bag.get_by_matter(Global.hydrogen)).is_equal(0)
 
 
 ## Replacing a bag with an empty bag should clear all contents.
 func test_replace_bag_with_empty_bag():
-	bag.set_by_matter(Matter.hydrogen, 50)
+	bag.set_by_matter(Global.hydrogen, 50)
 	var bag2: MatterBag = MatterBag.new()
 	bag.replace_bag(bag2)
-	assert_int(bag.get_by_matter(Matter.hydrogen)).is_equal(0)
+	assert_int(bag.get_by_matter(Global.hydrogen)).is_equal(0)
 
 
 ## Signals should be emitted for each changed matter when replacing a bag.
 ## Including matters that are removed.
 func test_replace_bag_emits_signals():
 	var bag2: MatterBag = MatterBag.new()
-	bag2.set_by_matter(Matter.carbon, 100)
-	bag2.set_by_matter(Matter.water, 200)
-	bag.set_by_matter(Matter.hydrogen, 50)
+	var expected: Array = [
+		Global.hydrogen, # was removed
+		Global.carbon, # added
+		Global.water, # added
+	]
+	bag2.set_by_matter(Global.carbon, 100)
+	bag2.set_by_matter(Global.water, 200)
+	bag.set_by_matter(Global.hydrogen, 50)
 	var changed_matters: Array[Matter] = []
 	bag.matter_changed.connect(
 		func(m: Matter) -> void:
@@ -162,18 +169,21 @@ func test_replace_bag_emits_signals():
 	)
 	bag.replace_bag(bag2)
 
-	assert_array(changed_matters).contains_same_exactly_in_any_order(
-		[
-			Matter.hydrogen,
-			Matter.carbon,
-			Matter.water,
-		],
+	assert_array(
+		changed_matters
+	).append_failure_message(
+		"expected %s but got %s" % [
+			expected.map(func(m: Matter) -> String: return m.name),
+			changed_matters.map(func(m: Matter) -> String: return m.name),
+		]
+	).contains_same_exactly_in_any_order(
+		expected
 	)
 
 
 ## Using set_by_name() with a matter StringName should set the matching amount.
 func test_set_by_name():
-	for mat: Matter in Matter.all_matter:
+	for mat: Matter in Global.matter.all:
 		var expected: int = randi_range(0, 100)
 		bag.set_by_name(mat.name, expected)
 		assert_int(bag.get_by_matter(mat)).is_equal(expected)
@@ -184,7 +194,7 @@ func test_set_by_name():
 ## set_by_name() with an invalid name should do nothing.
 func test_set_by_name_invalid():
 	# Populate the bag with some random values.
-	for mat: Matter in Matter.all_matter:
+	for mat: Matter in Global.matter.all:
 		bag.set_by_matter(mat, randi_range(1, 100))
 
 	# Make a copy of the original bag.
@@ -194,7 +204,7 @@ func test_set_by_name_invalid():
 	bag.set_by_name("not_a_real_matter", 42)
 
 	# The bag should be unchanged.
-	for mat: Matter in Matter.all_matter:
+	for mat: Matter in Global.matter.all:
 		assert_int(bag.get_by_matter(mat)) \
 		.append_failure_message("for %s" % mat.name) \
 		.is_equal(original_bag.get_by_matter(mat))
@@ -203,15 +213,15 @@ func test_set_by_name_invalid():
 ## set_by_name() with a new value should emit the changed signal.
 func test_set_by_name_emit_signal():
 	changed = false
-	bag.set_by_name(Matter.helium.name, 77)
+	bag.set_by_name(Global.helium.name, 77)
 	assert_bool(changed).is_true()
 
 
 ## set_by_name() with the same value should not emit the changed signal.
 func test_set_by_name_no_op():
-	bag.set_by_matter(Matter.helium, 22)
+	bag.set_by_matter(Global.helium, 22)
 	changed = false
-	bag.set_by_name(Matter.helium.name, 22)
+	bag.set_by_name(Global.helium.name, 22)
 	assert_bool(changed).is_false()
 
 
@@ -224,29 +234,31 @@ func test_set_by_name_invalid_no_op():
 
 ## Using get_by_name() with a matter StringName should retrieve the matching amount.
 func test_get_by_name():
-	for mat: Matter in Matter.all_matter:
+	for mat: Matter in Global.matter.all:
 		var expected: int = randi_range(0, 100)
 		bag.set_by_matter(mat, expected)
 
 		var got: int = bag.get_by_name(mat.name)
-		assert_int(got).is_equal(expected)
+		assert_int(got).is_equal(expected).append_failure_message(
+			"for %s" % mat.name,
+		)
 		if is_failure():
 			return
 
 
 ## Adding matter should increase the amount correctly.
 func test_add_matter():
-	bag.set_by_matter(Matter.hydrogen, 10)
-	bag.add_by_matter(Matter.hydrogen, 42)
-	var got: int = bag.get_by_matter(Matter.hydrogen)
+	bag.set_by_matter(Global.hydrogen, 10)
+	bag.add_by_matter(Global.hydrogen, 42)
+	var got: int = bag.get_by_matter(Global.hydrogen)
 	assert_int(got).is_equal(52)
 
 
 ## Adding negative matter should decrease the amount correctly.
 func test_add_negative_matter():
-	bag.set_by_matter(Matter.hydrogen, 50)
-	bag.add_by_matter(Matter.hydrogen, -20)
-	var got: int = bag.get_by_matter(Matter.hydrogen)
+	bag.set_by_matter(Global.hydrogen, 50)
+	bag.add_by_matter(Global.hydrogen, -20)
+	var got: int = bag.get_by_matter(Global.hydrogen)
 	assert_int(got).is_equal(30)
 
 
@@ -254,16 +266,16 @@ func test_add_negative_matter():
 func test_add_bag():
 	var bag2: MatterBag = MatterBag.new()
 
-	bag.set_by_matter(Matter.carbon, 2)
-	bag.set_by_matter(Matter.magnesium, 3)
+	bag.set_by_matter(Global.carbon, 2)
+	bag.set_by_matter(Global.magnesium, 3)
 
-	bag2.set_by_matter(Matter.carbon, 11)
-	bag2.set_by_matter(Matter.water, 23)
+	bag2.set_by_matter(Global.carbon, 11)
+	bag2.set_by_matter(Global.water, 23)
 
 	bag.add_bag(bag2)
 
-	assert_int(bag.get_by_matter(Matter.carbon)).is_equal(13)
+	assert_int(bag.get_by_matter(Global.carbon)).is_equal(13)
 
-	assert_int(bag.get_by_matter(Matter.magnesium)).is_equal(3)
+	assert_int(bag.get_by_matter(Global.magnesium)).is_equal(3)
 
-	assert_int(bag.get_by_matter(Matter.water)).is_equal(23)
+	assert_int(bag.get_by_matter(Global.water)).is_equal(23)

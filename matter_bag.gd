@@ -30,14 +30,16 @@ func duplicate_bag() -> MatterBag:
 ## Replaces the contents of this bag with another bag.
 ## Use this to prevent losing signal connections.
 func replace_bag(other_bag: MatterBag) -> void:
-	for matter: Matter in Matter.all_matter:
+	var every_matter: Array[Matter] = keys() + other_bag.keys()
+
+	for matter: Matter in every_matter:
 		var amt: int = other_bag.get_by_matter(matter, 0)
 		set_by_matter(matter, amt)
 
 
 ## Given a Matter's name, returns the amount in the bag.
 func get_by_name(matter_name: StringName, default: int = 0) -> int:
-	var matter: Matter = Matter.by_name.get(matter_name, null)
+	var matter: Matter = Global.matter.by_name.get(matter_name, null)
 	if matter == null:
 		return default
 	return get_by_matter(matter, default)
@@ -45,7 +47,7 @@ func get_by_name(matter_name: StringName, default: int = 0) -> int:
 
 ## Given a Matter's name, sets the amount in the bag.
 func set_by_name(matter_name: StringName, amt: int) -> void:
-	var matter: Matter = Matter.by_name.get(matter_name, null)
+	var matter: Matter = Global.matter.by_name.get(matter_name, null)
 	if matter == null:
 		return
 	set_by_matter(matter, amt)
