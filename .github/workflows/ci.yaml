@@ -37,8 +37,8 @@ jobs:
                   mise install
                   mise doctor || :
 
-            - name: Run format check
-              run: hk check
+            - name: Run formatting check
+              run: trunk check
 
     test:
         name: Test Game

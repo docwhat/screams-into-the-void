@@ -37,13 +37,6 @@ run = "(godot --path . --editor >& /dev/null &)"
 description = "Optimize PNG images"
 run = "git ls-files --no-ignored -z '*.png' ':!:addons/' | xargs -0 oxipng --opt max --strip safe"
 
-[tasks.pre-commit]
-run = "hk run pre-commit"
-
-[tasks.prelint]
-
-[tasks.postlint]
-
 [tasks.report]
 description = "Show the latest report"
 run = '''
