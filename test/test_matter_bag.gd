@@ -170,14 +170,14 @@ func test_replace_bag_emits_signals():
 	bag.replace_bag(bag2)
 
 	assert_array(
-		changed_matters
+		changed_matters,
 	).append_failure_message(
 		"expected %s but got %s" % [
 			expected.map(func(m: Matter) -> String: return m.name),
 			changed_matters.map(func(m: Matter) -> String: return m.name),
-		]
+		],
 	).contains_same_exactly_in_any_order(
-		expected
+		expected,
 	)
 
 

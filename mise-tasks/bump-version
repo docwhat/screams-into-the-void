@@ -16,7 +16,7 @@ die() {
 }
 
 root_dir="$(git rev-parse --show-toplevel 2>/dev/null)" || die "Not in a git repository."
-cd "$root_dir" || die "Failed to change to root directory."
+cd "${root_dir}" || die "Failed to change to root directory."
 
 is_new_version=0 do_tag=-1
 
@@ -30,13 +30,13 @@ fi
 
 ver="$(git describe --tags --abbrev=0)" || die "Failed to get latest tag."
 
-if ! git diff --quiet "$ver"..HEAD; then
+if ! git diff --quiet "${ver}"..HEAD; then
     is_new_version=1
 fi
 
-new_ver="v$(semver bump patch "$ver")" || die "Failed to bump version."
+new_ver="v$(semver bump patch "${ver}")" || die "Failed to bump version."
 
-semver validate "$new_ver" >/dev/null || die "New version '$new_ver' is not valid."
+semver validate "${new_ver}" >/dev/null || die "New version '${new_ver}' is not valid."
 
 # Abort if any files are not committed.
 if ! git diff --quiet || ! git diff --cached --quiet; then
@@ -58,7 +58,7 @@ env \
 
 # If there are changes, add and commit them.
 if ! git diff --quiet -- global.gd; then
-    printf "Updated version in %s to %s\n" "global.gd" "$new_ver"
+    printf "Updated version in %s to %s\n" "global.gd" "${new_ver}"
     git add -- global.gd || die "Failed to stage version bump."
     git commit -m "Bump version to ${new_ver}" || die "Failed to commit version bump."
     is_new_version=1
@@ -67,8 +67,8 @@ fi
 if ((is_new_version)); then
     if ((do_tag < 0)); then
         # Ask if it is okay to do the tag.
-        read -r -p "Run 'git tag' to change $ver to $new_ver? [y/N] " response
-        if [[ $response =~ ^[Yy] ]]; then
+        read -r -p "Run 'git tag' to change ${ver} to ${new_ver}? [y/N] " response
+        if [[ ${response} =~ ^[Yy] ]]; then
             do_tag=1
         else
             do_tag=0
@@ -78,7 +78,7 @@ if ((is_new_version)); then
     if ((do_tag > 0)); then
         git tag "${new_ver}"
     else
-        printf "Skipping 'git tag %s'\n" "$new_ver"
+        printf "Skipping 'git tag %s'\n" "${new_ver}"
     fi
 else
     printf "Nothing to do. Good night.\n"

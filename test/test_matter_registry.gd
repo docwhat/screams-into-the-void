@@ -41,17 +41,20 @@ func test_get_by_symbol_case_insensitive():
 	assert_object(registry.get_by_symbol("st")).is_equal(element)
 	assert_object(registry.get_by_symbol("ST")).is_equal(element)
 
+
 ## All by_name keys are lowercase.
 func test_by_name_keys_lowercase():
 	registry.create_element("LowerCaseTestium", "Lct", 10.11)
 	for key in registry.by_name.keys():
 		assert_str(key).is_equal(key.to_lower())
 
+
 ## All by_symbol keys are lowercase.
 func test_by_symbol_keys_lowercase():
 	registry.create_element("LowerSymbolTestium", "Lst", 12.13)
 	for key in registry.by_symbol.keys():
 		assert_str(key).is_equal(key.to_lower())
+
 
 ## Test that you can't add a duplicate name.
 func test_add_duplicate_name_fails():
@@ -72,7 +75,7 @@ func test_add_duplicate_symbol_fails():
 	var element2 = Element.new("UniqueName2", "DupSym", 56.78)
 	assert_bool(registry.add(element1)).is_true()
 	assert_bool(registry.add(element2)).is_false()
-	
+
 	# Lookup should return the first added element.
 	assert_object(registry.get_by_symbol("DupSym")).is_equal(element1)
 	assert_object(registry.get_by_name("UniqueName1")).is_equal(element1)
