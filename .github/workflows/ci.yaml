@@ -14,14 +14,15 @@ env:
     GODOT_VERSION: "4.5.1"
     EXPORT_NAME: "void"
 
+permissions:
+    checks: write
+    contents: read
+
 jobs:
     # Always run these jobs
     lint-and-format:
         name: Lint and Format GDScript
         runs-on: ubuntu-24.04
-        permissions:
-            checks: write
-            contents: read
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         steps:
@@ -34,8 +35,6 @@ jobs:
     test:
         name: Test Game
         runs-on: ubuntu-24.04
-        permissions:
-            checks: write
         steps:
             - name: Checkout
               uses: actions/checkout@v5
