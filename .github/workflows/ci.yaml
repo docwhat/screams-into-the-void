@@ -38,7 +38,7 @@ jobs:
                   mise doctor || :
 
             - name: Run formatting check
-              run: trunk check
+              run: trunk check --ci
 
     test:
         name: Test Game
