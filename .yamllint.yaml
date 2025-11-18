@@ -2,7 +2,5 @@ extends: default
 
 rules:
     document-start: disable
-    line-length:
-        level: warning
-        max: 100
+    line-length: disable
     quoted-strings: disable
