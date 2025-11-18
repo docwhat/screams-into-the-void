@@ -1,0 +1,182 @@
+name: "Game CI/CD"
+
+# TODO: Add cache action for mise and godot export templates.
+
+"on":
+    push:
+        tags: ["v*"]
+    workflow_dispatch:
+
+env:
+    GODOT_VERSION: "4.5.1"
+    EXPORT_NAME: "void"
+
+permissions:
+    checks: write
+    contents: read
+
+jobs:
+    export-windows:
+        name: Windows Export
+        runs-on: ubuntu-24.04
+        container:
+            image: "barichello/godot-ci:4.5.1"
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
+
+            - name: Update PATH
+              run: |
+                  echo "$HOME/.local/bin" >> $GITHUB_PATH
+                  echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
+                  echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
+
+            - name: Setup mise
+              run: |
+                  wget -qO- https://mise.run | sh
+                  mise install
+                  mise doctor || :
+
+            - name: Setup
+              run: |
+                  mkdir -v -p ~/.local/share/godot/export_templates/
+                  mkdir -v -p ~/.config/
+                  mv /root/.config/godot ~/.config/godot
+                  mv "/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable" \
+                  "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+
+            - name: Windows Build
+              run: "mise run export-windows"
+
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: windows
+                  path: build/windows
+
+    export-linux:
+        name: Linux Export
+        runs-on: ubuntu-24.04
+        container:
+            image: "barichello/godot-ci:4.5.1"
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
+
+            - name: Update PATH
+              run: |
+                  echo "$HOME/.local/bin" >> $GITHUB_PATH
+                  echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
+                  echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
+
+            - name: Setup mise
+              run: |
+                  wget -qO- https://mise.run | sh
+                  mise install
+                  mise doctor || :
+
+            - name: Setup
+              run: |
+                  mkdir -v -p ~/.local/share/godot/export_templates/
+                  mv "/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable" \
+                  "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+
+            - name: Linux Build
+              run: mise run export-linux
+
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: linux
+                  path: build/linux
+
+    export-web:
+        name: Web Export
+        runs-on: ubuntu-24.04
+        container:
+            image: "barichello/godot-ci:4.5.1"
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        permissions:
+            contents: write
+            pages: write
+            id-token: write
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
+
+            - name: Update PATH
+              run: |
+                  echo "$HOME/.local/bin" >> $GITHUB_PATH
+                  echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
+                  echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
+
+            - name: Setup mise
+              run: |
+                  wget -qO- https://mise.run | sh
+                  mise install
+                  mise doctor || :
+
+            - name: Setup
+              run: |
+                  mkdir -v -p ~/.local/share/godot/export_templates/
+                  mv "/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable" \
+                  "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+
+            - name: Web Build
+              run: "mise run export-web"
+
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: web
+                  path: build/web
+
+            - name: Deploy to GitHub Pages 🚀
+              uses: JamesIves/github-pages-deploy-action@v4
+              with:
+                  branch: gh-pages
+                  folder: build/web
+
+    export-macos:
+        name: Mac Export
+        runs-on: ubuntu-24.04
+        container:
+            image: "barichello/godot-ci:4.5.1"
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
+
+            - name: Update PATH
+              run: |
+                  echo "$HOME/.local/bin" >> $GITHUB_PATH
+                  echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
+                  echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
+
+            - name: Setup mise
+              run: |
+                  wget -qO- https://mise.run | sh
+                  mise install
+                  mise doctor || :
+
+            - name: Setup
+              run: |
+                  mkdir -v -p ~/.local/share/godot/export_templates/
+                  mv "/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable" \
+                  "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+
+            - name: Mac Build
+              run: "mise run export-macos"
+
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: macOS
+                  path: build/macos
+# EOF
