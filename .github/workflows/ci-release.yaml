@@ -48,7 +48,7 @@ jobs:
                   "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
 
             - name: Windows Build
-              run: "mise run export-windows"
+              run: "mise run release windows"
 
             - name: Upload Artifact
               uses: actions/upload-artifact@v5
@@ -86,7 +86,7 @@ jobs:
                   "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
 
             - name: Linux Build
-              run: mise run export-linux
+              run: mise run release linux
 
             - name: Upload Artifact
               uses: actions/upload-artifact@v5
@@ -128,7 +128,7 @@ jobs:
                   "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
 
             - name: Web Build
-              run: "mise run export-web"
+              run: "mise run release web"
 
             - name: Upload Artifact
               uses: actions/upload-artifact@v5
@@ -172,7 +172,7 @@ jobs:
                   "${HOME}/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
 
             - name: Mac Build
-              run: "mise run export-macos"
+              run: "mise run release macos"
 
             - name: Upload Artifact
               uses: actions/upload-artifact@v5
