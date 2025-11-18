@@ -1,6 +1,6 @@
 extends Node
 
-const VERSION: String = "v0.5.11"
+const VERSION: String = "v0.5.12"
 
 var resolution: Vector2 = Vector2(
 	ProjectSettings.get_setting("display/window/size/viewport_width"),
