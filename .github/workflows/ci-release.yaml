@@ -51,7 +51,7 @@ jobs:
               run: "mise run export-windows"
 
             - name: Upload Artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v5
               with:
                   name: windows
                   path: build/windows
@@ -89,7 +89,7 @@ jobs:
               run: mise run export-linux
 
             - name: Upload Artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v5
               with:
                   name: linux
                   path: build/linux
@@ -131,7 +131,7 @@ jobs:
               run: "mise run export-web"
 
             - name: Upload Artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v5
               with:
                   name: web
                   path: build/web
@@ -175,7 +175,7 @@ jobs:
               run: "mise run export-macos"
 
             - name: Upload Artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v5
               with:
                   name: macOS
                   path: build/macos
