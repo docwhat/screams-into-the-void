@@ -4,7 +4,7 @@ import argparse
 import contextlib
 import os
 import socket
-import subprocess
+import subprocess  # nosec B404
 import sys
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
@@ -29,10 +29,10 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
 
 def shell_open(url):
     if sys.platform == "win32":
-        os.startfile(url)
+        os.startfile(url)  # nosec B606
     else:
         opener = "open" if sys.platform == "darwin" else "xdg-open"
-        subprocess.call([opener, url])
+        subprocess.call([opener, url])  # nosec B603
 
 
 def serve(root, port, run_browser):
