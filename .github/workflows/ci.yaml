@@ -23,6 +23,8 @@ jobs:
     lint-and-format:
         name: Lint and Format GDScript
         runs-on: ubuntu-24.04
+        # We don't care about linting on release tags
+        if: ${{!startsWith(github.ref, 'refs/tags/v') }}
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         steps:
@@ -49,7 +51,7 @@ jobs:
     export-windows:
         name: Windows Export
         runs-on: ubuntu-24.04
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: ${{startsWith(github.ref, 'refs/tags/v')}}
         needs: [lint-and-format, test]
         container:
             image: "barichello/godot-ci:4.5.1"
@@ -91,7 +93,7 @@ jobs:
     export-linux:
         name: Linux Export
         runs-on: ubuntu-24.04
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: ${{startsWith(github.ref, 'refs/tags/v')}}
         needs: [lint-and-format, test]
         container:
             image: "barichello/godot-ci:4.5.1"
@@ -131,7 +133,7 @@ jobs:
     export-web:
         name: Web Export
         runs-on: ubuntu-24.04
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: ${{startsWith(github.ref, 'refs/tags/v')}}
         needs: [lint-and-format, test]
         container:
             image: "barichello/godot-ci:4.5.1"
@@ -181,7 +183,7 @@ jobs:
     export-macos:
         name: Mac Export
         runs-on: ubuntu-24.04
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: ${{startsWith(github.ref, 'refs/tags/v')}}
         needs: [lint-and-format, test]
         container:
             image: "barichello/godot-ci:4.5.1"
