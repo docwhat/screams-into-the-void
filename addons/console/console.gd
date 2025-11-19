@@ -26,7 +26,8 @@ class ConsoleCommand:
 		description = in_description
 
 var theme : Theme
-var control := Control.new()
+var canvas_layer : CanvasLayer = CanvasLayer.new()
+var control : Control = Control.new()
 
 # If you want to customize the way the console looks, you can direcly modify
 # the properties of the rich text and line edit here:
@@ -87,7 +88,6 @@ func _enter_tree() -> void:
 		if theme:
 			control.theme = theme
 
-	var canvas_layer := CanvasLayer.new()
 	canvas_layer.layer = 3
 	add_child(canvas_layer)
 	control.anchor_bottom = 1.0

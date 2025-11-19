@@ -32,6 +32,10 @@ GameSave="*res://game_save.tscn"
 GUIDE="*res://addons/guide/guide.gd"
 Console="*res://addons/console/console.gd"
 
+[console]
+
+theme="uid://d1jjppe1dopqh"
+
 [debug]
 
 file_logging/enable_file_logging=true
@@ -46,6 +50,7 @@ window/size/viewport_width=1280
 window/size/viewport_height=720
 window/size/window_width_override=1280
 window/size/window_height_override=720
+window/energy_saving/keep_screen_on=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=6

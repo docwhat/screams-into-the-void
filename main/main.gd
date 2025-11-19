@@ -30,4 +30,7 @@ func _ready() -> void:
 	else:
 		$CurrentWindow.pause()
 
+	# Setup the Developer Console.
+	Console.canvas_layer.layer = 99
+
 # EOF
