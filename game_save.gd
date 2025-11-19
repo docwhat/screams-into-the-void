@@ -6,12 +6,13 @@ var absorber: Absorber = StarterAbsorber.new()
 
 @export_group("Options")
 
+# TODO: This should use signals to tell something else to make the vsync change.
 ## Does the player want us to use VSync?
 @export var use_vsync: bool = true:
 	set(value):
 		var new_mode: DisplayServer.VSyncMode
 		if value:
-			new_mode = DisplayServer.VSYNC_ADAPTIVE
+			new_mode = DisplayServer.VSYNC_ENABLED
 		else:
 			new_mode = DisplayServer.VSYNC_DISABLED
 		DisplayServer.window_set_vsync_mode(new_mode)

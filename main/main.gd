@@ -16,6 +16,9 @@ func _ready() -> void:
 	# We're only using 2D here.
 	Global.viewport.set_disable_3d(true)
 
+	# Disable VSync by default.
+	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+
 	await get_tree().process_frame
 	asteroid_launcher = AsteroidLauncher.new()
 	add_child(asteroid_launcher)
