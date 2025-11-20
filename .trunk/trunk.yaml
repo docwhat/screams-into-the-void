@@ -30,12 +30,12 @@ lint:
               - addons/**
     enabled:
         - actionlint@1.7.8
-        - bandit@1.8.6
+        - bandit@1.9.1
         - black@25.11.0
-        - checkov@3.2.493
+        - checkov@3.2.494
         - git-diff-check
         - isort@7.0.0
-        - markdownlint@0.45.0
+        - markdownlint@0.46.0
         - oxipng@9.1.5
         - prettier@3.6.2
         - ruff@0.14.5
@@ -45,13 +45,13 @@ lint:
         - taplo@0.10.0
         - trufflehog@3.91.0
         - yamllint@1.37.1
-        - gdscript-formatter@0.17.0
+        - gdscript-formatter@0.18.0
     definitions:
         - name: gdscript-formatter
           description: Formats GDScript (Godot's scripting language)
           files: [gdscript]
           tools: [gdscript-formatter]
-          known_good_version: 0.17.0
+          known_good_version: 0.18.0
           suggest_if: files_present
           commands:
               - name: lint
@@ -87,9 +87,11 @@ tools:
         - name: gdscript-formatter
           runtime: rust
           package: gdscript-formatter:https://github.com/gdquest/gdscript-formatter.git
-          shims: [gdscript-formatter]
+          shims:
+              - name: gdscript-formatter
+                target: gdscript-formatter
           # Requires rust 1.88.0 at minumum
-          known_good_version: 0.17.0
+          known_good_version: 0.18.0
           health_checks:
               - command: gdscript-formatter --version
                 parse_regex: ${semver}
