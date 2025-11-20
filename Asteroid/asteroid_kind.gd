@@ -18,9 +18,13 @@ var matter: MatterBag
 
 static var kinds: Array[AsteroidKind]
 
+static var _is_loaded: bool = false
+
 
 ## Load the AsteroidKind resources dynamically from disk.
-static func load_resources() -> Array[AsteroidKind]:
+static func load_resources() -> void:
+	if _is_loaded:
+		return
 	var resources: Array[AsteroidKind] = []
 	var file_paths: Array[String] = ResourceTools.find_resources("res://Asteroid/AsteroidKind")
 
@@ -31,15 +35,14 @@ static func load_resources() -> Array[AsteroidKind]:
 		else:
 			push_error("Failed to load resource  AsteroidKind from %s" % [file_path])
 
-	return resources
-
-
-static func _static_init() -> void:
-	kinds = load_resources()
+	kinds = resources
+	_is_loaded = true
 
 
 ## Retrieve a random asteroid kind.
 static func random_kind() -> AsteroidKind:
+	load_resources()
+
 	if kinds.size() == 0:
 		return null
 
