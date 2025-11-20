@@ -15,6 +15,17 @@ die() {
     exit 1
 }
 
+patch_version() {
+    local new_version=$1
+
+    # shellcheck disable=SC2016
+    env \
+        new_version="${new_version}" \
+        perl -pi \
+        -e 's/^\s*const\s+VERSION:\s*String\s*=.*/const VERSION: String = "$ENV{new_version}"/;' \
+        global.gd || die "Failed to update to version ${new_version}."
+}
+
 root_dir="$(git rev-parse --show-toplevel 2>/dev/null)" || die "Not in a git repository."
 cd "${root_dir}" || die "Failed to change to root directory."
 
@@ -49,12 +60,7 @@ if ! [[ -f "global.gd" ]]; then
 fi
 
 # Replace the version with the new tag.
-# shellcheck disable=SC2016
-env \
-    new_ver="${new_ver}" \
-    perl -pi \
-    -e 's/^\s*const\s+VERSION:\s*String\s*=.*/const VERSION: String = "$ENV{new_ver}"/;' \
-    global.gd || die "Failed to update version."
+patch_version "${new_ver}"
 
 # If there are changes, add and commit them.
 if ! git diff --quiet -- global.gd; then
@@ -77,6 +83,16 @@ if ((is_new_version)); then
 
     if ((do_tag > 0)); then
         git tag "${new_ver}"
+
+        # Update the version to -dev after tagging.
+        patch_version "${new_ver}-dev"
+
+        # If there aren't change, complain.
+        if git diff --quiet -- global.gd; then
+            die "Unable to update version to ${new_ver}-dev"
+        fi
+        git add -- global.gd || die "Failed to stage version bump."
+        git commit -m "chore: prepare for development" || die "Failed to commit version bump."
     else
         printf "Skipping 'git tag %s'\n" "${new_ver}"
     fi
