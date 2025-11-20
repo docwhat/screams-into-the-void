@@ -22,6 +22,9 @@ flags=(
     --headless
 )
 
+# Used as a timestamp used for cache busting in web exports.
+ts=$(date +%s)
+
 # Parse usage flags.
 if [[ ${usage_verbose:-} == "true" ]]; then
     flags+=(--verbose)
@@ -35,7 +38,7 @@ outdir="build/${usage_platform?}"
 # Add platform-specific export flags.
 case "${usage_platform?}" in
 "web")
-    flags+=(--export-release "Web" "${outdir?}/index.html")
+    flags+=(--export-release "Web" "${outdir?}/index-${ts}.html")
     ;;
 "windows")
     flags+=(--export-release "Windows Desktop" "${outdir?}/Void.exe")
@@ -62,5 +65,13 @@ touch "build/.gdignore"
 
 # Run the export.
 godot "${flags[@]}" || die "Godot export failed"
+
+case ${usage_platform?} in
+"web")
+    # Copy index-ts.html back to index.html so it can act as the
+    # default view.
+    cp -v "${outdir?}/index-${ts}.html" "${outdir?}/index.html"
+    ;;
+esac
 
 # vim: ft=bash
