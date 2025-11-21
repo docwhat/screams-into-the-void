@@ -320,8 +320,6 @@ func trigger_dissolve() -> void:
 
 	dissolver_material.set_shader_parameter("rotation", angle)
 
-	# var size: Vector2 = calculate_polygon_bounds(shape.polygon)
-
 	# Scaling is a number from 0.0 to 1.0 based on the radius of the asteroid.
 	var scaling: float = (radius - 8) / (64.0 - 8.0)
 
