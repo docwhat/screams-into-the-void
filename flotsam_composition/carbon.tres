@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="FlotsamComposition" load_steps=2 format=3 uid="uid://bs4sgwf45sxnn"]
 
-[ext_resource type="Script" uid="uid://dy15xjwx353q5" path="res://asteroid/flotsam_composition.gd" id="1_21v3c"]
+[ext_resource type="Script" uid="uid://dy15xjwx353q5" path="res://flotsam_composition.gd" id="1_21v3c"]
 
 [resource]
 script = ExtResource("1_21v3c")

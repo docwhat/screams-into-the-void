@@ -81,4 +81,20 @@ func test_add_duplicate_symbol_fails():
 	assert_object(registry.get_by_name("UniqueName1")).is_equal(element1)
 	assert_array(registry.all).not_contains(element2)
 
+
+## Test the has_name method.
+func test_has_name():
+	registry.create_element("Existium", "Ex", 9.87)
+	assert_bool(registry.has_name("Existium")).is_true()
+	assert_bool(registry.has_name("existium")).is_true()
+	assert_bool(registry.has_name("NonExistium")).is_false()
+
+
+## Test the has_symbol method.
+func test_has_symbol():
+	registry.create_element("Symbolium", "Sy", 6.54)
+	assert_bool(registry.has_symbol("Sy")).is_true()
+	assert_bool(registry.has_symbol("sy")).is_true()
+	assert_bool(registry.has_symbol("NonSy")).is_false()
+
 # EOF

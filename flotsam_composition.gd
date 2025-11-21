@@ -72,7 +72,7 @@ func _get_property_list() -> Array[Dictionary]:
 	var props: Array[Dictionary] = []
 
 	# Add all the matter types as integer properties.
-	for mat: Matter in Global.matter.all:
+	for mat: Matter in AllMatter.all:
 		var prop: Dictionary = {
 			"name": "matter/%s" % mat.name,
 			"type": TYPE_INT,
@@ -94,7 +94,7 @@ func _get_property_list() -> Array[Dictionary]:
 func _get(property: StringName) -> Variant:
 	if property.begins_with("matter/"):
 		var mat_name: StringName = property.get_slice("/", 1)
-		if mat_name and Global.matter.by_name.has(mat_name):
+		if mat_name and AllMatter.has_name(mat_name):
 			return matter.get_by_name(mat_name)
 
 	return null
@@ -109,7 +109,7 @@ func _get(property: StringName) -> Variant:
 func _set(property: StringName, value: Variant) -> bool:
 	if property.begins_with("matter/"):
 		var mat_name: StringName = property.get_slice("/", 1)
-		if mat_name and Global.matter.by_name.has(mat_name):
+		if mat_name and AllMatter.has_name(mat_name):
 			matter.set_by_name(mat_name, int(value))
 			return true
 	return false

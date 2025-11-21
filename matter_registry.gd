@@ -53,3 +53,13 @@ func get_by_name(name: String) -> Matter:
 ## Find matter by symbol.
 func get_by_symbol(symbol: String) -> Matter:
 	return by_symbol.get(symbol.to_lower())
+
+
+## Check if name exists.
+func has_name(name: String) -> bool:
+	return by_name.has(name.to_lower())
+
+
+## Check if symbol exists.
+func has_symbol(symbol: String) -> bool:
+	return by_symbol.has(symbol.to_lower())

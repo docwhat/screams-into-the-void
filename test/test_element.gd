@@ -16,9 +16,9 @@ func test_element_init():
 ## Test that preferred_name works.
 func test_preferred_name():
 	GameSave.use_symbols = false
-	assert_str(Global.carbon.preferred_name).is_equal("carbon")
+	assert_str(AllMatter.carbon.preferred_name).is_equal("carbon")
 	GameSave.use_symbols = true
-	assert_str(Global.carbon.preferred_name).is_equal("c")
+	assert_str(AllMatter.carbon.preferred_name).is_equal("c")
 
 
 ## Test that element names and symbols are capitalized.

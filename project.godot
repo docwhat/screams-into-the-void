@@ -31,6 +31,7 @@ Events="*res://events.gd"
 GameSave="*res://game_save.tscn"
 GUIDE="*res://addons/guide/guide.gd"
 Console="*res://addons/console/console.gd"
+AllMatter="*res://all_matter.gd"
 
 [console]
 

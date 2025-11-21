@@ -50,7 +50,7 @@ func _ready() -> void:
 		child.queue_free()
 
 	# Add labels for each matter type.
-	for matter: Matter in Global.matter.all:
+	for matter: Matter in AllMatter.all:
 		add_label(matter)
 
 	GameSave.matter.matter_changed.connect(update_hud)
@@ -70,7 +70,7 @@ func update_hud(matter: Matter = null) -> void:
 	if matter:
 		to_update = [matter]
 	else:
-		to_update = Global.matter.all.duplicate()
+		to_update = AllMatter.all.duplicate()
 
 	for mat: Matter in to_update:
 		var amt: int = GameSave.matter.get_by_matter(mat)
