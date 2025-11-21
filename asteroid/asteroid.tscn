@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dgo8gq5d22uf"]
 
-[ext_resource type="Script" uid="uid://b2samh810qdpg" path="res://Asteroid/asteroid.gd" id="1_p0ukn"]
-[ext_resource type="Script" uid="uid://cfq2rug5pgrb2" path="res://Asteroid/shape.gd" id="4_itfhv"]
+[ext_resource type="Script" uid="uid://b2samh810qdpg" path="res://asteroid/asteroid.gd" id="1_p0ukn"]
+[ext_resource type="Script" uid="uid://cfq2rug5pgrb2" path="res://asteroid/shape.gd" id="4_itfhv"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_p0ukn"]
 friction = 0.0
