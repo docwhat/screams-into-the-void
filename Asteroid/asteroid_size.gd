@@ -21,33 +21,20 @@ extends Resource
 ## The number of points for the polygon.
 @export_range(3, 100, 1) var shape_number_of_points: int = 3
 
-###########################
-## Shader Values
-@export_group("Shader", "shader_")
-
-## The size of the noise patterns.
-@export var shader_noise_size: float = 5.3
-
-## The size of the craters.
-@export var shader_crater_size: float = 0.2
-
-## The ratio of pixels on the asteroid's surface.
-@export var shader_pixels: float = 75.0
-
 static var sizes: Array[AsteroidSize]
 
 
 ## Load the AsteroidSize resources dynamically from disk.
 static func load_resources() -> Array[AsteroidSize]:
 	var resources: Array[AsteroidSize] = []
-	var file_paths: Array[String] = ResourceTools.find_resources("res://Asteroid/AsteroidSize")
+	var file_paths: Array[String] = ResourceTools.find_resources("res://asteroid_size")
 
 	for file_path: String in file_paths:
 		var res: AsteroidSize = load(file_path)
 		if res:
 			resources.append(res)
 		else:
-			push_error("Failed to load resource  AsteroidSize from %s" % [file_path])
+			push_error("Failed to load AsteroidSize resource from %s" % [file_path])
 
 	return resources
 
@@ -67,13 +54,6 @@ static func random_size() -> AsteroidSize:
 
 	random_index = Global.rng.rand_weighted(size_weights)
 	return sizes[random_index]
-
-
-## Given a shader, set the various knobs.
-func configure_shader(mat: ShaderMaterial) -> void:
-	mat.set_shader_parameter("pixels", shader_pixels)
-	mat.set_shader_parameter("noise_size", shader_noise_size)
-	mat.set_shader_parameter("crater_size", shader_crater_size)
 
 
 ## Generate a set of points describing an asteroid of this size.

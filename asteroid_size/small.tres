@@ -9,5 +9,4 @@ probability = 2.0
 shape_radius = 12.0
 shape_max_radius_delta = 4.5
 shape_number_of_points = 7
-shader_noise_size = 18.0
 metadata/_custom_type_script = "uid://cgft0s3gn2qny"

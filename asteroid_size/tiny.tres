@@ -8,5 +8,4 @@ name = "Tiny"
 probability = 1.0
 shape_max_radius_delta = 3.0
 shape_number_of_points = 6
-shader_noise_size = 20.0
 metadata/_custom_type_script = "uid://cgft0s3gn2qny"
