@@ -1,5 +1,5 @@
 @tool
-class_name AsteroidKind
+class_name FlotsamComposition
 extends Resource
 ## What kind of Asteroid is it?
 ##
@@ -16,31 +16,31 @@ var matter: MatterBag
 @export_color_no_alpha var color_saturation: Color
 @export_color_no_alpha var color_hue_diff: Color
 
-static var kinds: Array[AsteroidKind]
+static var kinds: Array[FlotsamComposition]
 
 static var _is_loaded: bool = false
 
 
-## Load the AsteroidKind resources dynamically from disk.
+## Load the FlotsamComposition resources dynamically from disk.
 static func load_resources() -> void:
 	if _is_loaded:
 		return
-	var resources: Array[AsteroidKind] = []
-	var file_paths: Array[String] = ResourceTools.find_resources("res://Asteroid/AsteroidKind")
+	var resources: Array[FlotsamComposition] = []
+	var file_paths: Array[String] = ResourceTools.find_resources("res://flotsam_composition")
 
 	for file_path: String in file_paths:
-		var res: AsteroidKind = load(file_path)
+		var res: FlotsamComposition = load(file_path)
 		if res:
 			resources.append(res)
 		else:
-			push_error("Failed to load resource  AsteroidKind from %s" % [file_path])
+			push_error("Failed to load resource  FlotsamComposition from %s" % [file_path])
 
 	kinds = resources
 	_is_loaded = true
 
 
 ## Retrieve a random asteroid kind.
-static func random_kind() -> AsteroidKind:
+static func random_kind() -> FlotsamComposition:
 	load_resources()
 
 	if kinds.size() == 0:
@@ -48,7 +48,7 @@ static func random_kind() -> AsteroidKind:
 
 	var kind_weights: PackedFloat32Array = []
 
-	for kind: AsteroidKind in kinds:
+	for kind: FlotsamComposition in kinds:
 		kind_weights.push_back(kind.probability)
 
 	var random_index: int = Global.rng.rand_weighted(kind_weights)
@@ -113,61 +113,5 @@ func _set(property: StringName, value: Variant) -> bool:
 			matter.set_by_name(mat_name, int(value))
 			return true
 	return false
-
-
-func palette() -> PackedColorArray:
-	var n_colors: int = 3
-
-	var a: Color = color_base_color
-	var b: Color = color_saturation
-	var c: Color = color_hue_diff
-	var d: Color = Color(
-		Global.rng.randf_range(0.0, 1.0),
-		Global.rng.randf_range(0.0, 1.0),
-		Global.rng.randf_range(0.0, 1.0),
-	) * Global.rng.randf_range(1.0, 3.0)
-
-	var cols: PackedColorArray = PackedColorArray()
-	var n: float = max(1.0, float(n_colors - 1.0))
-
-	for i: int in range(0, n_colors, 1):
-		var t: float = float(i) / n
-		var new_col: Color = ColorSchemes.phase_shift(a, b, c, d, t)
-		new_col = new_col.darkened(t * 0.9)
-		new_col = new_col.lightened((1.0 - t) * 0.2)
-		cols.append(new_col.clamp())
-
-	if Global.debug_asteroid_colors:
-		print("== ", name, " ==")
-		print_color("bas", color_base_color)
-		print_color("sat", color_saturation)
-		print_color("hue", color_hue_diff)
-		print()
-		print_color("0", cols[0])
-		print_color("1", cols[1])
-		print_color("2", cols[2])
-
-	return cols
-
-
-func print_color(n: String, c: Color) -> void:
-	if not Global.debug_asteroid_colors:
-		return
-
-	var h: String = "#" + c.to_html(true)
-	print_rich(
-		"   %3s  [b]%s[/b]  [bgcolor=%s]      [/bgcolor]  Color(%f, %f, %f)" % [
-			n,
-			h,
-			h,
-			c.r,
-			c.g,
-			c.b,
-		],
-	)
-
-
-func configure_shader(material: ShaderMaterial) -> void:
-	material.set_shader_parameter("colors", palette())
 
 # EOF

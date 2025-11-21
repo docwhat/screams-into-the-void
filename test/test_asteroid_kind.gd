@@ -1,7 +1,7 @@
 extends GdUnitTestSuite
 
 ## The object under test.
-var asteroid_kind: AsteroidKind
+var asteroid_kind: FlotsamComposition
 
 @warning_ignore_start("inferred_declaration")
 @warning_ignore_start("redundant_await")
@@ -9,8 +9,8 @@ var asteroid_kind: AsteroidKind
 
 
 func before_test():
-	# Create a test AsteroidKind instance with known parameters
-	asteroid_kind = AsteroidKind.new()
+	# Create a test FlotsamComposition instance with known parameters
+	asteroid_kind = FlotsamComposition.new()
 	asteroid_kind.name = "TestTest"
 	asteroid_kind.probability = 2.0
 
@@ -20,7 +20,7 @@ func after_test():
 
 
 func test_all_have_required_values():
-	for kind: AsteroidKind in AsteroidKind.kinds:
+	for kind: FlotsamComposition in FlotsamComposition.kinds:
 		assert_str(kind.name).has_length(3, Comparator.GREATER_EQUAL)
 
 

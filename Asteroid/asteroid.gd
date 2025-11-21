@@ -8,7 +8,7 @@ var debuted: bool = false
 @export var asteroid_size: AsteroidSize
 
 ## The kind of asteroid (e.g., Carbon, Ice, Organic, etc.)
-@export var asteroid_kind: AsteroidKind
+@export var asteroid_kind: FlotsamComposition
 
 ## How long it takes to dissolve an Asteroid (in seconds).
 @export_range(0.1, 3.0, 0.1) var dissolve_duration: float = 2.0
@@ -17,7 +17,7 @@ var debuted: bool = false
 var last_asteroid_size: AsteroidSize
 
 ## Save off the previous kind, in case it changed.
-var last_asteroid_kind: AsteroidKind
+var last_asteroid_kind: FlotsamComposition
 
 ## Used to dissolve an asteroid upon absorption.
 var dissolve_tween: Tween
@@ -125,7 +125,7 @@ var click_tween: Tween
 
 func _init() -> void:
 	asteroid_size = AsteroidSize.random_size()
-	asteroid_kind = AsteroidKind.random_kind()
+	asteroid_kind = FlotsamComposition.random_kind()
 	matter_bag = MatterBag.new()
 
 
@@ -236,7 +236,13 @@ func rebuild() -> void:
 
 	# Set the shapes.
 	shape.set_polygon(points)
-	var colors: PackedColorArray = asteroid_kind.palette()
+	var colors: PackedColorArray = PackedColorArray(
+		[
+			Color.RED,
+			Color.GREEN,
+			Color.BLUE,
+		],
+	)
 	color_dark = colors[0]
 	color_mid = colors[1]
 	color_light = colors[2]
