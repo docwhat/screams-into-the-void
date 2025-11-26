@@ -4,7 +4,10 @@ extends Node2D
 func rand_angular_velocity(t: float) -> float:
 	var variation: float = t * 0.20
 	var base: float = t - variation
-	var angular_velocity: float = base + Global.rng.randf_range(0 - TAU / 4.0, TAU / 4.0) * variation
+	var angular_velocity: float = base + Global.rng.randf_range(
+		0 - TAU / 4.0,
+		TAU / 4.0,
+	) * variation
 	if Global.flip_coin() == 0:
 		angular_velocity = 0 - angular_velocity
 	return angular_velocity

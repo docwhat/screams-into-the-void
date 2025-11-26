@@ -72,7 +72,13 @@ func make_asteroid_texture(width: int, height: int) -> Image:
 
 
 ## Unfilled circle (optionally a ring with `thickness` pixels).
-func circle(image: Image, center: Vector2, radius: int, the_color: Color, thickness: int = 1) -> void:
+func circle(
+		image: Image,
+		center: Vector2,
+		radius: int,
+		the_color: Color,
+		thickness: int = 1,
+) -> void:
 	var width: int = image.get_width()
 	var height: int = image.get_height()
 
@@ -132,7 +138,10 @@ func add_craters(image: Image) -> Image:
 		var crater_y: int = Global.rng.randi_range(0, height - 1)
 
 		# Random radius for the crater
-		var crater_radius: int = Global.rng.randi_range(4, mini(floor(maxi(height, width) * 0.1), 14))
+		var crater_radius: int = Global.rng.randi_range(
+			4,
+			mini(floor(maxi(height, width) * 0.1), 14),
+		)
 
 		# Darked the color and shift it towards yellowish
 		var shadow: Color = color_dark.darkened(0.4)
@@ -177,14 +186,14 @@ func surface_noise(image: Image) -> Image:
 
 			var noise_value: float = fbm(x_pos, y_pos)
 
-			const light_boundary: float = 0.4
-			const dark_boundary: float = 0.6
-			const boundary_size: float = 0.05
+			const LIGHT_BOUNDARY: float = 0.4
+			const DARK_BOUNDARY: float = 0.6
+			const BOUNDARY_SIZE: float = 0.05
 
 			var the_color: Color
-			if noise_value < light_boundary or noise_value < (light_boundary + boundary_size):
+			if noise_value < LIGHT_BOUNDARY or noise_value < (LIGHT_BOUNDARY + BOUNDARY_SIZE):
 				the_color = color_dark
-			elif noise_value > dark_boundary or noise_value > (dark_boundary + boundary_size):
+			elif noise_value > DARK_BOUNDARY or noise_value > (DARK_BOUNDARY + BOUNDARY_SIZE):
 				the_color = color_light
 			else:
 				the_color = color_mid
