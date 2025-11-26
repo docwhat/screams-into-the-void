@@ -33,7 +33,7 @@ var is_marked_for_absorbtion: bool
 @onready var collision_shape: CollisionPolygon2D = %CollisionShape
 
 ## Increase the size of pixels in the generated texture.
-@export_range(1, 10, 1, "or_greater") var pixel_size: int = 3:
+@export_range(1, 30, 1, "or_greater") var pixel_size: int = 6:
 	get:
 		return pixel_size
 	set(value):
@@ -68,48 +68,6 @@ var is_marked_for_absorbtion: bool
 		return await _shape_get(&"color_light")
 	set(value):
 		_shape_set(&"color_light", value)
-
-@export_group("Noise", "noise_")
-
-## The method for combining octaves into a fractal.
-@export var noise_type: FastNoiseLite.NoiseType = FastNoiseLite.TYPE_SIMPLEX:
-	get:
-		return await _shape_get(&"noise_type")
-	set(value):
-		_shape_set(&"noise_type", value)
-
-## The frequency for all noise types. Low frequency results in smooth noise while
-## high frequency results in rougher, more granular noise.
-@export var noise_frequency: float = 0.03:
-	get:
-		return await _shape_get(&"noise_frequency")
-	set(value):
-		_shape_set(&"noise_frequency", value)
-
-## The number of noise layers that are sampled to get the final value for fractal noise types.
-@export_range(0, 10, 1) var noise_fractal_octaves: int = 4:
-	get:
-		return await _shape_get(&"noise_fractal_octaves")
-	set(value):
-		_shape_set(&"noise_fractal_octaves", value)
-
-## Determines the strength of each subsequent layer of noise in fractal noise.
-##
-## A low value places more emphasis on the lower frequency base layers, while
-## a high value puts more emphasis on the higher frequency layers.
-@export var noise_fractal_gain: float = 0.35:
-	get:
-		return await _shape_get(&"noise_fractal_gain")
-	set(value):
-		_shape_set(&"noise_fractal_gain", value)
-
-## Frequency multiplier between subsequent octaves. Increasing this value results in higher
-## octaves producing noise with finer details and a rougher appearance.
-@export var noise_fractal_lacunarity: float = 25.0:
-	get:
-		return await _shape_get("noise_fractal_lacunarity")
-	set(value):
-		_shape_set(&"noise_fractal_lacunarity", value)
 
 # Deligation
 var radius: float:
@@ -238,9 +196,9 @@ func rebuild() -> void:
 	shape.set_polygon(points)
 	var colors: PackedColorArray = PackedColorArray(
 		[
-			Color.RED,
-			Color.GREEN,
-			Color.BLUE,
+			Color.SADDLE_BROWN,
+			Color.ROSY_BROWN,
+			Color.SANDY_BROWN,
 		],
 	)
 	color_dark = colors[0]

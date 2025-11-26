@@ -18,6 +18,7 @@ linear_damp_mode = 1
 angular_damp_mode = 1
 constant_force = Vector2(0, -10)
 script = ExtResource("1_p0ukn")
+pixel_size = 1
 border_color = Color(0, 0, 0, 1)
 
 [node name="CollisionShape" type="CollisionPolygon2D" parent="."]

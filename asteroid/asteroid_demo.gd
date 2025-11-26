@@ -1,19 +1,22 @@
 extends Node2D
 
-## Returns a randomly modulated number that is possible negative.
-func rand_torque(t: float) -> float:
+## Returns a randomly modulated number that is possibly negative.
+func rand_angular_velocity(t: float) -> float:
 	var variation: float = t * 0.20
 	var base: float = t - variation
-	var torque: float = base + Global.rng.randf_range(0, variation * 2.0)
+	var angular_velocity: float = base + Global.rng.randf_range(0 - TAU / 4.0, TAU / 4.0) * variation
 	if Global.flip_coin() == 0:
-		torque = 0 - torque
-	return torque
+		angular_velocity = 0 - angular_velocity
+	return angular_velocity
 
 
 func _ready() -> void:
 	# Find all the Asteroids under the Node2D grouping nodes and start them spinning.
 	for asteroid: Asteroid in get_tree().get_nodes_in_group(&"asteroid"):
-		asteroid.apply_torque_impulse(rand_torque(asteroid.inertia * 0.8))
-		asteroid.freeze = false
+		var new_av: float = rand_angular_velocity(0.80 + 0.2 * asteroid.inertia)
+		asteroid.angular_velocity = new_av
 
-# EOF
+
+func _rebuild() -> void:
+	for asteroid: Asteroid in get_tree().get_nodes_in_group(&"asteroid"):
+		asteroid.rebuild()
