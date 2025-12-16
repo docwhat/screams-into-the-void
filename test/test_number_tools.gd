@@ -1,7 +1,7 @@
 extends GdUnitTestSuite
 
 ## Test that scientific_notate_int() returns the correct notation.
-func test_scientific_notate_int():
+func test_scientific_notate_int() -> void:
 	var table: Array = [
 		# Positives
 		[1_234_567, "1.23e6"],
@@ -45,7 +45,7 @@ func test_scientific_notate_int():
 
 
 ## Test that scientific_notate_int() handles comma decimal separators.
-func test_scientific_notate_int_dsep_comma():
+func test_scientific_notate_int_dsep_comma() -> void:
 	var number: int = 1_234_567
 	var expected: String = "1,23e6"
 	var got: String = NumberTools.scientific_notate_int(
@@ -56,7 +56,7 @@ func test_scientific_notate_int_dsep_comma():
 
 
 ## Test that engineering_notate_int() returns the correct notation.
-func test_engineering_notate_int():
+func test_engineering_notate_int() -> void:
 	var table: Array = [
 		# Positives
 		[1_234_567, "1.23e6"],
@@ -104,7 +104,7 @@ func test_engineering_notate_int():
 
 
 ## Test that engineering_notate_int() handles comma decimal separators.
-func test_engineering_notate_int_dsep_comma():
+func test_engineering_notate_int_dsep_comma() -> void:
 	var number: int = 12_345
 	var expected: String = "12,3e3"
 	var got: String = NumberTools.engineering_notate_int(
@@ -115,7 +115,7 @@ func test_engineering_notate_int_dsep_comma():
 
 
 ## Test that comma_notate_int() returns the correct notation.
-func test_comma_notate_int():
+func test_comma_notate_int() -> void:
 	var table: Array = [
 		# Positives
 		[1_234_567, "1,234,567"],
@@ -148,7 +148,7 @@ func test_comma_notate_int():
 
 
 ## Test that comma_notate_int() handles period decimal separators.
-func test_comma_notate_int_dsep_period():
+func test_comma_notate_int_dsep_period() -> void:
 	var number: int = 1_234_567
 	var expected: String = "1.234.567"
 	var got: String = NumberTools.comma_notate_int(
@@ -159,7 +159,7 @@ func test_comma_notate_int_dsep_period():
 
 
 ## Test that comma_notate_int() handles space decimal separators.
-func test_comma_notate_int_dsep_space():
+func test_comma_notate_int_dsep_space() -> void:
 	var number: int = 1_234_567
 	var expected: String = "1 234 567"
 	var got: String = NumberTools.comma_notate_int(
@@ -170,7 +170,7 @@ func test_comma_notate_int_dsep_space():
 
 
 ## Test short_scale_notate_int() returns the correct notation.
-func test_short_scale_notate_int():
+func test_short_scale_notate_int() -> void:
 	var table: Array = [
 		# Positives
 		[1_234_567, "1.23M"],
