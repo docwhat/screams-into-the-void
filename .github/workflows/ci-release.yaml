@@ -1,4 +1,4 @@
-name: "Game CI/CD"
+name: "Continuous Delivery"
 
 # TODO: Add cache action for mise and godot export templates.
 
