@@ -58,11 +58,8 @@ oxipng = "9.1.5"
 pkl = "0.29.1"
 semver = "3.4.0"
 taplo = "0.10.0"
+trunk = "latest"
 usage = "2.8.0"
 uv = "0.9.3"
 yamllint = "1.37.1"
 yq = "4.48.1"
-
-[tools."http:trunk"]
-url = "https://trunk.io/releases/trunk"
-version = "latest"
