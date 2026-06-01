@@ -9,7 +9,7 @@ description = "Deploy the web version to void.docwhat.org"
 run = "rsync -av --delete-after --progress build/web/ gerf:/srv/website/srv/void/"
 
 [tasks.export-all]
-depends = ["export-web", "export-macos", "export-windows", "export-linux"]
+depends = ["release web", "release macos", "release windows", "release linux"]
 description = "Export all platforms to build/"
 
 [tasks.serve-web]
