@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://drbf8d237goj"]
+[gd_scene format=3 uid="uid://drbf8d237goj"]
 
 [ext_resource type="Script" uid="uid://3lpx3nh5ceyj" path="res://main/main.gd" id="1_h2yge"]
 [ext_resource type="Shader" uid="uid://bxg7qu236s2yc" path="res://Shaders/stars.gdshader" id="2_h2yge"]
@@ -37,15 +37,15 @@ shader_parameter/time = 0.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_s758e"]
 radius = 12.0
 
-[node name="Main" type="Control"]
+[node name="Main" type="Control" unique_id=1477987669]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_h2yge")
 
-[node name="Background" type="CanvasLayer" parent="."]
+[node name="Background" type="CanvasLayer" parent="." unique_id=1169062410]
 layer = -10
 
-[node name="Stars" type="ColorRect" parent="Background"]
+[node name="Stars" type="ColorRect" parent="Background" unique_id=677799614]
 material = SubResource("ShaderMaterial_0xm2m")
 anchors_preset = 15
 anchor_right = 1.0
@@ -58,35 +58,35 @@ mouse_filter = 2
 script = ExtResource("3_1bvp3")
 metadata/_edit_lock_ = true
 
-[node name="PlayField" type="CanvasLayer" parent="."]
+[node name="PlayField" type="CanvasLayer" parent="." unique_id=43588734]
 unique_name_in_owner = true
 
-[node name="Player" parent="PlayField" instance=ExtResource("4_1bvp3")]
+[node name="Player" parent="PlayField" unique_id=1513823406 instance=ExtResource("4_1bvp3")]
 unique_name_in_owner = true
 position = Vector2(640, 656)
 input_pickable = false
 
-[node name="HUD" parent="." instance=ExtResource("5_7mycd")]
+[node name="HUD" parent="." unique_id=2026726675 instance=ExtResource("5_7mycd")]
 layer = 10
 visible = false
 
-[node name="PauseScreen" type="CanvasLayer" parent="."]
+[node name="PauseScreen" type="CanvasLayer" parent="." unique_id=405602869]
 process_mode = 2
 layer = 30
 script = ExtResource("6_67ri8")
 
-[node name="PauseMenu" parent="PauseScreen" instance=ExtResource("7_272bh")]
+[node name="PauseMenu" parent="PauseScreen" unique_id=1399054461 instance=ExtResource("7_272bh")]
 unique_name_in_owner = true
 visible = false
 
-[node name="OptionsMenu" parent="PauseScreen" instance=ExtResource("7_4dugh")]
+[node name="OptionsMenu" parent="PauseScreen" unique_id=108727628 instance=ExtResource("7_4dugh")]
 unique_name_in_owner = true
 visible = false
 
-[node name="CursorLayer" type="CanvasLayer" parent="."]
+[node name="CursorLayer" type="CanvasLayer" parent="." unique_id=1250387993]
 layer = 100
 
-[node name="Pointer" type="Area2D" parent="CursorLayer"]
+[node name="Pointer" type="Area2D" parent="CursorLayer" unique_id=754132191]
 unique_name_in_owner = true
 z_index = 2
 position = Vector2(547, 352)
@@ -96,35 +96,35 @@ script = ExtResource("5_piupu")
 cursor_2d = ExtResource("6_vapsy")
 click = ExtResource("7_jofbb")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CursorLayer/Pointer"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CursorLayer/Pointer" unique_id=1752687754]
 shape = SubResource("CircleShape2D_s758e")
 metadata/_edit_lock_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="CursorLayer/Pointer"]
+[node name="Sprite2D" type="Sprite2D" parent="CursorLayer/Pointer" unique_id=1707827683]
 self_modulate = Color(0.20783335, 1, 0.029999971, 1)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("5_4hmqs")
 metadata/_edit_lock_ = true
 
-[node name="CurrentWindow" type="Node" parent="."]
+[node name="CurrentWindow" type="Node" parent="." unique_id=1870498781]
 unique_name_in_owner = true
 process_mode = 3
 script = ExtResource("9_fwcvl")
 metadata/_custom_type_script = "uid://di13056p5aubc"
 
-[node name="PlayFieldState" type="Node" parent="CurrentWindow"]
+[node name="PlayFieldState" type="Node" parent="CurrentWindow" unique_id=183457055]
 script = ExtResource("10_bsumw")
 metadata/_custom_type_script = "uid://cj8s6t717xr4y"
 
-[node name="PauseState" type="Node" parent="CurrentWindow"]
+[node name="PauseState" type="Node" parent="CurrentWindow" unique_id=5290784]
 script = ExtResource("11_fwcvl")
 metadata/_custom_type_script = "uid://cj8s6t717xr4y"
 
-[node name="OptionsState" type="Node" parent="CurrentWindow"]
+[node name="OptionsState" type="Node" parent="CurrentWindow" unique_id=150723308]
 script = ExtResource("12_fwcvl")
 metadata/_custom_type_script = "uid://cj8s6t717xr4y"
 
-[node name="InputManager" type="Node" parent="."]
+[node name="InputManager" type="Node" parent="." unique_id=1413515442]
 unique_name_in_owner = true
 script = ExtResource("13_na0o7")
 km_global = ExtResource("14_n3o0a")

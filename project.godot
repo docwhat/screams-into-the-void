@@ -13,13 +13,17 @@ config_version=5
 git_describe/command_options="--always --tags --long"
 git_describe/user_extensions_dir="res://addons/git_describe/extensions"
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="Screams into the Void"
 run/main_scene="uid://drbf8d237goj"
-config/features=PackedStringArray("4.5", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
 boot_splash/show_image=false
-boot_splash/fullsize=false
+boot_splash/stretch_mode=0
 boot_splash/use_filter=false
 config/icon="uid://dolvc3ib4ac2n"
 
@@ -30,7 +34,7 @@ ColorSchemes="*res://color_schemes.gd"
 Events="*res://events.gd"
 GameSave="*res://game_save.tscn"
 GUIDE="*res://addons/guide/guide.gd"
-Console="*res://addons/console/console.gd"
+Console="*uid://ouiu5xh1cs8n"
 AllMatter="*res://all_matter.gd"
 
 [console]

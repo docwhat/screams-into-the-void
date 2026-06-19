@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://d0aunt6sldifx"]
+[gd_scene format=3 uid="uid://d0aunt6sldifx"]
 
 [ext_resource type="Script" uid="uid://t87mam7uarfh" path="res://asteroid/asteroid_demo.gd" id="1_8rxj1"]
 [ext_resource type="PackedScene" uid="uid://dgo8gq5d22uf" path="res://asteroid/asteroid.tscn" id="1_ocfal"]
@@ -17,12 +17,12 @@
 [ext_resource type="Resource" uid="uid://csgc6rhgdk8f4" path="res://asteroid_size/spiky_small.tres" id="11_kh20f"]
 [ext_resource type="Resource" uid="uid://xlqvrv6idgxv" path="res://flotsam_composition/magnesium.tres" id="12_g5exe"]
 
-[node name="AsteroidDemo" type="Node2D"]
+[node name="AsteroidDemo" type="Node2D" unique_id=1736036480]
 script = ExtResource("1_8rxj1")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=862747717]
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=159909692]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -31,16 +31,16 @@ grow_vertical = 2
 color = Color(0.012500024, 0, 0.15, 1)
 metadata/_edit_lock_ = true
 
-[node name="Asteroids" type="CanvasLayer" parent="."]
+[node name="Asteroids" type="CanvasLayer" parent="." unique_id=1977431049]
 
-[node name="Gargantuan Icy" type="Node2D" parent="Asteroids"]
+[node name="Gargantuan Icy" type="Node2D" parent="Asteroids" unique_id=1369695426]
 
-[node name="Asteroid" parent="Asteroids/Gargantuan Icy" groups=["asteroid"] instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Gargantuan Icy" unique_id=1133913819 groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(1030, 552)
 asteroid_size = ExtResource("2_ocfal")
 asteroid_kind = ExtResource("3_ocfal")
 
-[node name="Label" type="Label" parent="Asteroids/Gargantuan Icy"]
+[node name="Label" type="Label" parent="Asteroids/Gargantuan Icy" unique_id=1821990696]
 anchors_preset = 13
 anchor_left = 0.5
 anchor_right = 0.5
@@ -55,14 +55,14 @@ size_flags_horizontal = 4
 text = "Gargantuan Icy"
 horizontal_alignment = 1
 
-[node name="Tiny Stony" type="Node2D" parent="Asteroids"]
+[node name="Tiny Stony" type="Node2D" parent="Asteroids" unique_id=175587292]
 
-[node name="Asteroid" parent="Asteroids/Tiny Stony" groups=["asteroid"] instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Tiny Stony" unique_id=2122709018 groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(189, 113)
 asteroid_size = ExtResource("4_x0xei")
 asteroid_kind = ExtResource("3_vbwx6")
 
-[node name="Label" type="Label" parent="Asteroids/Tiny Stony"]
+[node name="Label" type="Label" parent="Asteroids/Tiny Stony" unique_id=2009608097]
 offset_left = 80.0
 offset_top = 177.0
 offset_right = 293.0
@@ -71,14 +71,14 @@ text = "Tiny Stoney"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Tiny Uranium" type="Node2D" parent="Asteroids"]
+[node name="Tiny Uranium" type="Node2D" parent="Asteroids" unique_id=2031724227]
 
-[node name="Asteroid" parent="Asteroids/Tiny Uranium" groups=["asteroid"] instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Tiny Uranium" unique_id=500307468 groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(448, 120)
 asteroid_size = ExtResource("4_x0xei")
 asteroid_kind = ExtResource("3_ivpih")
 
-[node name="Label" type="Label" parent="Asteroids/Tiny Uranium"]
+[node name="Label" type="Label" parent="Asteroids/Tiny Uranium" unique_id=164405656]
 offset_left = 339.0
 offset_top = 184.0
 offset_right = 552.0
@@ -87,14 +87,14 @@ text = "Tiny Uranium"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Small Organic" type="Node2D" parent="Asteroids"]
+[node name="Small Organic" type="Node2D" parent="Asteroids" unique_id=1987201894]
 
-[node name="Asteroid" parent="Asteroids/Small Organic" groups=["asteroid"] instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Small Organic" unique_id=1346700904 groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(727, 125)
 asteroid_size = ExtResource("7_uhw5y")
 asteroid_kind = ExtResource("8_3al8o")
 
-[node name="Label" type="Label" parent="Asteroids/Small Organic"]
+[node name="Label" type="Label" parent="Asteroids/Small Organic" unique_id=1838994086]
 offset_left = 618.0
 offset_top = 189.0
 offset_right = 831.0
@@ -102,14 +102,14 @@ offset_bottom = 206.0
 text = "Small Organic"
 horizontal_alignment = 1
 
-[node name="Medium Uranium" type="Node2D" parent="Asteroids"]
+[node name="Medium Uranium" type="Node2D" parent="Asteroids" unique_id=1634988469]
 
-[node name="Asteroid" parent="Asteroids/Medium Uranium" groups=["asteroid"] instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Medium Uranium" unique_id=1782630915 groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(719, 347)
 asteroid_size = ExtResource("9_kh20f")
 asteroid_kind = ExtResource("3_ivpih")
 
-[node name="Label" type="Label" parent="Asteroids/Medium Uranium"]
+[node name="Label" type="Label" parent="Asteroids/Medium Uranium" unique_id=457527426]
 offset_left = 610.0
 offset_top = 411.0
 offset_right = 823.0
@@ -117,14 +117,14 @@ offset_bottom = 428.0
 text = "Medium Uranium"
 horizontal_alignment = 1
 
-[node name="Spiky Magnesium" type="Node2D" parent="Asteroids"]
+[node name="Spiky Magnesium" type="Node2D" parent="Asteroids" unique_id=357491237]
 
-[node name="Asteroid" parent="Asteroids/Spiky Magnesium" groups=["asteroid"] instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Spiky Magnesium" unique_id=1076076448 groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(217, 334)
 asteroid_size = ExtResource("11_kh20f")
 asteroid_kind = ExtResource("12_g5exe")
 
-[node name="Label" type="Label" parent="Asteroids/Spiky Magnesium"]
+[node name="Label" type="Label" parent="Asteroids/Spiky Magnesium" unique_id=434515010]
 offset_left = 108.0
 offset_top = 398.0
 offset_right = 321.0
@@ -133,14 +133,14 @@ text = "Spiky Magnesium"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Spiky Icey" type="Node2D" parent="Asteroids"]
+[node name="Spiky Icey" type="Node2D" parent="Asteroids" unique_id=1485881244]
 
-[node name="Asteroid" parent="Asteroids/Spiky Icey" groups=["asteroid"] instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Spiky Icey" unique_id=1858871695 groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(492, 343)
 asteroid_size = ExtResource("11_kh20f")
 asteroid_kind = ExtResource("3_ocfal")
 
-[node name="Label" type="Label" parent="Asteroids/Spiky Icey"]
+[node name="Label" type="Label" parent="Asteroids/Spiky Icey" unique_id=1702367341]
 offset_left = 383.0
 offset_top = 407.0
 offset_right = 596.0
@@ -149,14 +149,14 @@ text = "Spiky Icey"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Large Carbon" type="Node2D" parent="Asteroids"]
+[node name="Large Carbon" type="Node2D" parent="Asteroids" unique_id=1131480409]
 
-[node name="Asteroid" parent="Asteroids/Large Carbon" groups=["asteroid"] instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Large Carbon" unique_id=824681331 groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(227, 546)
 asteroid_size = ExtResource("6_8rxj1")
 asteroid_kind = ExtResource("7_f1j48")
 
-[node name="Label" type="Label" parent="Asteroids/Large Carbon"]
+[node name="Label" type="Label" parent="Asteroids/Large Carbon" unique_id=1538600143]
 offset_left = 118.0
 offset_top = 610.0
 offset_right = 331.0
@@ -164,14 +164,14 @@ offset_bottom = 627.0
 text = "Large Carbon"
 horizontal_alignment = 1
 
-[node name="Huge Iron" type="Node2D" parent="Asteroids"]
+[node name="Huge Iron" type="Node2D" parent="Asteroids" unique_id=1968380355]
 
-[node name="Asteroid" parent="Asteroids/Huge Iron" groups=["asteroid"] instance=ExtResource("1_ocfal")]
+[node name="Asteroid" parent="Asteroids/Huge Iron" unique_id=1961011231 groups=["asteroid"] instance=ExtResource("1_ocfal")]
 position = Vector2(537, 557)
 asteroid_size = ExtResource("4_ivpih")
 asteroid_kind = ExtResource("5_st53i")
 
-[node name="Label" type="Label" parent="Asteroids/Huge Iron"]
+[node name="Label" type="Label" parent="Asteroids/Huge Iron" unique_id=856043232]
 offset_left = 431.0
 offset_top = 620.0
 offset_right = 644.0
@@ -179,6 +179,6 @@ offset_bottom = 637.0
 text = "Huge Iron"
 horizontal_alignment = 1
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=377101395]
 
 [connection signal="timeout" from="Timer" to="." method="_rebuild"]
