@@ -1,0 +1,18 @@
+{
+    "mcpServers": {
+        "godot-ai": {
+            "command": "uvx",
+            "args": [
+                "mcp-proxy",
+                "--transport",
+                "streamablehttp",
+                "http://localhost:8000/mcp"
+            ],
+            "env": {
+                "UV_LINK_MODE": "copy",
+                "GODOT_AI_DISABLE_TELEMETRY": "false"
+            },
+            "directTools": true
+        }
+    }
+}
