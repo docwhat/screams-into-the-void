@@ -18,3 +18,5 @@ indent_style = tab
 [*.md]
 max_line_length = off
 
+[*.yaml]
+indent_size = 2
