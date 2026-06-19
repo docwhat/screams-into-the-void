@@ -1,6 +1,6 @@
 extends: default
 
 rules:
-    document-start: disable
-    line-length: disable
-    quoted-strings: disable
+  document-start: disable
+  line-length: disable
+  quoted-strings: disable

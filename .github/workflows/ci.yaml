@@ -3,46 +3,46 @@ name: "Continuous Integration"
 # TODO: Add cache action for mise and godot export templates.
 
 "on":
-    push:
-        branches: [main]
-    pull_request:
-        branches: [main]
-    workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 env:
-    GODOT_VERSION: "4.5.1"
-    EXPORT_NAME: "void"
+  GODOT_VERSION: "4.5.1"
+  EXPORT_NAME: "void"
 
 permissions:
-    checks: write
-    contents: read
+  checks: write
+  contents: read
 
 jobs:
-    # Always run these jobs
-    lint-and-format:
-        name: Lint and Format GDScript
-        runs-on: ubuntu-24.04
-        # We don't care about linting on release tags
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v6
+  # Always run these jobs
+  lint-and-format:
+    name: Lint and Format GDScript
+    runs-on: ubuntu-24.04
+    # We don't care about linting on release tags
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
 
-            - name: Trunk Code Quality
-              uses: trunk-io/trunk-action@v1
+      - name: Trunk Code Quality
+        uses: trunk-io/trunk-action@v1
 
-    test:
-        name: Test Game
-        runs-on: ubuntu-24.04
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v6
+  test:
+    name: Test Game
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
 
-            - uses: MikeSchulze/gdunit4-action@v1
-              with:
-                  godot-version: ${{env.GODOT_VERSION}}
-                  paths: "res://test"
-                  warnings-as-errors: true
-                  arguments: "--verbose"
+      - uses: MikeSchulze/gdunit4-action@v1
+        with:
+          godot-version: ${{env.GODOT_VERSION}}
+          paths: "res://test"
+          warnings-as-errors: true
+          arguments: "--verbose"
 # EOF

@@ -39,12 +39,12 @@ signal use_format_changed()
 
 ## What should we use to separate decimals from fractions?
 @export var number_decimal_separator: NumberTools.NumberDecimalSeparator = (
-	NumberTools.NumberDecimalSeparator.PERIOD
+		NumberTools.NumberDecimalSeparator.PERIOD
 )
 
 ## What should we use to separate number groups. i.e., the comma thousands in the USA.
 @export var number_grouping_separator: NumberTools.NumberGroupSeparator = (
-	NumberTools.NumberGroupSeparator.COMMA
+		NumberTools.NumberGroupSeparator.COMMA
 )
 
 @export_group("")

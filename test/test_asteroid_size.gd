@@ -45,10 +45,10 @@ func test_generate_polygon_first_point_at_radius() -> void:
 func test_generate_polygon_points_within_radius_bounds() -> void:
 	var result: PackedVector2Array = asteroid_size.generate_polygon()
 	var min_expected_radius: float = (
-		asteroid_size.shape_radius - asteroid_size.shape_max_radius_delta
+			asteroid_size.shape_radius - asteroid_size.shape_max_radius_delta
 	)
 	var max_expected_radius: float = (
-		asteroid_size.shape_radius + asteroid_size.shape_max_radius_delta
+			asteroid_size.shape_radius + asteroid_size.shape_max_radius_delta
 	)
 
 	for point: Vector2 in result:

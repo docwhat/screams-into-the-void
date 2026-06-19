@@ -1,24 +1,24 @@
 name: "Populate Trunk Cache"
 
 "on":
-    push:
-        branches: [main]
-        paths: [.trunk/trunk.yaml]
+  push:
+    branches: [main]
+    paths: [.trunk/trunk.yaml]
 
 permissions: read-all
 
 jobs:
-    cache_trunk:
-        name: Cache Trunk
-        runs-on: ubuntu-latest
-        permissions:
-            actions: write
+  cache_trunk:
+    name: Cache Trunk
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v6
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
 
-            - name: Trunk Check
-              uses: trunk-io/trunk-action@v1
-              with:
-                  check-mode: populate_cache_only
+      - name: Trunk Check
+        uses: trunk-io/trunk-action@v1
+        with:
+          check-mode: populate_cache_only

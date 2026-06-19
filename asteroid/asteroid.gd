@@ -96,13 +96,13 @@ func _ready() -> void:
 	# This bit of code forces all the setters to be called on exported (hint'd)
 	# variables.
 	var usage: int = (
-		PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE
+			PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE
 	)
 	for prop: Dictionary in get_property_list():
 		if prop.usage & usage and (
-			prop.type == TYPE_INT or
-			prop.type == TYPE_FLOAT or
-			prop.type == TYPE_COLOR
+				prop.type == TYPE_INT or
+				prop.type == TYPE_FLOAT or
+				prop.type == TYPE_COLOR
 		):
 			set(prop.name, get(prop.name))
 
@@ -332,9 +332,9 @@ func is_on_screen() -> bool:
 	var fudge: float = 64 * 4
 
 	return pos.y >= 0.0 - fudge && \
-	pos.x >= 0.0 - fudge && \
-	pos.x <= screen.x + fudge && \
-	pos.y <= screen.y + fudge
+			pos.x >= 0.0 - fudge && \
+			pos.x <= screen.x + fudge && \
+			pos.y <= screen.y + fudge
 
 
 ## Fling an asteroid at someone.
