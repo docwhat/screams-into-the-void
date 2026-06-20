@@ -1,5 +1,11 @@
 [env]
 
+GODOT_BIN = "{{ exec(command='which godot') | trim }}"
+
+# Tell Pi's watchdog to wait 30 minutes before killing the session,
+# since local AI is slow.
+PI_RETRY_STALL_TIMEOUT_MS = 1800000
+
 [tasks.clean]
 description = "Clean all exported builds and other cruft"
 run = "rm -rf build"
