@@ -95,14 +95,14 @@ func _ready() -> void:
 	# a default and the scene doesn't change it. See godotengine/godot#86494
 	# This bit of code forces all the setters to be called on exported (hint'd)
 	# variables.
-	var usage: int = (
-			PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE
-	)
+	var usage: int = (PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_SCRIPT_VARIABLE)
 	for prop: Dictionary in get_property_list():
-		if prop.usage & usage and (
-				prop.type == TYPE_INT or
-				prop.type == TYPE_FLOAT or
-				prop.type == TYPE_COLOR
+		if (
+			prop.usage & usage
+			and (
+				prop.type == TYPE_INT or prop.type == TYPE_FLOAT
+				or prop.type == TYPE_COLOR
+			)
 		):
 			set(prop.name, get(prop.name))
 
@@ -179,7 +179,8 @@ func rebuild() -> void:
 
 	if Global.debug_asteroid_launch:
 		print_rich(
-			"%s %s \n  m-r:    %f \n  m-m:    %f \n  i-r:    %f \n  i-m:    %f" % [
+			"%s %s \n  m-r:    %f \n  m-m:    %f \n  i-r:    %f \n  i-m:    %f"
+			% [
 				asteroid_size.name,
 				asteroid_kind.name,
 				1_000.0 * radius,
@@ -195,11 +196,7 @@ func rebuild() -> void:
 	# Set the shapes.
 	shape.set_polygon(points)
 	var colors: PackedColorArray = PackedColorArray(
-		[
-			Color.SADDLE_BROWN,
-			Color.ROSY_BROWN,
-			Color.SANDY_BROWN,
-		],
+		[Color.SADDLE_BROWN, Color.ROSY_BROWN, Color.SANDY_BROWN],
 	)
 	color_dark = colors[0]
 	color_mid = colors[1]
@@ -224,12 +221,7 @@ func click() -> void:
 
 	click_tween = create_tween()
 	click_tween.set_trans(Tween.TRANS_SPRING)
-	click_tween.tween_property(
-		%Outline,
-		"default_color",
-		Color(2, 2, 2),
-		0.1,
-	)
+	click_tween.tween_property(%Outline, "default_color", Color(2, 2, 2), 0.1)
 	click_tween.tween_property(
 		%Outline,
 		"default_color",
@@ -274,7 +266,9 @@ func trigger_dissolve() -> void:
 	dissolver_material.set_shader_parameter("color", color)
 
 	# Calculate the angle to the player.
-	var player_angle: float = global_position.angle_to_point(Global.player_position)
+	var player_angle: float = global_position.angle_to_point(
+		Global.player_position
+	)
 
 	# Angle to the player.
 	var angle: float = TAU * 3.0 / 4.0 - player_angle + TAU * 2.0 / 4.0
@@ -288,7 +282,10 @@ func trigger_dissolve() -> void:
 	var scaling: float = (radius - 8) / (64.0 - 8.0)
 
 	# TODO: The beam size should be based on the size of the asteroid.
-	dissolver_material.set_shader_parameter("beam_size", min(0.1, 0.2 + 0.2 * scaling))
+	dissolver_material.set_shader_parameter(
+		"beam_size",
+		min(0.1, 0.2 + 0.2 * scaling),
+	)
 	# dissolver_material.set_shader_parameter("noise_density", noise_size + noise_size / scaling)
 
 	# TODO: The duration should be based on the size of the asteroid.
@@ -339,7 +336,11 @@ func is_on_screen() -> bool:
 
 ## Fling an asteroid at someone.
 func launch() -> Node:
-	var screen_size: Vector2 = Global.play_field.get_viewport().get_visible_rect().size
+	var screen_size: Vector2 = Global \
+			.play_field \
+			.get_viewport() \
+			.get_visible_rect() \
+			.size
 	var player_coord: Vector2 = Global.player_node.global_position
 	var target_coord: Vector2
 	var direction: float
@@ -349,11 +350,8 @@ func launch() -> Node:
 
 	if not is_valid():
 		push_error(
-			"This asteroid is invalid: name: %s   size: %s   kind: %s" % [
-				name,
-				asteroid_size,
-				asteroid_kind,
-			],
+			"This asteroid is invalid: name: %s   size: %s   kind: %s"
+			% [name, asteroid_size, asteroid_kind],
 		)
 		return
 
@@ -364,10 +362,9 @@ func launch() -> Node:
 	if should_intercept:
 		target_coord = player_coord
 	else:
-		target_coord = Vector2(
-			Global.rng.randf_range(0, screen_size.x),
-			Global.rng.randf_range(0, screen_size.y),
-		)
+		target_coord = Vector2(Global.rng.randf_range(0, screen_size.x), Global
+			.rng
+			.randf_range(0, screen_size.y))
 	direction = position.angle_to_point(target_coord)
 
 	# Choose a velocity
@@ -390,10 +387,10 @@ func launch() -> Node:
 	# Note: I've been unable to get apply_impulse to work correctly.
 	# Instead, I'm brute-forcing the velocity while it is frozen.
 	# apply_torque_impulse(torque)
-
 	if Global.debug_asteroid_launch:
 		print_rich(
-			"Launch: %s %s  ->  linear_velocity: %s  angular_velocity: %f" % [
+			"Launch: %s %s  ->  linear_velocity: %s  angular_velocity: %f"
+			% [
 				asteroid_kind.name,
 				asteroid_size.name,
 				linear_velocity,
@@ -419,16 +416,21 @@ func calculate_asteroid_starting_position(screen_size: Vector2) -> Vector2:
 	var spawn_margin: int = 100
 
 	# Where the asteroid should spawn.
-	var sides: Array[Asteroid.Side] = [Side.TOP, Side.LEFT, Side.RIGHT, Side.BOTTOM]
+	var sides: Array[Asteroid.Side] = [
+		Side.TOP,
+		Side.LEFT,
+		Side.RIGHT,
+		Side.BOTTOM,
+	]
 	var side_weights: PackedFloat32Array = [5, 1.5, 1.5, 0.2]
 
 	var side_index: int = Global.rng.rand_weighted(side_weights)
 	match sides[side_index]:
 		Side.LEFT:
-			return Vector2(
-				-spawn_margin,
-				Global.rng.randf_range(0, screen_size.y),
-			)
+			return Vector2(-spawn_margin, Global.rng.randf_range(
+					0,
+					screen_size.y,
+				))
 		Side.RIGHT:
 			return Vector2(
 				screen_size.x + spawn_margin,
@@ -440,10 +442,10 @@ func calculate_asteroid_starting_position(screen_size: Vector2) -> Vector2:
 				screen_size.y + spawn_margin,
 			)
 		Side.TOP, _: # AKA Side.TOP
-			return Vector2(
-				Global.rng.randf_range(-spawn_margin, screen_size.x + spawn_margin),
-				-spawn_margin,
-			)
+			return Vector2(Global.rng.randf_range(
+					-spawn_margin,
+					screen_size.x + spawn_margin,
+				), -spawn_margin)
 
 
 ## Generate a random matter collection for this asteroid.

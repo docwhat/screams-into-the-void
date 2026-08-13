@@ -13,7 +13,7 @@ func before_test():
 	bag = MatterBag.new()
 	bag.matter_changed.connect(
 		func(_m: Matter) -> void:
-			changed = true
+			changed = true,
 	)
 
 
@@ -33,10 +33,7 @@ func test_constructor_with_empty_dictionary():
 
 ## Test that the constructor handles a populated, untyped dictionary correctly.
 func test_constructor_with_dictionary():
-	var dict = {
-		AllMatter.carbon: 2,
-		AllMatter.water: 3,
-	}
+	var dict = { AllMatter.carbon: 2, AllMatter.water: 3 }
 	bag = MatterBag.new(dict)
 	for matter: Matter in AllMatter.all:
 		var got: int = bag.get_by_matter(matter)
@@ -116,7 +113,9 @@ func test_duplicate_bag():
 	for matter: Matter in AllMatter.all:
 		var got: int = bag2.get_by_matter(matter)
 		var expected: int = bag.get_by_matter(matter)
-		assert_int(got).append_failure_message("for %s" % matter.name).is_equal(expected)
+		assert_int(got).append_failure_message("for %s" % matter.name).is_equal(
+			expected
+		)
 		if is_failure():
 			return
 
@@ -165,20 +164,25 @@ func test_replace_bag_emits_signals():
 	var changed_matters: Array[Matter] = []
 	bag.matter_changed.connect(
 		func(m: Matter) -> void:
-			changed_matters.append(m)
+			changed_matters.append(m),
 	)
 	bag.replace_bag(bag2)
 
-	assert_array(
-		changed_matters,
-	).append_failure_message(
-		"expected %s but got %s" % [
-			expected.map(func(m: Matter) -> String: return m.name),
-			changed_matters.map(func(m: Matter) -> String: return m.name),
-		],
-	).contains_same_exactly_in_any_order(
-		expected,
-	)
+	assert_array(changed_matters) \
+			.append_failure_message(
+		"expected %s but got %s"
+		% [
+			expected.map(
+				func(m: Matter) -> String:
+					return m.name,
+			),
+			changed_matters.map(
+				func(m: Matter) -> String:
+					return m.name,
+			),
+		]
+	) \
+			.contains_same_exactly_in_any_order(expected)
 
 
 ## Using set_by_name() with a matter StringName should set the matching amount.

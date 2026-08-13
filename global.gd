@@ -123,7 +123,11 @@ const NONE: Boolish = Boolish.NULL
 ## Converts a string to a bool.
 ##
 ## Suitable for use with Console commands.
-func string_to_bool(s: String, allow_empty: bool = false, preferred: bool = true) -> Boolish:
+func string_to_bool(
+	s: String,
+	allow_empty: bool = false,
+	preferred: bool = true,
+) -> Boolish:
 	if not s or s == "":
 		if allow_empty:
 			return Boolish.NULL
