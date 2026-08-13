@@ -29,6 +29,7 @@ mono_crash.*.json
 
 # Krita
 *-autosave.kra
+*.kra~
 
 # macOS cruft
 .DS_Store
