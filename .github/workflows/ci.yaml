@@ -27,19 +27,19 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Trunk Code Quality
-        uses: trunk-io/trunk-action@v1
+        uses: trunk-io/trunk-action@04ba50e7658c81db7356da96657e6e77f220bfa3 # v1.3.1
 
   test:
     name: Test Game
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
-      - uses: MikeSchulze/gdunit4-action@v1
+      - uses: MikeSchulze/gdunit4-action@17eeffa988f9732fdc3dba3067405d16b55809de # v1.3.2
         with:
           godot-version: ${{env.GODOT_VERSION}}
           paths: "res://test"

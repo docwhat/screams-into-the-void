@@ -4,3 +4,5 @@ rules:
   document-start: disable
   line-length: disable
   quoted-strings: disable
+  comments:
+    min-spaces-from-content: 1

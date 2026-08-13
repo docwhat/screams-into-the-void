@@ -222,12 +222,7 @@ func click() -> void:
 	click_tween = create_tween()
 	click_tween.set_trans(Tween.TRANS_SPRING)
 	click_tween.tween_property(%Outline, "default_color", Color(2, 2, 2), 0.1)
-	click_tween.tween_property(
-		%Outline,
-		"default_color",
-		Global.color_nanobots,
-		0.2,
-	)
+	click_tween.tween_property(%Outline, "default_color", Global.color_nanobots, 0.2)
 	click_tween.set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
 	click_tween.tween_property(
 		%Outline,
@@ -236,12 +231,7 @@ func click() -> void:
 		1.2,
 	)
 	click_tween.set_trans(Tween.TRANS_LINEAR)
-	click_tween.parallel().tween_property(
-		%Shape,
-		"self_modulate",
-		Color(2, 2, 2),
-		1.0,
-	)
+	click_tween.parallel().tween_property(%Shape, "self_modulate", Color(2, 2, 2), 1.0)
 
 
 ## Contract method for Absorbers.
@@ -266,9 +256,7 @@ func trigger_dissolve() -> void:
 	dissolver_material.set_shader_parameter("color", color)
 
 	# Calculate the angle to the player.
-	var player_angle: float = global_position.angle_to_point(
-		Global.player_position
-	)
+	var player_angle: float = global_position.angle_to_point(Global.player_position)
 
 	# Angle to the player.
 	var angle: float = TAU * 3.0 / 4.0 - player_angle + TAU * 2.0 / 4.0
@@ -282,10 +270,7 @@ func trigger_dissolve() -> void:
 	var scaling: float = (radius - 8) / (64.0 - 8.0)
 
 	# TODO: The beam size should be based on the size of the asteroid.
-	dissolver_material.set_shader_parameter(
-		"beam_size",
-		min(0.1, 0.2 + 0.2 * scaling),
-	)
+	dissolver_material.set_shader_parameter("beam_size", min(0.1, 0.2 + 0.2 * scaling))
 	# dissolver_material.set_shader_parameter("noise_density", noise_size + noise_size / scaling)
 
 	# TODO: The duration should be based on the size of the asteroid.
@@ -390,12 +375,7 @@ func launch() -> Node:
 	if Global.debug_asteroid_launch:
 		print_rich(
 			"Launch: %s %s  ->  linear_velocity: %s  angular_velocity: %f"
-			% [
-				asteroid_kind.name,
-				asteroid_size.name,
-				linear_velocity,
-				angular_velocity,
-			],
+			% [asteroid_kind.name, asteroid_size.name, linear_velocity, angular_velocity],
 		)
 
 	return self
@@ -416,31 +396,21 @@ func calculate_asteroid_starting_position(screen_size: Vector2) -> Vector2:
 	var spawn_margin: int = 100
 
 	# Where the asteroid should spawn.
-	var sides: Array[Asteroid.Side] = [
-		Side.TOP,
-		Side.LEFT,
-		Side.RIGHT,
-		Side.BOTTOM,
-	]
+	var sides: Array[Asteroid.Side] = [Side.TOP, Side.LEFT, Side.RIGHT, Side.BOTTOM]
 	var side_weights: PackedFloat32Array = [5, 1.5, 1.5, 0.2]
 
 	var side_index: int = Global.rng.rand_weighted(side_weights)
 	match sides[side_index]:
 		Side.LEFT:
-			return Vector2(-spawn_margin, Global.rng.randf_range(
+			return Vector2(-spawn_margin, Global.rng.randf_range(0, screen_size.y))
+		Side.RIGHT:
+			return Vector2(screen_size.x + spawn_margin, Global.rng.randf_range(
 					0,
 					screen_size.y,
 				))
-		Side.RIGHT:
-			return Vector2(
-				screen_size.x + spawn_margin,
-				Global.rng.randf_range(0, screen_size.y),
-			)
 		Side.BOTTOM:
-			return Vector2(
-				Global.rng.randf_range(0, screen_size.x),
-				screen_size.y + spawn_margin,
-			)
+			return Vector2(Global.rng.randf_range(0, screen_size.x), screen_size.y
+				+ spawn_margin)
 		Side.TOP, _: # AKA Side.TOP
 			return Vector2(Global.rng.randf_range(
 					-spawn_margin,

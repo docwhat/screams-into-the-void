@@ -38,10 +38,7 @@ func test_generate_polygon_returns_valid_number_of_points() -> void:
 
 func test_generate_polygon_first_point_at_radius() -> void:
 	var first_point: Vector2 = asteroid_size.generate_polygon()[0]
-	assert_float(first_point.x).is_equal_approx(
-		asteroid_size.shape_radius,
-		0.001,
-	)
+	assert_float(first_point.x).is_equal_approx(asteroid_size.shape_radius, 0.001)
 	assert_float(first_point.y).is_equal_approx(0.0, 0.001)
 
 
@@ -55,7 +52,4 @@ func test_generate_polygon_points_within_radius_bounds() -> void:
 	)
 
 	for point: Vector2 in result:
-		assert_float(point.length()).is_between(
-			min_expected_radius,
-			max_expected_radius,
-		)
+		assert_float(point.length()).is_between(min_expected_radius, max_expected_radius)

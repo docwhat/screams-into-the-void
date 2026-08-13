@@ -45,10 +45,7 @@ func test_constructor_with_dictionary():
 
 ## Test that the constructor handles a populated, typed dictionary correctly.
 func test_constructor_with_typed_dictionary():
-	var dict: Dictionary[Matter, int] = {
-		AllMatter.carbon: 2,
-		AllMatter.water: 3,
-	}
+	var dict: Dictionary[Matter, int] = { AllMatter.carbon: 2, AllMatter.water: 3 }
 	bag = MatterBag.new(dict)
 	for matter: Matter in AllMatter.all:
 		var got: int = bag.get_by_matter(matter)
@@ -113,9 +110,7 @@ func test_duplicate_bag():
 	for matter: Matter in AllMatter.all:
 		var got: int = bag2.get_by_matter(matter)
 		var expected: int = bag.get_by_matter(matter)
-		assert_int(got).append_failure_message("for %s" % matter.name).is_equal(
-			expected
-		)
+		assert_int(got).append_failure_message("for %s" % matter.name).is_equal(expected)
 		if is_failure():
 			return
 
@@ -243,9 +238,7 @@ func test_get_by_name():
 		bag.set_by_matter(mat, expected)
 
 		var got: int = bag.get_by_name(mat.name)
-		assert_int(got).is_equal(expected).append_failure_message(
-			"for %s" % mat.name,
-		)
+		assert_int(got).is_equal(expected).append_failure_message("for %s" % mat.name)
 		if is_failure():
 			return
 
