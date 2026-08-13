@@ -92,7 +92,7 @@ func quit() -> void:
 
 ## Returns 0 or 1 50% of the time.
 func flip_coin() -> int:
-	return Global.rng.randi_range(0, 1)
+	return rng.randi_range(0, 1)
 
 
 ## Format a string according to preferred formatter.
